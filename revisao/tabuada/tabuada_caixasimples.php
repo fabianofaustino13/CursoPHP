@@ -12,7 +12,7 @@
     <!-- Início Container -->
     <div class="container">
         <!-- Início Form -->
-        <form action="tabuada_caixasimples.php">
+        <form action="tabuada_caixasimples.php" method="post">
             <!-- Início Div Form-row -->
             <div class="form-row">
                 <!-- Início Caixa 1 -->
@@ -20,8 +20,7 @@
                     <label for="tabuada">Tabuada com caixa simples</label>
                     <input class="form-control" type="number" name="tabuada" id="tabuada" placeholder="Informe um número">
                 </div>
-                <!-- Fim  Caixa 1 -->
-                
+                <!-- Fim  Caixa 1 -->    
                 <!-- Início do button -->
                 <div class="form-control col-md-12 mb-3" style="text-align:center">
                     <button type="submit" >Calcular</button>
@@ -34,14 +33,12 @@
         </form>
         <!-- Fim Form -->
         <div class="form-control posicao">
-            
             <div>
                 <?php include 'repeticao1.php'; ?>
             </div>
         </div>
     </div>
     <!-- Fim Container -->
-    
     
 </body>
 </html>

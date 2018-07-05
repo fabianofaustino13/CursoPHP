@@ -7,6 +7,7 @@
     }else if ((!empty($_REQUEST['select']))) {
         $tabuada = $_REQUEST['select'];
     }
+
     if ($tabuada > 0 && $tabuada < 10) {
         for ($i = 1; $i <= 10; $i++) {
             $resultado = $tabuada * $i;
