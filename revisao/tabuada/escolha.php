@@ -1,7 +1,7 @@
 <?php
     $tabuada = 0;
-    if (!empty($_REQUEST['radio'])) {
-        $escolha = $_REQUEST['radio'];
+    if (!empty($_POST['radio'])) {
+        $escolha = $_POST['radio'];
         switch ($escolha) {
             case 1:
                 header("Location: tabuada_caixasimples.php");

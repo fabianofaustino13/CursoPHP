@@ -1,11 +1,11 @@
 <?php
     $tabuada = 0;
-    if (!empty($_REQUEST['tabuada'])) {
-        $tabuada = $_REQUEST['tabuada'];
-    }else if ((!empty($_REQUEST['radio']))) {
-        $tabuada = $_REQUEST['radio'];
-    }else if ((!empty($_REQUEST['select']))) {
-        $tabuada = $_REQUEST['select'];
+    if (!empty($_POST['tabuada'])) {
+        $tabuada = $_POST['tabuada'];
+    }else if ((!empty($_POST['radio']))) {
+        $tabuada = $_POST['radio'];
+    }else if ((!empty($_POST['select']))) {
+        $tabuada = $_POST['select'];
     }
 
     if ($tabuada > 0 && $tabuada < 10) {
