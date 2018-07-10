@@ -16,21 +16,22 @@
 </head>
 <body>
     <div>
-        <?php $lampada = 'img/lampada-off.png';
-        if (!empty($_POST['ligar']) && $_POST['ligar'] == 'ligada') {
-            $lampada = 'img/lampada-on.png';
-        } ?>
-
-        <img src="<?php echo $lampada; ?>">
-    
+        <?php 
+        require_once 'Lampada.php';
+        $lampada = new Lampada('img/lampada-off.png', 'img/lampada-on.png');
+        if (isset($_POST['desligar'])) {
+            $lampada->desliga();
+        } else {
+            $lampada->liga();
+        }
+        ?>
+        <img src="<?=$lampada->getImagem()?>" alt="Aqui fica a lâmpada">
         <!-- Início Form -->
-        <form action="" method="POST">
-            
-            <button name="ligar" type="submit" value="ligada">Ligar</button>
-            <button name="desligar" type="submit" value="desligada">Desligar</button>
-
+        <form method="POST">
+            <button name="ligar" type="submit">Ligar</button>
+            <button name="desligar" type="submit">Desligar</button>
         </form>
-         
+        <!-- Fim Form -->
     </div>
     
 </body>
