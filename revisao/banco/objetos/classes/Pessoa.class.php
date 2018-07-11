@@ -3,13 +3,15 @@
 abstract class Pessoa {
 
     protected $nome;
-    protected $sexo;
     protected $idade;
+    protected $sexo;
+    protected $cpf;
 
-    function __construct($nome = '', $sexo = 'M', $idade = 0) {
+    function __construct($nome = '', $idade, $sexo = 'M',  $cpf) {
         $this->setNome($nome);
-        $this->setSexo($sexo);
         $this->setIdade($idade);
+        $this->setSexo($sexo);
+        $this->setCpf($cpf);
     }
 
     function setNome($nome) {
@@ -25,6 +27,15 @@ abstract class Pessoa {
         return $this->nome;
     }
 
+
+    function setIdade($idade) {
+        $this->idade = $idade;
+    }
+
+    function getIdade() {
+        return $this->idade;
+    }
+
     function setSexo($sexo) {
         $sex = strtoupper($sexo);
         if ($sex != 'F') {
@@ -37,10 +48,14 @@ abstract class Pessoa {
     function getSexo() {
         return $this->sexo;
     }
+    
+    function setCpf($cpf) {
+        $this->cpf = $cpf;
+    }
 
-    abstract function setIdade($idade);
-
-    abstract function getIdade();
+    function getCpf() {
+        return $this->cpf;
+    }
 }
 
 ?>

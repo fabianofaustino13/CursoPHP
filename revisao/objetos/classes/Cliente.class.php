@@ -1,5 +1,5 @@
 <?php
-
+    require_once 'classes/Pessoa.class.php';
     class Cliente extends Pessoa {
 
         private $cpf;
@@ -25,6 +25,22 @@
 
         function getCartao() {
             return $this->cartao;
+        }
+
+        function setIdade($idade) {
+            if (is_numeric($idade) && $idade >= 0 && $idade <= 150) {
+                $this->idade = $idade;
+            } else {
+                $this->idade = 0;
+            }
+        }
+        
+        function getIdade() {
+            return $this->idade;
+        }
+
+        function __toString() {
+            return "Nome: {$this->nome}, Idade: {$this->idade}";
         }
 
     }

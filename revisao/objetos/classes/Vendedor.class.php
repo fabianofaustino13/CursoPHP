@@ -1,5 +1,5 @@
 <?php
-
+    require_once 'classes/Pessoa.class.php';
     class Vendedor extends Pessoa {
 
         private $matricula;
@@ -11,6 +11,24 @@
             $this->setMatricula($matricula);
             $this->setDataAdmissao($data_admissao);
             $this->setDataDemissao($data_demissao);
+        }
+
+        function setIdade($idade) {
+            if (is_numeric($idade) && $idade >= 0 && $idade <= 150) {
+                if ($idade < 1) {
+                    $this->idade = $idade . ' meses';    
+                } else if ($idade <= 18 ) {
+                    $this->idade = $idade . ' menor aprendiz';
+                } else {
+                    $this->idade = $idade;
+                }
+            } else {
+                $this->idade = 0;
+            }
+        }
+        
+        function getIdade() {
+            return $this->idade;
         }
 
         function setMatricula($matricula) {
@@ -39,6 +57,10 @@
 
         function getDataDemissao() {
            return $this->data_demissao;
+        }
+
+        function __toString() {
+            return "Nome: {$this->nome}, Sexo: {$this->sexo}, Idade: {$this->idade}, Matrícula: {$this->matricula}";
         }
 
     }
