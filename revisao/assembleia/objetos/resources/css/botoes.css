@@ -1,0 +1,27 @@
+.btn-success {
+  color: #fff;
+  background-color: #79aec8;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btn-success:focus, .btn-success.focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+
+.btn-warning {
+  color: #fff;
+  background-color: #79aec8;
+  border-color: #28a745;
+}
+
+.btn-warning:hover {
+  color: #fff;
+  background-color: #e0a800;
+  border-color: #1e7e34;
+}

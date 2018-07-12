@@ -39,11 +39,11 @@ $contaMariaClara->setCliente($clienteMariaClara);
 $contaMariaClara->setAgencia('2595');
 $contaMariaClara->setNumero('300208');
 $contaMariaClara->setSaldo(1000);
-echo $contaMariaClara->setRende(10);
 
-$contaFabiano->transfere(250.0, $contaCarla);
+$contaFabiano->transfere(0.0, $contaCarla);
+$contaCarla->transfere(500.0,$contaMariaClara);
 
-$contaCarla->transfere(1000,$contaMariaClara);
+$contaMariaClara->setRende(10);
 
 //$contaFabiano->setCliente($cliente);
 
@@ -51,7 +51,7 @@ $contaCarla->transfere(1000,$contaMariaClara);
 
 // var_dump($contaFabiano);
 // var_dump($contaCarla);
-//var_dump($contaMariaClara);
+var_dump($contaMariaClara);
 
 // echo "Nome: {$contaFabiano->getNome()}<br>CPF: {$contaFabiano->getCpf()} <br>E-mail: {$contaFabiano->getEmail()} <br>Agência: {$contaFabiano->getAgencia()} <br>Conta: {$contaFabiano->getNumero()} <br>";
 //echo "<br><br>", $contaBanco;
