@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cadastrar Assembléia</title>
+	<title>Assembbléias</title>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/base.css">
@@ -68,11 +68,25 @@
 			<div class="form-row">
 
 				<div class="col-md-10 mb-3">
-					<label><h2>Cadastro das Assembléias</h2></label>
-				</div>
+					<!-- <label><h2>Assembbléias</h2></label> -->
+                </div>
+                <table class="table-bordered text-center table-striped" style="font-size: 12px;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome da Assembléias</th>
+                            <th scope="col">data da assembléia  </th>        
+                        </tr>
+                        <tr>
+                            <th scope="col">Nome da Assembléias</th>
+                            <th scope="col">data da assembléia  </th>        
+                        </tr>
+                    </thead>
+                    
+                </table>
+
 				<!-- Nome da assembléia -->
 				<div class="col-md-10 mb-3">
-					<label for="nome-assembleia" class="required">Nome da Assembléia</label>
+					<label for="nome-assembleia" class="required">Tabelas das Assembbléias</label>
 					<input type="text" class="form-control" id="nome-assembleia" name="nome-assembleia" placeholder="Assembléia Ordinária" required />
 				</div>
 				<!-- Fim da assembléia  -->
