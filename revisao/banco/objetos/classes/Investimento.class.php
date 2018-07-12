@@ -1,22 +1,26 @@
 <?php
-    require_once 'classes/Conta.class.php';
+    
+    require_once 'Conta.class.php';
+    
     abstract class Investimento extends Conta {
-        protected $operacao;
-        protected $rendimento;
+        
+        private $rendimento;
 
-        function __construct($nome, $idade, $sexo, $cpf, $agencia, $conta, $operacao, $rendimento) {
-            parent::__construct($nome, $idade, $sexo, $cpf);
-            parent::__construct($agencia, $conta);
-            $this->setOperacao($operacao);
-            $this->setRendimento($rendimento);
+        public function setRendimento($rendimento) {
+            $this->rendimento = $rendimento;
+        }
+        
+        public function getRendimento() {
+            return $this->rendimento;
         }
 
-        abstract function setOperacao($operacao);
-        
-        abstract function getOperacao();
-
-        abstract function setRendimento($rendimento);
-        
-        abstract function getRendimento();
+        public function saca($valor) {
+            if (is_numeric($valor) && $valor > 0 && $valor <= parent::getSaldo()) {
+                $novoSaldo = parent::getSaldo() - $valor;
+                parent::setSaldo($novoSaldo);
+                return true;
+            }
+            return false;
+        }
     }
 ?>

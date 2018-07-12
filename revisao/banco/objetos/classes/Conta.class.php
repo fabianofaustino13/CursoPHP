@@ -2,7 +2,8 @@
     
     require_once 'Cliente.class.php';
 
-class Conta {
+abstract class Conta {
+
         protected $cliente;
         protected $agencia;
         protected $numero;
@@ -13,36 +14,54 @@ class Conta {
         //     $this->setConta($conta);
         // }
 
-        function setCliente(Cliente $cliente) {
+        public function setCliente(Cliente $cliente) {
             $this->cliente = $cliente;
         }
         
-        function getCliente() {
+        public function getCliente() {
             return $this->cliente;
         }
 
-        function setAgencia($agencia) {
+        public function setAgencia($agencia) {
             $this->agencia = $agencia;
         }
         
-        function getAgencia() {
+        public function getAgencia() {
             return $this->agencia;
         }
 
-        function setNumero($numero) {
+        public function setNumero($numero) {
             $this->numero = $numero;
         }
         
-        function getNumero() {
+        public function getNumero() {
             return $this->numero;
         }
 
-        function setSaldo($saldo) {
+        public function setSaldo($saldo) {
             $this->saldo = $saldo;
         }
         
-        function getSaldo() {
+        public function getSaldo() {
             return $this->saldo;
+        }
+
+        public abstract function saca($valor);
+
+        public function deposita($valor) {
+            if (is_numeric($valor) && $valor > 0) {
+                $this->saldo += $valor;
+                return true;
+            }
+            return false;
+        }
+
+        public function transfere($valor, Conta $conta) {
+            if ($this->saca($valor)) {
+                $conta->deposita($valor);
+                return true;
+            }
+            return false;
         }
 
         // function __toString() {

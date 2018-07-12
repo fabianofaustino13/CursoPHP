@@ -1,22 +1,32 @@
+<pre>
+
 <?php
 
 require_once 'classes/Cliente.class.php';
 require_once 'classes/Conta.class.php';
 require_once 'classes/Corrente.class.php';
 
-$conta = new Conta();
-$conta->setAgencia('8082-9');
-
-$corrente = new Corrente();
-$corrente->setSaldo(2000);
-$corrente->setLimite(1000);
-$corrente->setDeposito(300);
-$corrente->setSaque(1550);
+// $conta = new Corrente();
+// $conta->setAgencia('8082-9');
 
 $cliente = new Cliente();
 $cliente->setNome('Fabiano');
+$corrente = new Corrente();
+$corrente->setCliente($cliente);
+$corrente->setAgencia('8082-9');
+$corrente->setNumero('6681-8');
+$corrente->setSaldo(1000.0);
+$corrente->setLimite(500.0);
+$corrente->saca(1100.0);
+//$corrente->setDeposito(0);
+//$corrente->setSaque(500);
 
-echo "Nome: {$cliente->getNome()}<br> E-mail: {$cliente->getEmail()} <br> Agência: {$conta->getAgencia()} <br> Corrente: {$corrente->getNumero()} <br> Operação: {$corrente->getOperacao()} <br> Limite: {$corrente->getLimite()} <br> Deposito: {$corrente->getDeposito()} <br> Saldo: {$corrente->getSaldo()} <br> Saldo com Limite: {$corrente->getSaldoTotal()} <br> Saque: {$corrente->getSaque()}";
+
+var_dump($corrente);
+
+echo "<br>Agência: {$corrente->getAgencia()} <br>Corrente: {$corrente->getNumero()} <br>Limite: {$corrente->getLimite()} <br>Saldo: {$corrente->getSaldo()}";
 //echo "<br><br>", $corrente;
 
 ?>
+
+</pre>
