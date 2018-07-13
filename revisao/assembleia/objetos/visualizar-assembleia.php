@@ -1,61 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Assembbléias</title>
+	<title>Assembléias</title>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/base.css">
-	<link rel="stylesheet" type="text/css" href="resources/css/login.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/tabela.css">
+	<!-- <link rel="stylesheet" type="text/css" href="resources/css/login.css"> -->
 	<link rel="stylesheet" type="text/css" href="resources/css/botoes.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/responsive.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="resources/css/home.css">
 </head>
 <body>
-    <div class="sidenav">
-        <a href="home.html">Home</a>
-        <button class="dropdown-btn">Assembléia 
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <a href="cadastrar-assembleia.php">Criar Assembleia</a>
-            <a href="cadastrar-assembleia-pauta.php">Criar Pauta</a>
-            <a href="#">Visualizar</a>
+		<div class="sidenav">
+                <li>
+                    <a href="home.html"><i class="fa fa-home"></i> <span>Home</span></a>
+                </li>  
+                
+                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                    <a href="cadastrar-assembleia.php">Criar Assembleia</a>
+                    <a href="cadastrar-assembleia-pauta.php">Criar Pauta</a>
+                    <a href="visualizar-assembleia.php">Visualizar</a>
+                </div>
+            <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+                <div class="dropdown-container">
+                    <a href="cadastrar-morador.php">Cadastrar</a>
+                    <a href="#">Visualizar</a>
+                </div>
         </div>
-        <button class="dropdown-btn">Morador 
-            <i class="fa fa-caret-down"></i>
-        </button>
-		<div class="dropdown-container">
-			<a href="cadastrar-morador.php">Cadastrar</a>
-			<a href="#">Visualizar</a>
-		</div>
-    </div>
-
-    <div class="main">
-    <!-- <h2>Sidebar Dropdown</h2>
-    <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
-    <p>This sidebar is of full height (100%) and always shown.</p>
-    <p>Some random text..</p> -->
-
-    </div>
-
-    <script>
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-
-    for (i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var dropdownContent = this.nextElementSibling;
-        if (dropdownContent.style.display === "block") {
-        dropdownContent.style.display = "none";
-        } else {
-        dropdownContent.style.display = "block";
-        }
-    });
-    }
-	</script>
+        
+		<script>
+		/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+		var dropdown = document.getElementsByClassName("dropdown-btn");
+		var i;
+	
+		for (i = 0; i < dropdown.length; i++) {
+		dropdown[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var dropdownContent = this.nextElementSibling;
+			if (dropdownContent.style.display === "block") {
+			dropdownContent.style.display = "none";
+			} else {
+			dropdownContent.style.display = "block";
+			}
+		});
+		}
+		</script>
 	
 
 	<!-- Início do container -->
@@ -70,40 +66,56 @@
 				<div class="col-md-10 mb-3">
 					<!-- <label><h2>Assembbléias</h2></label> -->
                 </div>
-                <table class="table-bordered text-center table-striped" style="font-size: 12px;">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nome da Assembléias</th>
-                            <th scope="col">data da assembléia  </th>        
-                        </tr>
-                        <tr>
-                            <th scope="col">Nome da Assembléias</th>
-                            <th scope="col">data da assembléia  </th>        
-                        </tr>
-                    </thead>
-                    
-                </table>
+				<table id="playlistTable">
+					<caption>Top</caption>
+						<thead>
+							<tr>
+								<th class="celula1"></th>
+								<th class="celula2">Assembléias</th>
+								<th class="celula3">Data</th>
+								<th class="celula4">Cadastrar Pauta</th>
+							</tr>
+						</thead>
 
-				<!-- Nome da assembléia -->
-				<div class="col-md-10 mb-3">
-					<label for="nome-assembleia" class="required">Tabelas das Assembbléias</label>
-					<input type="text" class="form-control" id="nome-assembleia" name="nome-assembleia" placeholder="Assembléia Ordinária" required />
-				</div>
-				<!-- Fim da assembléia  -->
+						<tbody>
+							<tr>
+								<td class="coluna-editar">5</td>
+								<td >Hide You</td>
+								<td class="coluna-editar">15/07/2018</td>
+								<td class="coluna-editar"><a href="cadastrar-assembleia-pauta.php"><i class="fa fa-edit fa-2x icon-ativado"></i></a></td>
+							</tr>
 
-				<!-- Descrição da assembléia -->
-				<div class="col-md-10 mb-3">
-					<label for="descricao-assembleia">Descrição</label>
-					<input type="text" class="form-control" id="descricao-assembleia" name="descricao-assembleia" placeholder="Descrição para assembléia" />
-				</div>
-				<!-- Fim Descrição da assembléia -->
-	
-				<!-- Data da assembléia -->
-				<div class="col-md-3 mb-3">
-					<label for="data-assembleia" class="required">Data da Assembléia</label>
-					<input type="date" class="form-control" id="data-assembleia" name="data-assembleia" required />
-				</div>
-				<!-- Fim data da assembléia -->
+							<tr>
+								<td class="coluna-editar">4</td>
+								<td>Teste array_diff_assoc</td>
+								<td class="coluna-editar">15/07/2017</td>
+								<td class="coluna-editar"><a href="cadastrar-assembleia-pauta.php"><i class="fa fa-pencil-square fa-2x icon-ativado"></i></a></td>
+							</tr>
+
+							<tr>
+								<td class="coluna-editar">3</td>
+								<td>Fix You</td>
+								<td class="coluna-editar">15/07/2016</td>
+								<td class="coluna-editar"><i class="fa fa-pencil-square-o fa-2x icon-desativado"></i><a href="cadastrar-assembleia-pauta.php"></a></td>
+							</tr>
+
+							<tr>
+								<td class="coluna-editar">2</td>
+								<td>Maps</td>
+								<td class="coluna-editar">15/07/2015</td>
+								<td class="coluna-editar"><a href="cadastrar-assembleia-pauta.php"><i class="fa fa-pencil fa-2x icon-ativado"></i></a></td>
+							</tr>
+
+							<tr>
+								<td class="coluna-editar">1</td>
+								<td>Ask me how I am</td>
+								<td class="coluna-editar">15/07/2014</td>
+								<td class="coluna-editar"><i class="fa fa-pencil fa-2x icon-desativado"></i></td>
+							</tr>
+
+							
+						</tbody>
+			</table>
 
 			</div>
 			<!-- Fim Div1 -->
