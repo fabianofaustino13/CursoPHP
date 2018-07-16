@@ -14,6 +14,8 @@
             return $this->rendimento;
         }
 
+       // public abstract function rende();
+
         public function saca($valor) {
             if (is_numeric($valor) && $valor > 0 && $valor <= parent::getSaldo()) {
                 $novoSaldo = parent::getSaldo() - $valor;
@@ -22,5 +24,13 @@
             }
             return false;
         }
+
+        public function rende() {
+            $novoSaldo = parent::getSaldo() * (1 + $this->getPercentual());
+            parent::setSaldo($novoSaldo);
+        }
+
+        public abstract function getPercentual();
+
     }
 ?>

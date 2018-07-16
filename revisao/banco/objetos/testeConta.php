@@ -5,6 +5,8 @@ require_once 'classes/Cliente.class.php';
 require_once 'classes/Conta.class.php';
 require_once 'classes/Corrente.class.php';
 require_once 'classes/Poupanca.class.php';
+require_once 'classes/Acoes.class.php';
+
 
 //$conta = new Conta('Fabiano', 37, 'm', '12345678900', '8082-9', '6681-8');
 $clienteFabiano = new Cliente();
@@ -17,7 +19,6 @@ $contaFabiano->setAgencia('8082-9');
 $contaFabiano->setNumero('6681-8');
 $contaFabiano->setSaldo(500);
 $contaFabiano->setLimite(1000);
-
 
 $clienteCarla = new Cliente();
 $clienteCarla->setNome('Carla');
@@ -40,18 +41,32 @@ $contaMariaClara->setAgencia('2595');
 $contaMariaClara->setNumero('300208');
 $contaMariaClara->setSaldo(1000);
 
-$contaFabiano->transfere(0.0, $contaCarla);
-$contaCarla->transfere(500.0,$contaMariaClara);
+$clienteCarlaFalcao = new Cliente();
+$clienteCarlaFalcao->setNome('Carla Falcão');
+$clienteCarlaFalcao->setEmail('carla.falcao@ifrn.edu.br');
 
-$contaMariaClara->setRende(10);
+$acoesCarlaFalcao = new Acoes();
+$acoesCarlaFalcao->setCliente($clienteCarlaFalcao);
+$acoesCarlaFalcao->setAgencia('1111');
+$acoesCarlaFalcao->setNumero('222222-2');
+$acoesCarlaFalcao->setSaldo(2000);
+
+
+// $contaFabiano->transfere(0.0, $contaCarla);
+// $contaCarla->transfere(0.0,$contaMariaClara);
+
+// $contaMariaClara->rende();
+// $acoesCarlaFalcao->rende();
 
 //$contaFabiano->setCliente($cliente);
 
 //var_dump($contaBanco);
 
-// var_dump($contaFabiano);
-// var_dump($contaCarla);
-var_dump($contaMariaClara);
+//var_dump($contaFabiano);
+var_dump($contaCarla);
+//var_dump($contaMariaClara);
+//var_dump($acoesCarlaFalcao);
+echo "Parabéns, você é o cliente número " . Corrente::getQuantidadeContas();
 
 // echo "Nome: {$contaFabiano->getNome()}<br>CPF: {$contaFabiano->getCpf()} <br>E-mail: {$contaFabiano->getEmail()} <br>Agência: {$contaFabiano->getAgencia()} <br>Conta: {$contaFabiano->getNumero()} <br>";
 //echo "<br><br>", $contaBanco;

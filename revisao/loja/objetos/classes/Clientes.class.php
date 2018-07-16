@@ -1,6 +1,6 @@
 <?php
 
-class Cliente {
+class Clientes {
 
     private $nome;
     private $cpf;
@@ -32,3 +32,4 @@ class Cliente {
 }
 
 ?>
+
