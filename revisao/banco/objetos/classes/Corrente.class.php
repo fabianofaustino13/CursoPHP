@@ -28,14 +28,28 @@ class Corrente extends Conta {
         
         public function saca($valor) {
             //$saldoVirtual = parent::getSaldo() + $this->limite + $this->taxaSaque;
+            // $saldoVirtual = parent::getSaldo() + $this->limite + self::TAXA;
+            // if (is_numeric($valor) && $valor > 0 && $valor <= $saldoVirtual) {
+            //     //$novoSaldo = parent::getSaldo() - $valor - $this->taxaSaque;
+            //     $novoSaldo = parent::getSaldo() - $valor - self::TAXA;
+            //     parent::setSaldo($novoSaldo); 
+            //     return true;
+            // }
+            // return false;
             $saldoVirtual = parent::getSaldo() + $this->limite + self::TAXA;
-            if (is_numeric($valor) && $valor > 0 && $valor <= $saldoVirtual) {
-                //$novoSaldo = parent::getSaldo() - $valor - $this->taxaSaque;
+            if (!is_numeric($valor)) {
+                throw new Exception("O valor do saque deve ser um NÚMERO");
+            }
+            else if ($valor <= 0) {
+                throw new Exception("O valor do saque deve ser maior que ZERO");
+            }
+            else if ($valor > $saldoVirtual) {
+                throw new Exception("Saldo INSUFICIENTE");
+            }
+            else {
                 $novoSaldo = parent::getSaldo() - $valor - self::TAXA;
                 parent::setSaldo($novoSaldo); 
-                return true;
             }
-            return false;
         }
 
         public static function getQuantidadeContas() {

@@ -20,6 +20,14 @@ $contaFabiano->setNumero('6681-8');
 $contaFabiano->setSaldo(500);
 $contaFabiano->setLimite(1000);
 
+try {
+    $contaFabiano->saca("Teste");
+} catch (Exception $erro) {
+    echo "Falha: {$erro->getMessage()} <br>";
+    echo "Linha: {$erro->getLine()}, do Arquivo: {$erro->getFile()} <br><br>";
+}
+
+
 $clienteCarla = new Cliente();
 $clienteCarla->setNome('Carla');
 $clienteCarla->setEmail('carla.falcao@gmail.com');
