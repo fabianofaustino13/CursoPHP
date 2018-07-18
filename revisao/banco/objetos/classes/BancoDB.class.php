@@ -2,6 +2,7 @@
 
     require_once 'Conta.class.php';
     require_once 'Cliente.class.php';
+    require_once 'Corrente.class.php';
 
     class BancoDB {
         
@@ -18,13 +19,13 @@
 
         public function listaTodas() {
             $db = fopen(self::BANCO_DADOS, self::LEITURA_APENAS);
-            $str = fgets($db);
-            $contas = explode("<", $str);
+            $str = fread($db, filesize(self::BANCO_DADOS));
+            $contas = explode("->", $str);
             $lista = array();
-            for ($i = 0; $i < count($contas); $i++) {
+            for ($i = 1; $i < count($contas); $i++) {
                 $c = explode("|", $contas[$i]);
 
-                $conta = new ContaCorrente();
+                $conta = new Corrente();
                 $conta->setAgencia($c[0]);
                 $conta->setNumero($c[1]);
                 $conta->setSaldo($c[2]);
@@ -40,6 +41,27 @@
             fclose($db);
             return $lista;
         }
+
+        public function obterContaCliente($numero) {
+            $contas = $this->listaTodas();
+            foreach ($contas as $conta) {
+                if ($conta->getNumero() == $numero) {
+                    return $conta;
+                }
+            }
+            return null;
+        }
+
+        public function obterNomeCliente($nome) {
+            $contas = $this->listaTodas();
+            foreach ($contas as $conta) {
+                if ($conta->getCliente()->getNome() == $nome) {
+                    return $conta;
+                }
+            }
+            return null;
+        }
+        
     }
 
 

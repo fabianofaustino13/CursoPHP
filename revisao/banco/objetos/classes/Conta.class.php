@@ -69,7 +69,7 @@ abstract class Conta {
         // }
         //ToString para voltar uma string
         public function __toString() {
-            $resultado = "<{$this->agencia}|{$this->numero}|{$this->saldo}|{$this->cliente->getNome()}|{$this->cliente->getCpf()}";
+            $resultado = "->{$this->agencia}|{$this->numero}|{$this->saldo}|{$this->cliente->getNome()}|{$this->cliente->getCpf()}" . chr(10);
             return $resultado;
         }
     }

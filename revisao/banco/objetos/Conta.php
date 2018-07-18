@@ -16,7 +16,7 @@
 	<div class="container" >
 
 	<!-- Form -->
-	<form method="get" action="CadastrarCliente.php">
+	<form method="get" action="cadastrar-cliente.php">
 
 		<!-- Div1 -->
 		<div class="form-row">
@@ -24,11 +24,18 @@
 				<label><h2>Dados do Cliente</h2></label>
 			</div>
 			<!-- Nome -->
-			<div class="col-md-10 mb-3">
+			<div class="col-md-12 mb-3">
 				<label for="nome" class="required">Nome</label>
 				<input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" />
 			</div>
 			<!-- Fim nome -->
+
+			<!-- CPF -->
+			<div class="col-md-2 mb-3">
+				<label for="cpf" class="required">CPF</label>
+				<input type="text" class="form-control" id="cpf" name="cpf" maxlength="14" placeholder="xxx.xxx.xxx-xx" />
+			</div>
+			<!-- Fim CPF -->
 
 			<!-- Agência -->
 			<div class="col-md-5 mb-3">
@@ -39,15 +46,15 @@
 
 			<!-- Conta -->
 			<div class="col-md-5 mb-3">
-				<label for="conta" class="required">Conta</label>
-				<input type="text" class="form-control" id="conta" name="conta" maxlength="11" placeholder="Conta" />
+				<label for="numero-conta" class="required">Conta</label>
+				<input type="text" class="form-control" id="numero-conta" name="numero-conta" maxlength="11" placeholder="Conta" />
 			</div>
 			<!-- Fim Conta -->
 
 			<!-- Saldo -->
 			<div class="col-md-3 mb-3">
 				<label for="saldo" class="required">Saldo</label>
-				<input type="email" class="form-control" id="saldo" name="saldo" placeholder="Saldo" />
+				<input type="text" class="form-control" id="saldo" name="saldo" placeholder="Saldo" />
 			</div>
 			<!-- Fim Saldo -->
 
