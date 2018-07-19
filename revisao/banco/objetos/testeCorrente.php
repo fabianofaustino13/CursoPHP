@@ -4,14 +4,14 @@
 
 require_once 'classes/Cliente.class.php';
 require_once 'classes/Conta.class.php';
-require_once 'classes/Corrente.class.php';
+require_once 'classes/ContaCorrente.class.php';
 
 // $conta = new Corrente();
 // $conta->setAgencia('8082-9');
 
 $cliente = new Cliente();
 $cliente->setNome('Fabiano');
-$corrente = new Corrente();
+$corrente = new ContaCorrente();
 $corrente->setCliente($cliente);
 $corrente->setAgencia('8082-9');
 $corrente->setNumero('6681-8');

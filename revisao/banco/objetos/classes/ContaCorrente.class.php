@@ -2,7 +2,7 @@
     
     require_once 'Conta.class.php';
 
-class Corrente extends Conta {
+class ContaCorrente extends Conta {
         
         //Contador privado para o número de contas criadas
         private static $qtdContas = 0;

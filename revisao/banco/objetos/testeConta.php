@@ -3,7 +3,7 @@
 
 require_once 'classes/Cliente.class.php';
 require_once 'classes/Conta.class.php';
-require_once 'classes/Corrente.class.php';
+require_once 'classes/ContaCorrente.class.php';
 require_once 'classes/Poupanca.class.php';
 require_once 'classes/Acoes.class.php';
 
@@ -32,7 +32,7 @@ $clienteCarla = new Cliente();
 $clienteCarla->setNome('Carla');
 $clienteCarla->setEmail('carla.falcao@gmail.com');
 
-$contaCarla = new Corrente();
+$contaCarla = new ContaCorrente();
 $contaCarla->setCliente($clienteCarla);
 $contaCarla->setAgencia('1406');
 $contaCarla->setNumero('20804-1');
@@ -74,7 +74,7 @@ $acoesCarlaFalcao->setSaldo(2000);
 var_dump($contaCarla);
 //var_dump($contaMariaClara);
 //var_dump($acoesCarlaFalcao);
-echo "Parabéns, você é o cliente número " . Corrente::getQuantidadeContas();
+echo "Parabéns, você é o cliente número " . ContaCorrente::getQuantidadeContas();
 
 // echo "Nome: {$contaFabiano->getNome()}<br>CPF: {$contaFabiano->getCpf()} <br>E-mail: {$contaFabiano->getEmail()} <br>Agência: {$contaFabiano->getAgencia()} <br>Conta: {$contaFabiano->getNumero()} <br>";
 //echo "<br><br>", $contaBanco;

@@ -2,13 +2,13 @@
 
     require_once 'Conta.class.php';
     require_once 'Cliente.class.php';
-    require_once 'Corrente.class.php';
+    require_once 'ContaCorrente.class.php';
 
     class BancoDB {
         
         private const BANCO_DADOS = 'banco.txt';
         private const ESCRITA_APENAS = 'a';
-        private const LEITURA_APENAS = 'r';
+        private const LEITURA_APENAS = 'a+';
         
         //modelo do arquivo (<agencia|numero|saldo|nome|cpf>\n)
         public function salva(Conta $conta) {
@@ -25,7 +25,7 @@
             for ($i = 1; $i < count($contas); $i++) {
                 $c = explode("|", $contas[$i]);
 
-                $conta = new Corrente();
+                $conta = new ContaCorrente();
                 $conta->setAgencia($c[0]);
                 $conta->setNumero($c[1]);
                 $conta->setSaldo($c[2]);
@@ -42,7 +42,7 @@
             return $lista;
         }
 
-        public function obterContaCliente($numero) {
+        public function obterContaPorNumero($numero) {
             $contas = $this->listaTodas();
             foreach ($contas as $conta) {
                 if ($conta->getNumero() == $numero) {
@@ -52,7 +52,7 @@
             return null;
         }
 
-        public function obterNomeCliente($nome) {
+        public function obterContaPorNomeCliente($nome) {
             $contas = $this->listaTodas();
             foreach ($contas as $conta) {
                 if ($conta->getCliente()->getNome() == $nome) {
@@ -60,6 +60,24 @@
                 }
             }
             return null;
+        }
+
+        public function excluiContaPorNumero($numero) {
+            //$contas = $this->obterContaPorNumero($numero);
+            $todas = $this->listaTodas();
+            foreach ($todas as $conta) {
+                if ($conta->getNumero() == $numero) {
+                    
+                    
+                    return $conta;
+                }
+            }
+
+            //return $contas;
+            
+            return null;
+            //return $excluir;
+
         }
         
     }
