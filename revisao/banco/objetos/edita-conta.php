@@ -20,7 +20,7 @@ require_once 'classes/BancoDB.class.php';
             <div class="row" style="margin-top: 50px;">
                 <!-- Aqui fica o formulario -->
                 <div class="col-4">
-                <form method="post" action="cadastrar-conta.php">
+                <form method="post" action="editar-conta.php">
                     <fieldset>
                         <legend>Dados do Cliente</legend>
                         <div class="form-group">
@@ -48,7 +48,7 @@ require_once 'classes/BancoDB.class.php';
                         </div>
                     </fieldset>
                     <br>
-                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                    <button type="submit" class="btn btn-success">Salvar</button>
                 </form>
                 </div>
                 <!-- Aqui fica a tabela -->
@@ -78,15 +78,9 @@ require_once 'classes/BancoDB.class.php';
                                         <td><?=$conta->getCliente()->getCpf();?></td>
                                         <td><?=$conta->getSaldo();?></td>
                                         <td>
-                                            <form method="POST" action="edita-conta.php">
+                                            <form method="POST" action="editar-conta.php">
                                                 <input type="hidden" name="conta" value="<?=$conta->getNumero();?>">
                                                 <button type="submit" class="btn btn-primary"> <i class="far fa-edit"></i></button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form method="POST" action="excluir-conta.php">
-                                                <input type="hidden" name="conta" value="<?=$conta->getNumero();?>">
-                                                <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                             </form>
                                         </td>
                                     </tr>

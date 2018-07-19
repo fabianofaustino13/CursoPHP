@@ -1,14 +1,15 @@
 <?php
 
     require_once 'Conta.class.php';
-    require_once 'Cliente.class.php';
     require_once 'ContaCorrente.class.php';
+    require_once 'Cliente.class.php';
 
     class BancoDB {
         
         private const BANCO_DADOS = 'banco.txt';
         private const ESCRITA_APENAS = 'a';
-        private const LEITURA_APENAS = 'a+';
+        private const LEITURA_APENAS = 'r';
+        private const SOBRESCRITA = 'w';
         
         //modelo do arquivo (<agencia|numero|saldo|nome|cpf>\n)
         public function salva(Conta $conta) {
@@ -62,25 +63,38 @@
             return null;
         }
 
-        public function excluiContaPorNumero($numero) {
-            //$contas = $this->obterContaPorNumero($numero);
-            $todas = $this->listaTodas();
-            foreach ($todas as $conta) {
-                if ($conta->getNumero() == $numero) {
-                    
-                    
-                    return $conta;
+        public function editaContaPorNumero($numero) {
+            $contas = $this->listaTodas();
+            $c = $this->obterContaPorNumero($numero);
+            for ($i = 0; $i < count($contas); $i++) {
+                if ($contas[$i] == $c) {
+                    array_splice($contas[$i], $i);
+                    break;
                 }
             }
+            $this->sobrescreveBanco($contas);
+        }
 
-            //return $contas;
-            
-            return null;
-            //return $excluir;
-
+        public function excluiContaPorNumero($numero) {
+            $contas = $this->listaTodas();
+            $c = $this->obterContaPorNumero($numero);
+            for ($i = 0; $i < count($contas); $i++) {
+                if ($contas[$i] == $c) {
+                    unset($contas[$i]);
+                    break;
+                }
+            }
+            $this->sobrescreveBanco($contas);
         }
         
+        private function sobrescreveBanco($contas) {
+            $str = '';
+            foreach($contas as $conta) {
+                $str .= $conta;
+            }
+            $db = fopen(self::BANCO_DADOS, self::SOBRESCRITA);
+            fwrite($db, $str);
+            fclose($db);
+        }
     }
-
-
 ?>
