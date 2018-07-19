@@ -7,6 +7,7 @@ require_once 'classes/Corrente.class.php';
 require_once 'classes/Poupanca.class.php';
 require_once 'classes/Acoes.class.php';
 require_once 'classes/BancoDB.class.php';
+require_once 'classes/ChecaDados.class.php';
 
 $nomeCliente = $_REQUEST['nome'];
 $cpfCliente = $_REQUEST['cpf'];
@@ -15,14 +16,26 @@ $numeroContaCliente = $_REQUEST['numero-conta'];
 $saldoCliente = $_REQUEST['saldo'];
 
 $cliente = new Cliente();
-$cliente->setNome($nomeCliente);
-$cliente->setCpf($cpfCliente);
+$checaCpf = new ChecaDados();
+try {
+    $testeCpf = $checaCpf->validaCpf($cpfCliente);
+    if ($testeCpf) {
+        $cliente->setCpf($cpfCliente);
+    }
+} catch (Exception $erro) {
+    echo "Falha: {$erro->getMessage()} <br>";
+    echo "Linha: {$erro->getLine()}, do Arquivo: {$erro->getFile()} <br><br>";
+    //header('location: Conta.php');
+}
 
-$conta = new Corrente();
-$conta->setCliente($cliente);
-$conta->setAgencia($agenciaCliente);
-$conta->setNumero($numeroContaCliente);
-$conta->setSaldo($saldoCliente);
+
+// $cliente->setNome($nomeCliente);
+
+// $conta = new Corrente();
+// $conta->setCliente($cliente);
+// $conta->setAgencia($agenciaCliente);
+// $conta->setNumero($numeroContaCliente);
+// $conta->setSaldo($saldoCliente);
 
 // $clienteFabiano = new Cliente();
 // $clienteFabiano->setNome('Fabiano');
@@ -34,8 +47,8 @@ $conta->setSaldo($saldoCliente);
 // $contaFabiano->setNumero('6681-8');
 // $contaFabiano->setSaldo(500);
 
-$banco = new BancoDB();
-$banco->salva($conta);
+// $banco = new BancoDB();
+// $banco->salva($conta);
 
 // $clienteCarla = new Cliente();
 // $clienteCarla->setNome('Carla Falcão');
@@ -49,7 +62,7 @@ $banco->salva($conta);
 
 //$banco->salva($contaCarla);
 
-var_dump($banco->listaTodas());
+//ar_dump($banco->listaTodas());
 
 //var_dump($banco->obterContaCliente('6681-8'));
 //var_dump($banco->obterNomeCliente('Carla Falcão'));
