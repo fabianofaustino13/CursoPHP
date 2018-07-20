@@ -68,11 +68,11 @@
             $c = $this->obterContaPorNumero($numero);
             for ($i = 0; $i < count($contas); $i++) {
                 if ($contas[$i] == $c) {
-                    array_splice($contas[$i], $i);
+                    $c = $this->sobrescreveBanco($contas[$i]);
                     break;
                 }
             }
-            $this->sobrescreveBanco($contas);
+            
         }
 
         public function excluiContaPorNumero($numero) {
