@@ -97,7 +97,7 @@ if (isset($_GET['conta']) && !empty($_GET['conta'])) {
                                         <td><?=$conta->getCliente()->getCpf();?></td>
                                         <td><?=$conta->getSaldo();?></td>
                                         <td>
-                                            <form method="post" action="index.php?conta=<?=$conta->getNumero();?>">
+                                            <form method="post" action="edita-conta.php?conta=<?=$conta->getNumero();?>">
                                                 <input type="hidden" name="conta" value="<?=$conta->getNumero();?>">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="far fa-edit"></i>

@@ -63,16 +63,19 @@
             return null;
         }
 
-        public function editaContaPorNumero($numero) {
+        public function editaContaPorNumero($conta) {
             $contas = $this->listaTodas();
-            $c = $this->obterContaPorNumero($numero);
+            $numeroConta = $conta->getNumero($conta);
+            $c = $this->obterContaPorNumero($numeroConta);
+            $saldo = $c->getSaldo();
             for ($i = 0; $i < count($contas); $i++) {
-                if ($contas[$i] == $c) {
-                    $c = $this->sobrescreveBanco($contas[$i]);
+                 if ($contas[$i] == $c) {
+                    $contas[$i] = $conta;
+                    $contas[$i]->setSaldo($saldo);
                     break;
                 }
             }
-            
+            $this->sobrescreveBanco($contas);
         }
 
         public function excluiContaPorNumero($numero) {
