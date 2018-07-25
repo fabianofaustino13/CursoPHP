@@ -1,7 +1,10 @@
 <?php
+session_start();
+
 require_once 'classes/Cliente.class.php';
 require_once 'classes/ContaCorrente.class.php';
 require_once 'classes/BancoDB.class.php';
+
 $cliente = new Cliente();
 $cliente->setNome('');
 $cliente->setCpf('');
@@ -38,6 +41,13 @@ if (isset($_GET['conta']) && !empty($_GET['conta'])) {
                             <div class="form-group">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" name="nome" id="nome" autofocus="on" value="<?=$contaCorrente->getCliente()->getNome();?>">
+                                <?php 
+                                    if (!empty($_SESSION['vazio_nome'])) {
+                                        echo "<p style='color:red;'>" .$_SESSION['vazio_nome']."</p>";
+                                        unset($_SESSION['vazio_nome']);
+                                    }
+                                ?>
+
                             </div>
                             <div class="form-group">
                                 <label for="cpf">CPF</label>

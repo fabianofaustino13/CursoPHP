@@ -1,5 +1,7 @@
 <?php
 
+require_once 'classes/Cliente.class.php';
+require_once 'classes/ContaCorrente.class.php';
 require_once 'classes/BancoDB.class.php';
 
 $cliente = new Cliente();
