@@ -3,7 +3,7 @@
 
 require_once 'classes/Cliente.class.php';
 require_once 'classes/Conta.class.php';
-require_once 'classes/Corrente.class.php';
+require_once 'classes/ContaCorrente.class.php';
 require_once 'classes/Poupanca.class.php';
 require_once 'classes/Acoes.class.php';
 require_once 'classes/BancoDB.class.php';

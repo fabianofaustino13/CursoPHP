@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'classes/Cliente.class.php';
 require_once 'classes/ContaCorrente.class.php';
 require_once 'classes/BancoDB.class.php';
@@ -37,22 +38,79 @@ if (isset($_GET['conta']) && !empty($_GET['conta'])) {
                             <legend>Dados do Cliente</legend>
                             <div class="form-group">
                                 <label for="nome">Nome</label>
-                                <input type="text" class="form-control" name="nome" id="nome" autofocus="on" value="<?=$contaCorrente->getCliente()->getNome();?>">
+                                <!-- <input type="text" class="form-control" name="nome" id="nome" autofocus="on" value="<?=$contaCorrente->getCliente()->getNome();?>"> -->
+                                <input type="text" class="form-control" name="nome" id="nome" autofocus="on" 
+                                    <?php 
+                                        if (!empty($_SESSION['value_nome'])) {
+                                            echo "value='".$_SESSION['value_nome']."'";
+                                            unset($_SESSION['value_nome']);
+                                        }
+                                    ?>
+                                >
+                                <?php 
+                                    if (!empty($_SESSION['vazio_nome'])) {
+                                        echo "<p style='color:red;'>" .$_SESSION['vazio_nome']."</p>";
+                                        unset($_SESSION['vazio_nome']);
+                                    }
+                                ?>
                             </div>
                             <div class="form-group">
                                 <label for="cpf">CPF</label>
-                                <input type="text" class="form-control" name="cpf" id="cpf" value="<?=$contaCorrente->getCliente()->getCpf();?>">
+                                <!-- <input type="text" class="form-control" name="cpf" id="cpf" value="<?=$contaCorrente->getCliente()->getCpf();?>"> -->
+                                <input type="text" class="form-control" name="cpf" id="cpf"
+                                    <?php 
+                                        if (!empty($_SESSION['value_cpf'])) {
+                                            echo "value='".$_SESSION['value_cpf']."'";
+                                            unset($_SESSION['value_cpf']);
+                                        }
+                                    ?>
+                                >
+                                <?php 
+                                    if (!empty($_SESSION['vazio_cpf'])) {
+                                        echo "<p style='color:red;'>" .$_SESSION['vazio_cpf']."</p>";
+                                        unset($_SESSION['vazio_cpf']);
+                                    }
+                                ?>
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>Dados da Conta</legend>
                             <div class="form-group">
                                 <label for="agencia">Agencia</label>
-                                <input type="text" class="form-control" name="agencia" id="agencia" value="<?=$contaCorrente->getAgencia();?>">
+                                <!-- <input type="text" class="form-control" name="agencia" id="agencia" value="<?=$contaCorrente->getAgencia();?>"> -->
+                                <input type="text" class="form-control" name="agencia" id="agencia" 
+                                    <?php 
+                                        if (!empty($_SESSION['value_agencia'])) {
+                                            echo "value='".$_SESSION['value_agencia']."'";
+                                            unset($_SESSION['value_agencia']);
+                                        }
+                                    ?>
+                                >
+                                <?php 
+                                    if (!empty($_SESSION['vazio_agencia'])) {
+                                        echo "<p style='color:red;'>" .$_SESSION['vazio_agencia']."</p>";
+                                        unset($_SESSION['vazio_agencia']);
+                                    }
+                                ?>
                             </div>
                             <div class="form-group">
                                 <label for="conta">Conta</label>
-                                <input type="text" class="form-control" name="conta" id="conta" value="<?=$contaCorrente->getNumero();?>">
+                                <!-- <input type="text" class="form-control" name="conta" id="conta" value="<?=$contaCorrente->getNumero();?>"> -->
+                                <input type="text" class="form-control" name="conta" id="conta"
+                                    <?php 
+                                        if (!empty($_SESSION['value_conta'])) {
+                                            echo "value='".$_SESSION['value_conta']."'";
+                                            unset($_SESSION['value_conta']);
+                                        }
+                                    ?>
+                                >
+                                
+                                <?php 
+                                    if (!empty($_SESSION['vazio_conta'])) {
+                                        echo "<p style='color:red;'>" .$_SESSION['vazio_conta']."</p>";
+                                        unset($_SESSION['vazio_conta']);
+                                    }
+                                ?>
                             </div>
                             <div class="form-group">
                                 <label for="saldo">Saldo</label>
