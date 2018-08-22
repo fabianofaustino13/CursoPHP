@@ -11,52 +11,60 @@
 	<link rel="stylesheet" href="resources/css/home.css">
 </head>
 <body>
-<div class="sidenav">
-                <li>
-                    <a href="home.html"><i class="fa fa-home"></i> <span>Home</span></a>
-                </li>  
-                
-                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+    <!-- Menu lateral -->
+    <div class="sidenav">
+        <li>
+            <a href="home.html"><i class="fa fa-home"></i> <span>Home</span></a>
+        </li>  
+        
+        <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Cadastrar</span>  
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="cadastrar-assembleia.php">Criar Assembleia</a>
-                    <a href="cadastrar-assembleia-pauta.php">Criar Pauta</a>
-                    <a href="visualizar-assembleia.php">Visualizar</a>
+                    <a href="cadastrar-assembleia.php">Assembleia</a>
+                    <a href="cadastrar-assembleia-pauta.php">Pauta</a>
+                    <a href="cadastrar-tipo-assembleia.php">Tipo de Assembleia</a>
                 </div>
-            <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-                <div class="dropdown-container">
-                    <a href="cadastrar-morador.php">Cadastrar</a>
-                    <a href="#">Visualizar</a>
-                </div>
-            </div>
+                <a href="visualizar-assembleia.php">Visualizar</a>
+        </div>
+        <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+            <a href="cadastrar-morador.php">Cadastrar</a>
+            <a href="#">Visualizar</a>
+        </div>
+    </div>
         
-            <div class="main">
-            <!-- <h2>Sidebar Dropdown</h2>
-            <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
-            <p>This sidebar is of full height (100%) and always shown.</p>
-            <p>Some random text..</p> -->
+    <div class="main">
+    <!-- <h2>Sidebar Dropdown</h2>
+    <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
+    <p>This sidebar is of full height (100%) and always shown.</p>
+    <p>Some random text..</p> -->
+
+    </div>
         
-            </div>
-        
-            <script>
-            /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-            var dropdown = document.getElementsByClassName("dropdown-btn");
-            var i;
-        
-            for (i = 0; i < dropdown.length; i++) {
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener("click", function() {
                 this.classList.toggle("active");
                 var dropdownContent = this.nextElementSibling;
                 if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
+                    dropdownContent.style.display = "none";
                 } else {
-                dropdownContent.style.display = "block";
+                    dropdownContent.style.display = "block";
                 }
             });
-            }
-            </script>
+        }
+    </script>
+    <!-- Fim menu lateral -->
 </body>
 </html> 

@@ -1,75 +1,70 @@
 <?php
 
-    require_once __DIR__ . "/../modelo/Sexo.class.php";
+require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
 
-    class SexoDAO {
+    class TipoAssembleiaDAO {
 
         private function getConexao() {
             $servidor = "localhost";
             $usuario = "root";
             $senha = "";
-            $db = "db_loja";
+            $db = "db_Assembleia";
             $conn = new PDO("mysql:host=$servidor; dbname=$db", $usuario, $senha);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $conn;
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_SEXOS";
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS";
             $statement = $this->getConexao()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $sexos = array();
+            $tipoAssembleias = array();
             foreach ($result as $row) {
-                $sexo = new Sexo();
-                $sexo->setId($row['PK_SEX']);
-                $sexo->setNome($row['SEX_NOME']);
-                $sexo->setSigla($row['SEX_SIGLA']);
-                array_push($sexos, $sexo);
+                $tipoAssembleia = new TipoAssembleia();
+                $tipoAssembleia->setId($row['PK_TDA']);
+                $tipoAssembleia->setNome($row['TDA_NOME']);
+                array_push($tipoAssembleias, $tipoAssembleia);
             }
-            return $sexos;
+            return $tipoAssembleias;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_SEXOS WHERE PK_SEX = $id";
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA = $id";
             $statement = $this->getConexao()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $sexo = new Sexo();
+            $tipoAssembleia = new Assembleia();
             foreach ($result as $row) {
-                $sexo->setId($row['PK_SEX']);
-                $sexo->setNome($row['SEX_NOME']);
-                $sexo->setSigla($row['SEX_SIGLA']);
-                //array_push($sexos, $sexo);
+                $tipoAssembleia->setId($row['PK_TDA']);
+                $tipoAssembleia->setNome($row['TDA_NOME']);
             }
-            return $sexo;
+            return $tipoAssembleia;
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_SEXOS WHERE SEX_NOME = '$nome'";
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE TDA_NOME = '$nome'";
             $statement = $this->getConexao()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $sexo = new Sexo();
+            $tipoAssembleia = new Assembleia();
             foreach ($result as $row) {
-                $sexo->setId($row['PK_SEX']);
-                $sexo->setNome($row['SEX_NOME']);
-                $sexo->setSigla($row['SEX_SIGLA']);
-                //array_push($sexos, $sexo);
+                $tipoAssembleia->setId($row['PK_TDA']);
+                $tipoAssembleia->setNome($row['TDA_NOME']);
             }
-            return $sexo;
+            return $tipoAssembleia;
         }
 
-        public function save(Sexo $sexo) {
-            if ($sexo->getId() == null) {
-                $this->insert($sexo);
+        public function save(TipoAssembleia $tipoAssembleia) {
+            if ($tipoAssembleia->getId() == null) {
+                $this->insert($tipoAssembleia);
             } else {
-                $this->update($sexo);
+                $this->update($tipoAssembleia);
             }
         }
 
-        private function insert(Sexo $sexo) {
-            $sql = "INSERT INTO TB_SEXOS (SEX_NOME, SEX_SIGLA) VALUES ('{$sexo->getNome()}', '{$sexo->getSigla()}')";
+        private function insert(TipoAssembleia $tipoAssembleia) {
+            $sql = "INSERT INTO TB_TIPOS_ASSEMBLEIAS (TDA_NOME) VALUES ('{$tipoAssembleia->getNome()}')";
             try {
                 $this->getConexao()->exec($sql);
             } catch(PDOException $e) {
@@ -79,8 +74,8 @@
             //$statement->execute();
         }
 
-        private function update(Sexo $sexo) {
-            $sql = "UPDATE TB_SEXOS SET SEX_NOME ='{$sexo->getNome()}', SEX_SIGLA = '{$sexo->getSigla()}' WHERE PK_SEX='{$sexo->getId()}'";
+        private function update(TipoAssembleia $tipoAssembleia) {
+            $sql = "UPDATE TB_TIPOS_ASSEMBLEIAS SET TDA_NOME ='{$tipoAssembleia->getNome()}' WHERE PK_TDA='{$tipoAssembleia->getId()}'";
             try {
                 $this->getConexao()->exec($sql);
             } catch(PDOException $e) {
@@ -89,13 +84,11 @@
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_SEXOS WHERE PK_SEX=$id";
+            $sql = "DELETE FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA=$id";
             try {
                 $this->getConexao()->exec($sql);
             } catch(PDOException $e) {
                 echo $e->getMessage();
             }
         }
-
-
     }

@@ -12,53 +12,61 @@
 	<link rel="stylesheet" href="resources/css/home.css">
 </head>
 <body>
-<div class="sidenav">
-                <li>
-                    <a href="home.html"><i class="fa fa-home"></i> <span>Home</span></a>
-                </li>  
-                
-                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+    <!-- Menu lateral -->
+    <div class="sidenav">
+        <li>
+            <a href="home.html"><i class="fa fa-home"></i> <span>Home</span></a>
+        </li>  
+        
+        <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Cadastrar</span>  
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="cadastrar-assembleia.php">Criar Assembleia</a>
-                    <a href="cadastrar-assembleia-pauta.php">Criar Pauta</a>
-                    <a href="visualizar-assembleia.php">Visualizar</a>
+                    <a href="cadastrar-assembleia.php">Assembleia</a>
+                    <a href="cadastrar-assembleia-pauta.php">Pauta</a>
+                    <a href="cadastrar-tipo-assembleia.php">Tipo de Assembleia</a>
                 </div>
-            <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-                <div class="dropdown-container">
-                    <a href="cadastrar-morador.php">Cadastrar</a>
-                    <a href="#">Visualizar</a>
-                </div>
-            </div>
+                <a href="visualizar-assembleia.php">Visualizar</a>
+        </div>
+        <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+            <a href="cadastrar-morador.php">Cadastrar</a>
+            <a href="#">Visualizar</a>
+        </div>
+    </div>
         
-            <div class="main">
-            <!-- <h2>Sidebar Dropdown</h2>
-            <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
-            <p>This sidebar is of full height (100%) and always shown.</p>
-            <p>Some random text..</p> -->
+    <div class="main">
+    <!-- <h2>Sidebar Dropdown</h2>
+    <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
+    <p>This sidebar is of full height (100%) and always shown.</p>
+    <p>Some random text..</p> -->
+
+    </div>
         
-            </div>
-        
-            <script>
-            /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-            var dropdown = document.getElementsByClassName("dropdown-btn");
-            var i;
-        
-            for (i = 0; i < dropdown.length; i++) {
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener("click", function() {
                 this.classList.toggle("active");
                 var dropdownContent = this.nextElementSibling;
                 if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
+                    dropdownContent.style.display = "none";
                 } else {
-                dropdownContent.style.display = "block";
+                    dropdownContent.style.display = "block";
                 }
             });
-            }
-            </script>
+        }
+    </script>
+    <!-- Fim menu lateral -->
 	
 
 	<!-- Início do container -->
@@ -73,6 +81,40 @@
 				<div class="col-md-10 mb-3">
 					<label><h2>Cadastro das Assembléias</h2></label>
 				</div>
+				<!-- Tipo de Assembleia -->
+				<div class="col-md-6 mb-3">
+					<div class="form-group">
+						<label for="tipoAssembleia" class="required">Tipo de Assembléia</label>
+						<select class="form-control" name="tipoAssembleia">
+							<?php
+								$dao = new TipoAssembleiaDAO();
+								$tipoAssembleias = $dao->findAll();
+							?>						
+							<?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
+									<option value= <?php= {$tipoAssembleia->getNome()}; ?> </option> 
+
+							<!-- <option disabled selected>Seu estado</option>
+							<option value="nat">Natal</option>
+							<option value="rec">Recife</option>
+							<option value="bsb">Brasília</option> -->
+						</select>
+					</div>
+				</div>
+
+				<div class="col-md-3 mb-3">
+					<div>
+						<label class="required">Tipo de Assembléia</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" id="ordinaria" name="tipoAssembleia" value="ordinaria" class="custom-control-input" required checked />
+						<label class="custom-control-label" for="ordinaria">Ordinária</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" id="extraordinaria" name="tipoAssembleia" value="extraordinaria" class="custom-control-input" />
+						<label class="custom-control-label" for="extraordinaria">Extraordinária</label>
+					</div>
+				</div>
+				<!-- Fim Tipo de Assembleia -->
 				<!-- Nome da assembléia -->
 				<div class="col-md-10 mb-3">
 					<label for="nome-assembleia" class="required">Nome da Assembléia</label>

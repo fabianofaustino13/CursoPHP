@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__ . "/classes/modelo/Assembleia.class.php";
-require_once __DIR__ . "/classes/dao/AssembleiaDAO.class.php";
+require_once __DIR__ . "/classes/modelo/TipoAssembleia.class.php";
+require_once __DIR__ . "/classes/dao/TipoAssembleiaDAO.class.php";
 
-$nomeAssembleia = $_REQUEST["nome-assembleia"];
-$dataAssembleia = $_REQUEST["data-assembleia"];
+//$nomeTipoAssembleia = $_REQUEST["tipo-nome-assembleia"];
+
 /*
 //Mostrando todos os dados
 $dao = new SexoDAO();
@@ -20,20 +20,20 @@ $sexo = $dao->findById(2);
 echo("<br> {$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
 */
 //Inserindo os dados
-$dao = new AssembleiaDAO();
+$dao = new TipoAssembleiaDAO();
 
-$assembleia = new Assembleia();
-$assembleia->setNome('$nomeAssembleia');
-$assembleia->setData('$dataAssembleia');
+//$tipoAssembleia = new TipoAssembleia();
+//$tipoAssembleia->setNome($nomeTipoAssembleia);
 
-$assembleia = $dao->save($assembleia);
+//$tipoAssembleia = $dao->save($tipoAssembleia);
 
+//header('location: cadastrar-tipo-assembleia.php');
 //$dao = new AssembleiaDAO();
-$assembleias = $dao->findAll();
+$tipoAssembleias = $dao->findAll();
 
-foreach ($assembleias as $assembleia) {
-    echo("{$assembleia->getId()} - {$assembleia->getNome()} - {$sassembleiaexo->getData()} <br>");
-}
+ foreach ($tipoAssembleias as $tipoAssembleia) {
+     echo("{$tipoAssembleia->getId()} - {$tipoAssembleia->getNome()} <br>");
+ }
 /*
 //Atualizando os dados
 $dao = new SexoDAO();   

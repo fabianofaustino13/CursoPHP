@@ -21,13 +21,17 @@
     $dao = new SexoDAO();
 
     $sexo = new Sexo();
-    $sexo->setId(16);
-    $sexo->setNome('jose');
-    $sexo->setSigla('jj');
+    $sexo = $dao->findByNome('VIADO');
+    //echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
+
+    $sexo->setId($sexo->getId());
+    //echo("{$sexo->getId()}");
+    $sexo->setNome('VIADO');
+    $sexo->setSigla('VIA');
     
     $sexo = $dao->save($sexo);
     
-   // $dao = new SexoDAO();
+    $dao = new SexoDAO();
     $sexos = $dao->findAll();
 
     foreach ($sexos as $sexo) {
