@@ -65,7 +65,7 @@
 	<div class="container" >
 
 		<!-- Form -->
-		<form method="get" action="testeAssembleia.php">
+		<form method="get" action="cadAssembleia.php">
 
 			<!-- Div1 -->
 			<div class="form-row">
