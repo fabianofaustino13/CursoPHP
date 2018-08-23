@@ -89,15 +89,14 @@
 							<?php
 								$dao = new TipoAssembleiaDAO();
 								$tipoAssembleias = $dao->findAll();
-							?>						
-							<?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
-									<option value= <?php= {$tipoAssembleia->getNome()}; ?> </option> 
-
+								foreach ($tipoAssembleias as $tipoAssembleia): ?>
+									<option value="<?=$tipoAssembleia->getNome();?>"> </option> 
+														
 							<!-- <option disabled selected>Seu estado</option>
 							<option value="nat">Natal</option>
 							<option value="rec">Recife</option>
 							<option value="bsb">Brasília</option> -->
-						</select>
+						</select> <?php endforeach; ?>
 					</div>
 				</div>
 
