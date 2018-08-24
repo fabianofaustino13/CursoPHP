@@ -3,7 +3,7 @@
 class TipoAssembleia {
 
     private $id;
-    private $tipo;
+    private $nome;
 
     public function getId() {
         return $this->id;

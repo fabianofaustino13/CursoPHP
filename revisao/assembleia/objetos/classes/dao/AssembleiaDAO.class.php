@@ -73,8 +73,6 @@ require_once __DIR__ . "/../modelo/Assembleia.class.php";
             } catch(PDOException $e) {
                 echo $e->getMessage();
             }
-            //$statement = $this->getConexao()->prepare($sql);
-            //$statement->execute();
         }
 
         private function update(Assembleia $assembleia) {

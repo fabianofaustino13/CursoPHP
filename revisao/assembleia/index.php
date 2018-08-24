@@ -27,7 +27,7 @@
                 </button>
                 <div class="dropdown-container">
                     <a href="./assembleia/index.php">Assembleia</a>
-                    <a href="./assembleiaPauta/index.php">Pauta</a>
+                    <a href="./pauta/index.php">Pauta</a>
                     <a href="./tipoAssembleia/index.php">Tipo de Assembleia</a>
                 </div>
                 <a href="visualizar-assembleia.php">Visualizar</a>

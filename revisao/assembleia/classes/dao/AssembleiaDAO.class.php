@@ -2,11 +2,12 @@
 
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once (__DIR__ . "/../modelo/Assembleia.class.php");
+require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
 
     class AssembleiaDAO {
         
         public function findAll() {
-            $sql = "SELECT * FROM TB_ASSEMBLEIAS";
+            $sql = "SELECT * FROM TB_ASSEMBLEIAS ORDER BY ASS_DATA DESC";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -61,7 +62,7 @@ require_once (__DIR__ . "/../modelo/Assembleia.class.php");
         }
 
         private function insert(Assembleia $assembleia) {
-            $sql = "INSERT INTO TB_ASSEMBLEIAS (ASS_NOME, ASS_DATA, FK_ASS_TDA) VALUES ('{$assembleia->getNome()}', '{$assembleia->getData()}', '{$assembleia->getFkTda()}')";
+            $sql = "INSERT INTO TB_ASSEMBLEIAS (ASS_NOME, ASS_DATA, FK_ASS_TDA) VALUES ('{$assembleia->getNome()}', '{$assembleia->getData()}', {$assembleia->getFkTda()})";
             try {
                 Conexao::get()->exec($sql);
             } catch(PDOException $e) {
@@ -70,7 +71,7 @@ require_once (__DIR__ . "/../modelo/Assembleia.class.php");
         }
 
         private function update(Assembleia $assembleia) {
-            $sql = "UPDATE TB_ASSEMBLEIAS SET ASS_NOME ='{$assembleia->getNome()}', ASS_DATA = '{$assembleia->getData()}', FK_ASS_TDA = '{$assembleia->getFkTda()}'  WHERE PK_ASS='{$assembleia->getId()}'";
+            $sql = "UPDATE TB_ASSEMBLEIAS SET ASS_NOME ='{$assembleia->getNome()}', ASS_DATA = '{$assembleia->getData()}', FK_ASS_TDA = {$assembleia->getFkTda()}  WHERE PK_ASS='{$assembleia->getId()}'";
             try {
                 Conexao::get()->exec($sql);
             } catch(PDOException $e) {

@@ -1,33 +1,47 @@
+<?php require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/modelo/Pauta.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/dao/PautaDAO.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
 <?php 
-$dao = new TipoAssembleiaDAO();
+$dao = new PautaDAO();
+$pauta = new Pauta();
+
+$dao2 = new AssembleiaDAO();
+$assembleia = new Assembleia();
+$assembleias = $dao2->findAll();
+
+$dao3 = new TipoAssembleiaDAO();
 $tipoAssembleia = new TipoAssembleia();
+$tipoAssembleias = $dao3->findAll();
+
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $tipoAssembleia->setNome($_POST['tipoAssembleia']);
+    $pauta->setNome($_POST['nome']);
+    $pauta->setDescricao($_POST['descricao']);
+    $pauta->setFkPauAss($_POST['assembleia']);
     if ($_POST['id'] != '') {
-        $tipoAssembleia->setId($_POST['id']);
+        $pauta->setId($_POST['id']);
     }
-    $dao->save($tipoAssembleia);
+    $dao->save($pauta);
     header('location: index.php');
 } 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $tipoAssembleia = $dao->findById($_POST['id']);
+    $pauta = $dao->findById($_POST['id']);
 }
 
 if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
     $dao->remove($_POST['id']);
     header('location: index.php');
 }
-$tipoAssembleias = $dao->findAll();
-
+$pautas = $dao->findAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Tipo de Assembléia</title>
+    <title>Cadastrar Pauta</title>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
@@ -94,42 +108,95 @@ $tipoAssembleias = $dao->findAll();
     </script>
     <!-- Fim menu lateral -->
 
-    <!-- Início do container -->
-    <div class="conteiner">
-        <div class="row" style="margin-top: 50px; margin-left:390px;">
-            <div class="col-8"> <!-- Form -->
-                <fieldset>
-                    <legend>Dados do Tipo de Assembléia</legend>
-                    <form action="index.php" method="post">
+	<!-- Início do container -->
+	<div class="container" style="margin-top: 50px;">
+        <fieldset>
+            <legend>Cadastro de Pautas</legend>
+            <!-- Form -->
+            <form method="post" action="index.php">
+                <!-- Div1 -->
+                <div class="form-row">
+
+                    <!-- Tipo de Assembleia -->
+                    <div class="col-md-6 mb-3">
                         <div class="form-group">
-                            <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>">
-                            <label for="tipoAssembleia" class="required">Tipo de Assembléia</label>
-                            <input type="text" class="form-control" id="tipoAssembleia" name="tipoAssembleia" value="<?=$tipoAssembleia->getNome();?>" maxlength="100" required>
+                            
+                                <label for="assembleia" class="required">Selecione uma Assembléia vigente</label>
+                                <select class="form-control" name="assembleia">
+                                    <?php
+                                       $data = date ("Y-m-d");
+                                       //echo"<input type='date' value='$data' name='date'";
+                                        foreach ($assembleias as $assembleia): ?>
+                                           <?php if ($assembleia->getData() >= $data): ?> 
+                                           <option value="<?=$assembleia->getId();?> "> 
+                                                <?=$assembleia->getId() . " - " . $assembleia->getNome(); ?> <?php endif;
+                                    ?>
+                                            </option> 
+                                        <?php endforeach; ?>
+                                </select> 
+                            
                         </div>
-                        
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                        </div>
-                    </form>
-                </fieldset>
-            </div> <!-- Fim Form -->
-            <div class="col-8"> <!-- Tabela -->
+                    </div>
+
+
+
+
+                    <!-- Nome da pauta -->
+                    <div class="col-md-12 mb-3">
+                        <label for="nome" class="required">Pauta</label>
+                        <input type="hidden" name="id" value="<?=$pauta->getId();?>">
+                        <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
+                    </div>
+                    <!-- Fim da assembléia  -->
+                
+                    <!-- Data da assembléia -->
+                    <div class="col-md-12 mb-3">
+                        <label for="descricao">Descrição</label>
+                        <br/>
+                        <textarea placeholder="Descrição...." maxlength="1000" cols="135" rows="2" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>"></textarea>
+                        <br/>
+                    </div>
+                    <!-- Fim data da assembléia -->
+
+                </div>
+                <!-- Fim Div1 -->
+
+                <!-- Botões -->
+                <!-- <div class="submit-row">
+                    <button type="submit" name="salvar" value="salvar" class="btn btn-success">Salvar</button>
+                </div> -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                </div>
+                <!-- Fim Botões -->
+		    </form>
+        </fieldset>
+        <!-- Fim Form -->
+        <div class="col-12"> <!-- Tabela -->
                 <fieldset>
-                    <legend>Lista do Tipo de Assembléia</legend>
+                    <legend>Lista de Assembléias Disponíveis</legend>
                     <table class="table table-striped table-hover">
                         <thead>
                             <th>#</th>
-                            <th>Tipo de Assembléia</th>
+                            <th>Assembleia</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
+                            <?php foreach ($assembleias as $assembleia): ?>
                                 <tr>
-                                    <td><?=$tipoAssembleia->getId()?></td>
-                                    <td><?=$tipoAssembleia->getNome()?></td>
+                                    <td><?=$assembleia->getId()?></td>
+                                    <td><?=$assembleia->getNome()?></td>
+                                    <td><?=$assembleia->getData()?></td>
+                                    <?php foreach ($tipoAssembleias as $tipoAssembleia):
+                                        if ($assembleia->getFkTda() == $tipoAssembleia->getId()): ?>
+                                            <td><?=$tipoAssembleia->getNome()?></td> 
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                     <td>
                                         <form method="post" action="index.php">
-                                            <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
                                             <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                                 <i class="far fa-edit"></i>
                                             </button>
@@ -137,7 +204,7 @@ $tipoAssembleias = $dao->findAll();
                                     </td>
                                     <td>
                                         <form method="post" action="index.php"> 
-                                            <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
@@ -149,7 +216,7 @@ $tipoAssembleias = $dao->findAll();
                     </table>
                 </fieldset>
             </div> <!-- Fim Tabela -->
-        </div>
-    </div>
+    </div>  
+    <!-- Fim do container -->
 </body>
-</html>
+</html> 

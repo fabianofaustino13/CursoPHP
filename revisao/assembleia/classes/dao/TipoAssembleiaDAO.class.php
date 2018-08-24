@@ -1,11 +1,12 @@
 <?php
 
+require_once (__DIR__ . "/./Conexao.class.php");
 require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
 
     class TipoAssembleiaDAO {
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS";
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS ORDER BY PK_TDA ASC";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -24,7 +25,7 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $tipoAssembleia = new Assembleia();
+            $tipoAssembleia = new TipoAssembleia();
             foreach ($result as $row) {
                 $tipoAssembleia->setId($row['PK_TDA']);
                 $tipoAssembleia->setNome($row['TDA_NOME']);
@@ -37,7 +38,7 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $tipoAssembleia = new Assembleia();
+            $tipoAssembleia = new TipoAssembleia();
             foreach ($result as $row) {
                 $tipoAssembleia->setId($row['PK_TDA']);
                 $tipoAssembleia->setNome($row['TDA_NOME']);

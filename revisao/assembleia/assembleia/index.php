@@ -1,6 +1,6 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
 <?php 
 $dao = new AssembleiaDAO();
@@ -10,8 +10,8 @@ $tipoAssembleia = new TipoAssembleia();
 $tipoAssembleias = $dao2->findAll();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $assembleia->setNome($_POST['nome-assembleia']);
-    $assembleia->setData($_POST['data-assembleia']);
+    $assembleia->setNome($_POST['nome']);
+    $assembleia->setData($_POST['data']);
     $assembleia->setFkTda($_POST['tipoAssembleia']);
     if ($_POST['id'] != '') {
         $assembleia->setId($_POST['id']);
@@ -59,9 +59,9 @@ $assembleias = $dao->findAll();
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="./assembleia/index.php">Assembleia</a>
-                    <a href="./assembleiaPauta/index.php">Pauta</a>
-                    <a href="./tipoAssembleia/index.php">Tipo de Assembleia</a>
+                    <a href="../assembleia/index.php">Assembleia</a>
+                    <a href="../pauta/index.php">Pauta</a>
+                    <a href="../tipoAssembleia/index.php">Tipo de Assembleia</a>
                 </div>
                 <a href="visualizar-assembleia.php">Visualizar</a>
         </div>
@@ -102,57 +102,102 @@ $assembleias = $dao->findAll();
     <!-- Fim menu lateral -->
 
 	<!-- Início do container -->
-	<div class="container" >
-
-		<!-- Form -->
-		<form method="post" action="index.php">
-			<!-- Div1 -->
-			<div class="form-row">
-				<div class="col-md-10 mb-3">
-					<label><h2>Cadastro das Assembléias</h2></label>
-				</div>
-				<!-- Tipo de Assembleia -->
-				<div class="col-md-6 mb-3">
-					<div>
-						<label class="required">Tipo de Assembléia</label>
-					</div>
-					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="ordinaria" name="tipoAssembleia" value=1 class="custom-control-input" required checked />
-						<label class="custom-control-label" for="ordinaria">Ordinária</label>
-					</div>
-					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="extraordinaria" name="tipoAssembleia" value=2 class="custom-control-input" />
-						<label class="custom-control-label" for="extraordinaria">Extraordinária</label>
-					</div>
-				</div>
-                <!-- Fim Tipo de Assembleia -->
+	<div class="container" style="margin-top: 50px;">
+        <fieldset>
+            <legend>Cadastro das Assembléias</legend>
+            <!-- Form -->
+            <form method="post" action="index.php">
+                <!-- Div1 -->
+                <div class="form-row">
+                    
+                    <!-- Tipo de Assembleia -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                                <label for="tipoAssembleia" class="required">Tipo de Assembléia</label><br>
+                                    <?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
+                                        <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" id="<?=$tipoAssembleia->getNome();?>" name="tipoAssembleia" value=<?=$tipoAssembleia->getId();?> class="custom-control-input" <?php if ($tipoAssembleia->getId() == 1):?> checked <?php endif; ?>/>
+                                            <label class="custom-control-label" for="<?=$tipoAssembleia->getNome();?>"><?=$tipoAssembleia->getNome();?></label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                
+                        </div>
+                    </div>
+                                    
+                    <!-- Nome da assembléia -->
+                    <div class="col-md-9 mb-3">
+                        <label for="nome" class="required">Nome da Assembléia</label>
+                        <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
+                        <input type="text" class="form-control" id="nome" name="nome" value="<?=$assembleia->getNome();?>" maxlength="100" placeholder="Assembléia Ordinária" required />
+                    </div>
+                    <!-- Fim da assembléia  -->
                 
-				<!-- Nome da assembléia -->
-				<div class="col-md-9 mb-3">
-					<label for="nome-assembleia" class="required">Nome da Assembléia</label>
-					<input type="text" class="form-control" id="nome-assembleia" name="nome-assembleia" placeholder="Assembléia Ordinária" required />
-				</div>
-				<!-- Fim da assembléia  -->
-			
-				<!-- Data da assembléia -->
-				<div class="col-md-3 mb-3">
-					<label for="data-assembleia" class="required">Data da Assembléia</label>
-					<input type="date" class="form-control" id="data-assembleia" name="data-assembleia" required />
-				</div>
-				<!-- Fim data da assembléia -->
+                    <!-- Data da assembléia -->
+                    <div class="col-md-3 mb-3">
+                        <label for="data" class="required">Data da Assembléia</label>
+                        <input type="date" class="form-control" id="data" name="data" value="<?=$assembleia->getData();?>" required />
+                    </div>
+                    <!-- Fim data da assembléia -->
 
-			</div>
-			<!-- Fim Div1 -->
+                </div>
+                <!-- Fim Div1 -->
 
-			<!-- Botões -->
-			<div class="submit-row">
-				<button type="submit" name="salvar" value="salvar" class="btn btn-success">Salvar</button>
-			</div>
-			<!-- Fim Botões -->
-
-		</form>
-<!-- Fim Form -->
-</div>  
-<!-- Fim do container -->
+                <!-- Botões -->
+                <!-- <div class="submit-row">
+                    <button type="submit" name="salvar" value="salvar" class="btn btn-success">Salvar</button>
+                </div> -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                </div>
+                <!-- Fim Botões -->
+		    </form>
+        </fieldset>
+        <!-- Fim Form -->
+        <div class="col-12"> <!-- Tabela -->
+                <fieldset>
+                    <legend>Lista de Assembléias</legend>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th>#</th>
+                            <th>Assembleia</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th colspan="2">Ações</th>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($assembleias as $assembleia): ?>
+                                <tr>
+                                    <td><?=$assembleia->getId()?></td>
+                                    <td><?=$assembleia->getNome()?></td>
+                                    <td><?=$assembleia->getData()?></td>
+                                    <?php foreach ($tipoAssembleias as $tipoAssembleia):
+                                        if ($assembleia->getFkTda() == $tipoAssembleia->getId()): ?>
+                                            <td><?=$tipoAssembleia->getNome()?></td> 
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    <td>
+                                        <form method="post" action="index.php">
+                                            <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
+                                            <button type="submit" class="btn btn-primary" name="editar" value="editar">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="index.php"> 
+                                            <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
+                                            <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div> <!-- Fim Tabela -->
+    </div>  
+    <!-- Fim do container -->
 </body>
 </html> 
