@@ -2,6 +2,8 @@
 
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once __DIR__ . "/../modelo/Pauta.class.php";
+require_once (__DIR__ . "/../modelo/Assembleia.class.php");
+require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
 
     class PautaDAO {
 
@@ -15,9 +17,9 @@ require_once __DIR__ . "/../modelo/Pauta.class.php";
                 $pauta = new Pauta();
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
-                $pauta->setNome($row['PAU_DESCRICAO']);
-                $pauta->setNome($row['PAU_STATUS']);
-                $pauta->setNome($row['PAU_VOTOS']);
+                $pauta->setDescricao($row['PAU_DESCRICAO']);
+                $pauta->setStatus($row['PAU_STATUS']);
+                $pauta->setVoto($row['PAU_VOTOS']);
                 $pauta->setFkPauAss($row['FK_PAU_ASS']);
 
                 array_push($pautas, $pauta);
@@ -34,9 +36,9 @@ require_once __DIR__ . "/../modelo/Pauta.class.php";
             foreach ($result as $row) {
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
-                $pauta->setNome($row['PAU_DESCRICAO']);
-                $pauta->setNome($row['PAU_STATUS']);
-                $pauta->setNome($row['PAU_VOTOS']);
+                $pauta->setDescricao($row['PAU_DESCRICAO']);
+                $pauta->setStatus($row['PAU_STATUS']);
+                $pauta->setVoto($row['PAU_VOTOS']);
                 $pauta->setFkPauAss($row['FK_PAU_ASS']);
             }
             return $pauta;
@@ -51,9 +53,9 @@ require_once __DIR__ . "/../modelo/Pauta.class.php";
             foreach ($result as $row) {
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
-                $pauta->setNome($row['PAU_DESCRICAO']);
-                $pauta->setNome($row['PAU_STATUS']);
-                $pauta->setNome($row['PAU_VOTOS']);
+                $pauta->setDescricao($row['PAU_DESCRICAO']);
+                $pauta->setStatus($row['PAU_STATUS']);
+                $pauta->setVoto($row['PAU_VOTOS']);
                 $pauta->setFkPauAss($row['FK_PAU_ASS']);
             }
             return $pauta;
@@ -68,7 +70,7 @@ require_once __DIR__ . "/../modelo/Pauta.class.php";
         }
 
         private function insert(Pauta $pauta) {
-            $sql = "INSERT INTO TB_PAUTAS (PAU_NOME) VALUES ('{$pauta->getNome()}')";
+            $sql = "INSERT INTO TB_PAUTAS (PAU_NOME, PAU_DESCRICAO, FK_PAU_ASS) VALUES ('{$pauta->getNome()}', '{$pauta->getDescricao()}', '{$pauta->getFkPauAss()}')";
             try {
                 Conexao::get()->exec($sql);
             } catch(PDOException $e) {
@@ -77,7 +79,7 @@ require_once __DIR__ . "/../modelo/Pauta.class.php";
         }
 
         private function update(Pauta $pauta) {
-            $sql = "UPDATE TB_PAUTAS SET PAU_NOME ='{$pauta->getNome()}' WHERE PK_PAU='{$pauta->getId()}'";
+            $sql = "UPDATE TB_PAUTAS SET PAU_NOME ='{$pauta->getNome()}', PAU_DESCRICAO ='{$pauta->getDescricao()}' WHERE PK_PAU ='{$pauta->getId()}'";
             try {
                 Conexao::get()->exec($sql);
             } catch(PDOException $e) {

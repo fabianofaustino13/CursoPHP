@@ -6,36 +6,36 @@
 
     class Pauta {
 
-        private $assembleia;
-        private $nomePauta;
+        private $id;
+        private $nome;
         private $descricao;
-        private $opcao;
+        private $fkPauAss;
         
-        public function setNomeAssembleia(Assembleia $assembleia) {
-            $this->assembleia = $assembleia;
+        public function setId($id) {
+            $this->id = $id;
         }
         
-        public function getNomeAssembleia() {
-            return $this->assembleia;
+        public function getId() {
+            return $this->id;
         }
 
-        public function setNomePauta($nomePauta) {
-            $this->nomePauta = $nomePauta;
+        public function setNome($nome) {
+            $this->nome = $nome;
         }
         
-        public function getNomePauta() {
-            return $this->nomePauta;
+        public function getNome() {
+            return $this->nome;
         }
 
-        public function setDescricaoPauta($descricao) {
+        public function setDescricao($descricao) {
             $this->descricao = $descricao;
         }
         
-        public function getDescricaoPauta() {
+        public function getDescricao() {
             return $this->descricao;
         }
 
-        public function setOpcaoPauta(OpcaoPauta $opcao) {
+        public function setFkPauAss(OpcaoPauta $opcao) {
             $this->opcao = $opcao;
         }
         

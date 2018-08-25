@@ -4,7 +4,7 @@
 $dao = new TipoAssembleiaDAO();
 $tipoAssembleia = new TipoAssembleia();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $tipoAssembleia->setNome($_POST['tipoAssembleia']);
+    $tipoAssembleia->setNome(strtoupper($_POST['tipoAssembleia']));
     if ($_POST['id'] != '') {
         $tipoAssembleia->setId($_POST['id']);
     }
@@ -52,8 +52,11 @@ $tipoAssembleias = $dao->findAll();
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="../assembleia/index.php">Assembleia</a>
+                    <a href="../adimplente/index.php">Adimplente</a>  
+                    <a href="../assembleia/index.php">Assembleia</a>  
+                    <a href="../bloco/index.php">Bloco</a>                
                     <a href="../pauta/index.php">Pauta</a>
+                    <a href="../opcaoResposta/index.php">Resposta</a>                 
                     <a href="../tipoAssembleia/index.php">Tipo de Assembleia</a>
                 </div>
                 <a href="visualizar-assembleia.php">Visualizar</a>
@@ -96,8 +99,8 @@ $tipoAssembleias = $dao->findAll();
 
     <!-- Início do container -->
     <div class="conteiner">
-        <div class="row" style="margin-top: 50px; margin-left:390px;">
-            <div class="col-8"> <!-- Form -->
+        <div class="row" style="margin-top: 50px; margin-left:200px;">
+            <div class="col-11"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Tipo de Assembléia</legend>
                     <form action="index.php" method="post">
@@ -113,7 +116,7 @@ $tipoAssembleias = $dao->findAll();
                     </form>
                 </fieldset>
             </div> <!-- Fim Form -->
-            <div class="col-8"> <!-- Tabela -->
+            <div class="col-11"> <!-- Tabela -->
                 <fieldset>
                     <legend>Lista do Tipo de Assembléia</legend>
                     <table class="table table-striped table-hover">

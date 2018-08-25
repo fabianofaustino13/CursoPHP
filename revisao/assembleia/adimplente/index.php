@@ -1,47 +1,34 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Pauta.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/PautaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/modelo/Adimplente.class.php"); ?>
+<?php require_once(__DIR__ . "/../classes/dao/AdimplenteDAO.class.php"); ?>
 <?php 
-$dao = new PautaDAO();
-$pauta = new Pauta();
-
-$dao2 = new AssembleiaDAO();
-$assembleia = new Assembleia();
-$assembleias = $dao2->findAll();
-
-$dao3 = new TipoAssembleiaDAO();
-$tipoAssembleia = new TipoAssembleia();
-$tipoAssembleias = $dao3->findAll();
+$dao = new AdimplenteDAO();
+$adimplente = new Adimplente();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $pauta->setNome(strtoupper($_POST['nome']));
-    $pauta->setDescricao(strtoupper($_POST['descricao']));
-    $pauta->setFkPauAss($_POST['assembleia']);
+    $adimplente->setNome(strtoupper($_POST['nome']));
+    $adimplente->setImagem($_POST['imagem']);
     if ($_POST['id'] != '') {
-        $pauta->setId($_POST['id']);
+        $adimplente->setId($_POST['id']);
     }
-    $dao->save($pauta);
+    $dao->save($adimplente);
     header('location: index.php');
 } 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $pauta = $dao->findById($_POST['id']);
+    $adimplente = $dao->findById($_POST['id']);
 }
 
 if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
     $dao->remove($_POST['id']);
     header('location: index.php');
 }
-$pautas = $dao->findAll();
+$adimplentes = $dao->findAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Cadastrar Pauta</title>
+    <title>Situação Financeira</title>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
@@ -103,72 +90,46 @@ $pautas = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
-        <div class="row" style="margin-top: 50px; margin-left:100px;">
+        <div style="margin-top: 50px; margin-left:100px;">
             <fieldset>
-                <legend>Cadastro de Pautas</legend>
+                <legend>Situação Financeira</legend>
                 <form method="post" action="index.php"><!-- Form Geral -->
                     <div class="form-row"><!-- Div1 -->
-                        <label for="assembleia" class="required">Selecione uma Assembléia vigente</label>
-                        <div class="col-md-12 mb-3"><!-- Tipo de Assembleia -->
-                            <div class="form-group">
-                                <select class="form-control" id="assembleia" name="assembleia">
-                                    <?php
-                                        $data = date ("Y-m-d");
-                                        //echo"<input type='date' value='$data' name='date'";
-                                        foreach ($assembleias as $assembleia): ?>
-                                        <?php if ($assembleia->getData() >= $data): ?> 
-                                        <option value="<?=$assembleia->getId();?>"> 
-                                            <?=$assembleia->getId() . " - " . $assembleia->getNome(); ?> <?php endif;
-                                    ?>
-                                            </option> 
-                                        <?php endforeach; ?>
-                                </select> 
-                            </div>
-                        </div>                     
-                        <div class="col-md-12 mb-3"><!-- Nome da pauta -->
-                            <label for="nome" class="required">Pauta</label>
-                            <input type="hidden" name="id" value="<?=$pauta->getId();?>">
-                            <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
-                        </div><!-- Fim Nome da pauta -->
-
-                        <!-- <div class="col-md-12 mb-3">
-                        <label for="descricao">Descrição</label>
-                            <input type="text" class="form-control" id="descricao" name="descricao" value= maxlength="1000" placeholder="Descrição..."/>
-                        </div> -->
-                        <div class="col-md-12 mb-3"> 
-                            <label for="descricao">Descrição</label>
-                            <br/>
-                            <textarea placeholder="Descrição...." cols="124" rows="2" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>"></textarea>
-                            <br/>
-                        </div>
-
-
+                        <div class="col-md-6 mb-3"><!-- Nome -->
+                            <label for="nome" class="required">Nome</label>
+                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
+                            <input type="text" class="form-control" id="nome" name="nome" value="<?=$adimplente->getNome();?>" maxlength="25" placeholder="Adimplente" required />
+                        </div><!-- Fim Nome -->     
+                        <div class="col-md-6 mb-3"><!-- Imagem -->
+                            <label for="imagem">Imagem</label>
+                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
+                            <input type="text" class="form-control" id="imagem" name="imagem" value="<?=$adimplente->getImagem();?>" />
+                        </div><!-- Fim Nome -->                     
                     </div><!-- Fim Div1 -->
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                    </div>
-                    <!-- Fim Botões -->
-                </form> <!-- Fim Form Geral-->
+                    </div><!-- Fim Botões -->
+                </form> <!-- Fim Form Geral -->
             </fieldset>
             <div class="col-12"> <!-- Tabela -->
                 <fieldset>
-                    <legend>Lista de Pautas da Assembléia Selecionada</legend>
+                    <legend>Situações Financeiras</legend>
                     <table class="table table-striped table-hover">
                         <thead>
                             <th>#</th>
-                            <th>Pauta</th>
-                            <th>Descrição</th>
+                            <th>Nome</th>
+                            <th>Imagem</th>
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($pautas as $pauta):?>
+                            <?php foreach ($adimplentes as $adimplente):?>
                                 <tr>
-                                    <td><?=$pauta->getId()?></td>
-                                    <td><?=$pauta->getNome()?></td>
-                                    <td><?=$pauta->getDescricao()?></td>
+                                    <td><?=$adimplente->getId()?></td>
+                                    <td><?=$adimplente->getNome()?></td>
+                                    <td><?=$adimplente->getImagem()?></td>
                                     <td>
                                         <form method="post" action="index.php">
-                                            <input type="hidden" name="id" value="<?=$pauta->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
                                             <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                                 <i class="far fa-edit"></i>
                                             </button>
@@ -176,7 +137,7 @@ $pautas = $dao->findAll();
                                     </td>
                                     <td>
                                         <form method="post" action="index.php"> 
-                                            <input type="hidden" name="id" value="<?=$pauta->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>

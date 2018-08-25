@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Assembléia</title>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="./assets/css/base.css">
@@ -26,8 +27,11 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="./assembleia/index.php">Assembleia</a>
+                    <a href="./adimplente/index.php">Adimplente</a>  
+                    <a href="./assembleia/index.php">Assembleia</a>  
+                    <a href="./bloco/index.php">Bloco</a>                
                     <a href="./pauta/index.php">Pauta</a>
+                    <a href="./opcaoResposta/index.php">Resposta</a>                 
                     <a href="./tipoAssembleia/index.php">Tipo de Assembleia</a>
                 </div>
                 <a href="visualizar-assembleia.php">Visualizar</a>
