@@ -15,11 +15,17 @@ $assembleias = $dao2->findAll();
 $dao3 = new TipoAssembleiaDAO();
 $tipoAssembleia = new TipoAssembleia();
 $tipoAssembleias = $dao3->findAll();
+if (isset($_POST['atualizar']) && $_POST['atualizar'] == 'atualizar') {
+    $pautas2 = $dao->findAllAssembleia($_POST['idAss']);
+}
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $pauta->setNome(strtoupper($_POST['nome']));
     $pauta->setDescricao(strtoupper($_POST['descricao']));
     $pauta->setFkPauAss($_POST['assembleia']);
+    $teste = $_POST['assembleia'];
+    $pautas2 = $dao->findAllAssembleia($teste);
+
     if ($_POST['id'] != '') {
         $pauta->setId($_POST['id']);
     }
@@ -49,7 +55,7 @@ $pautas = $dao->findAll();
 	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
     <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/home.css">
+    <link rel="stylesheet" href="../assets/css/home.css">  
 </head>
 <body>
     <!-- Menu lateral -->
@@ -103,6 +109,7 @@ $pautas = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
+        <?php $idAssembleia ?>
         <div class="row" style="margin-top: 50px; margin-left:100px;">
             <fieldset>
                 <legend>Cadastro de Pautas</legend>
@@ -113,34 +120,36 @@ $pautas = $dao->findAll();
                             <div class="form-group">
                                 <select class="form-control" id="assembleia" name="assembleia">
                                     <?php
-                                        $data = date ("Y-m-d");
+                                        $data = date ("Y-m-d"); //Data de hoje no formato do banco
+                                        $data2 = date ("d-m-Y"); //Data de hoje no formato BR
                                         //echo"<input type='date' value='$data' name='date'";
                                         foreach ($assembleias as $assembleia): ?>
                                         <?php if ($assembleia->getData() >= $data): ?> 
-                                        <option value="<?=$assembleia->getId();?>"> 
-                                            <?=$assembleia->getId() . " - " . $assembleia->getNome(); ?> <?php endif;
-                                    ?>
-                                            </option> 
-                                        <?php endforeach; ?>
+                                        <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
+                                            <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $data2; ?> <?php endif;?>
+                                        </option> 
+                                        <?php endforeach; 
+                                    ?>                                    
                                 </select> 
-                            </div>
-                        </div>                     
+                            </div>                            
+                        </div>  
+                                           
                         <div class="col-md-12 mb-3"><!-- Nome da pauta -->
                             <label for="nome" class="required">Pauta</label>
                             <input type="hidden" name="id" value="<?=$pauta->getId();?>">
                             <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
                         </div><!-- Fim Nome da pauta -->
 
-                        <!-- <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3">
                         <label for="descricao">Descrição</label>
-                            <input type="text" class="form-control" id="descricao" name="descricao" value= maxlength="1000" placeholder="Descrição..."/>
-                        </div> -->
-                        <div class="col-md-12 mb-3"> 
+                            <input type="textarea" class="form-control" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>" maxlength="1000" placeholder="Descrição..."/>
+                        </div>
+                        <!-- <div class="col-md-12 mb-3"> 
                             <label for="descricao">Descrição</label>
                             <br/>
                             <textarea placeholder="Descrição...." cols="124" rows="2" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>"></textarea>
                             <br/>
-                        </div>
+                        </div> -->
 
 
                     </div><!-- Fim Div1 -->
@@ -158,14 +167,43 @@ $pautas = $dao->findAll();
                             <th>#</th>
                             <th>Pauta</th>
                             <th>Descrição</th>
+                            <th>Id Assembleia</th>
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($pautas as $pauta):?>
+
+                <form method="post" action="index.php"><!-- Form Geral -->
+                    <div class="form-row"><!-- Div1 -->
+                        <label for="assembleia" class="required">Escolha a Assembléia vigente</label>
+                        <div class="col-md-12 mb-3"><!-- Tipo de Assembleia -->
+                            <div class="form-group">
+                                <select class="form-control" id="idAss" name="idAss">
+                                    <?php
+                                        $data = date ("Y-m-d"); //Data de hoje no formato do banco
+                                        $data2 = date ("d-m-Y"); //Data de hoje no formato BR
+                                        //echo"<input type='date' value='$data' name='date'";
+                                        foreach ($assembleias as $assembleia): ?>
+                                        <?php if ($assembleia->getData() >= $data): ?> 
+                                        <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
+                                            <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $data2; ?> <?php endif;?>
+                                        </option> 
+                                        <?php endforeach; 
+                                    ?>                                    
+                                </select> 
+                            </div>                            
+                        </div>                  
+                        
+                    </div><!-- Fim Div1 -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block" name="atualizar" value="atualizar">atualizar</button>
+                    </div>
+                    <!-- Fim Botões -->
+                            <?php foreach ($pautas2 as $pauta): ?>
                                 <tr>
                                     <td><?=$pauta->getId()?></td>
                                     <td><?=$pauta->getNome()?></td>
                                     <td><?=$pauta->getDescricao()?></td>
+                                    <td><?=$pauta->getFkPauAss()?></td>
                                     <td>
                                         <form method="post" action="index.php">
                                             <input type="hidden" name="id" value="<?=$pauta->getId();?>">
@@ -184,6 +222,13 @@ $pautas = $dao->findAll();
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                </form> <!-- Fim Form Geral-->
+
+
+
+
+
+
                         </tbody>
                     </table>
                 </fieldset>
