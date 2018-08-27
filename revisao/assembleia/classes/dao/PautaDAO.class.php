@@ -8,7 +8,7 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
     class PautaDAO {
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_PAUTAS ORDER BY PK_PAU ASC";
+            $sql = "SELECT * FROM TB_PAUTAS ORDER BY PK_PAU DESC";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -45,8 +45,6 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
             return $pautas;
         }
 
-
-
         public function findById($id) {
             $sql = "SELECT * FROM TB_PAUTAS WHERE PK_PAU = $id";
             $statement = Conexao::get()->prepare($sql);
@@ -79,6 +77,23 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $pauta->setFkPauAss($row['FK_PAU_ASS']);
             }
             return $pauta;
+        }
+        
+        public function findPautaAssembleia($assembleiaId) {
+            $sql = "SELECT * FROM TB_PAUTAS WHERE FK_PAU_ASS = '$assembleiaId'";
+            $statement = Conexao::get()->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $pautas = array();
+            foreach ($result as $row) {
+                $pauta = new Pauta();
+                $pauta->setId($row['PK_PAU']);
+                $pauta->setNome($row['PAU_NOME']);
+                $pauta->setDescricao($row['PAU_DESCRICAO']);
+                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                array_push($pautas, $pauta);
+            }
+            return $pautas;
         }
 
         public function save(Pauta $pauta) {

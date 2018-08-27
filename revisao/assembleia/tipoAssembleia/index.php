@@ -41,32 +41,48 @@ $tipoAssembleias = $dao->findAll();
     <!-- Menu lateral -->
     <div class="sidenav">
         <li>
-            <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>
+            <a href="index.php"><i class="fa fa-home"></i> <span>Home</span></a>
         </li>  
-        
-        <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+                
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Cadastrar</span>  
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-container">
-                    <a href="../adimplente/index.php">Adimplente</a>  
-                    <a href="../assembleia/index.php">Assembleia</a>  
-                    <a href="../bloco/index.php">Bloco</a>                
-                    <a href="../pauta/index.php">Pauta</a>
-                    <a href="../opcaoResposta/index.php">Resposta</a>                 
-                    <a href="../tipoAssembleia/index.php">Tipo de Assembleia</a>
-                </div>
-                <a href="visualizar-assembleia.php">Visualizar</a>
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../pauta/index.php">Pauta</a>
+                <a href="../opcaoResposta/index.php">Resposta</a>                 
+            </div>
+            <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
+            <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
         </div>
-        <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Visualizar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="cadastrar-morador.php">Cadastrar</a>
-            <a href="#">Visualizar</a>
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../pauta/index.php">Pauta</a>
+                <a href="../opcaoResposta/index.php">Resposta</a>                 
+            </div>
         </div>
     </div>
         
@@ -99,14 +115,14 @@ $tipoAssembleias = $dao->findAll();
 
     <!-- Início do container -->
     <div class="conteiner">
-        <div class="row" style="margin-top: 50px; margin-left:200px;">
-            <div class="col-11"> <!-- Form -->
+        <div class="row" style="margin-top: 50px; margin-left:390px;">
+            <div class="col-md-9 mb-3"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Tipo de Assembléia</legend>
                     <form action="index.php" method="post">
+                        <label for="tipoAssembleia" class="required">Tipo de Assembléia</label>
                         <div class="form-group">
                             <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>">
-                            <label for="tipoAssembleia" class="required">Tipo de Assembléia</label>
                             <input type="text" class="form-control" id="tipoAssembleia" name="tipoAssembleia" value="<?=$tipoAssembleia->getNome();?>" maxlength="100" required>
                         </div>
                         
@@ -116,7 +132,7 @@ $tipoAssembleias = $dao->findAll();
                     </form>
                 </fieldset>
             </div> <!-- Fim Form -->
-            <div class="col-11"> <!-- Tabela -->
+            <div class="col-md-9 mb-3"> <!-- Tabela -->
                 <fieldset>
                     <legend>Lista do Tipo de Assembléia</legend>
                     <table class="table table-striped table-hover">
@@ -140,7 +156,7 @@ $tipoAssembleias = $dao->findAll();
                                     </td>
                                     <td>
                                         <form method="post" action="index.php"> 
-                                            <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$tipoAssembleia->getId();?>"><label></label>
                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>

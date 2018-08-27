@@ -42,33 +42,54 @@ $opcaoRespostas = $dao->findAll();
     <!-- Menu lateral -->
     <div class="sidenav">
         <li>
-            <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>
+            <a href="index.php"><i class="fa fa-home"></i> <span>Home</span></a>
         </li>  
-        <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+        
+        <!-- <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+            <i class="fa fa-caret-down"></i>
+        </button> -->
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Cadastrar</span>  
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="../adimplente/index.php">Adimplente</a>  
-                <a href="../assembleia/index.php">Assembleia</a>  
-                <a href="../bloco/index.php">Bloco</a>                
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
                 <a href="../pauta/index.php">Pauta</a>
                 <a href="../opcaoResposta/index.php">Resposta</a>                 
-                <a href="../tipoAssembleia/index.php">Tipo de Assembleia</a>
             </div>
-            <a href="visualizar-assembleia.php">Visualizar</a>
+            <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
+            <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
         </div>
-        <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Visualizar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="cadastrar-morador.php">Cadastrar</a>
-            <a href="#">Visualizar</a>
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../pauta/index.php">Pauta</a>
+                <a href="../opcaoResposta/index.php">Resposta</a>                 
+            </div>
         </div>
-    </div>  
+        
+    </div> 
     <script>
         /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
         var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -90,7 +111,8 @@ $opcaoRespostas = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
-        <div style="margin-top: 50px; margin-left:100px;">
+        <div style="margin-top: 50px;">
+        <div class="col-md-12 mb-3">
             <fieldset>
                 <legend>Opções de Respostas</legend>
                 <form method="post" action="index.php"><!-- Form Geral Opção Resposta -->
@@ -110,6 +132,7 @@ $opcaoRespostas = $dao->findAll();
                     </div><!-- Fim Botões -->
                 </form> <!-- Fim Form Opção Resposta-->
             </fieldset>
+            </div>
             <div class="col-12"> <!-- Tabela -->
                 <fieldset>
                     <legend>Lista de Opções de Respostas</legend>

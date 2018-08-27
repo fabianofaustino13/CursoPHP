@@ -38,17 +38,19 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME = '$nome'";
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE '%$nome%'";
             $statement = Conexao::get()->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $morador = new Morador();
+            $moradores = array();
             foreach ($result as $row) {
+                $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setFkMorSin($row['FK_MOR_SIN']);
+                array_push($moradores, $morador);
             }
-            return $morador;
+            return $moradores;
         }
 
         public function save(Morador $morador) {

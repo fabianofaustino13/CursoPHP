@@ -46,36 +46,56 @@ $assembleias = $dao->findAll();
 </head>
 <body>
     <!-- Menu lateral -->
-    <div class="sidenav">
+     <div class="sidenav">
         <li>
-            <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>
+            <a href="index.php"><i class="fa fa-home"></i> <span>Home</span></a>
         </li>  
         
-        <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+        <!-- <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
+            <i class="fa fa-caret-down"></i>
+        </button> -->
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-                <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Cadastrar</span>  
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-container">
-                    <a href="../adimplente/index.php">Adimplente</a>  
-                    <a href="../assembleia/index.php">Assembleia</a>  
-                    <a href="../bloco/index.php">Bloco</a>                
-                    <a href="../pauta/index.php">Pauta</a>
-                    <a href="../opcaoResposta/index.php">Resposta</a>                 
-                    <a href="../tipoAssembleia/index.php">Tipo de Assembleia</a>
-                </div>
-                <a href="visualizar-assembleia.php">Visualizar</a>
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../pauta/index.php">Pauta</a>
+                <a href="../opcaoResposta/index.php">Resposta</a>                 
+            </div>
+            <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
+            <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
         </div>
-        <button class="dropdown-btn"><i class="fa fa-users"></i> <span>Morador</span>  
+        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Visualizar</span>  
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="cadastrar-morador.php">Cadastrar</a>
-            <a href="#">Visualizar</a>
+            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../assembleia/index.php">Assembléia</a>  
+                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../pauta/index.php">Pauta</a>
+                <a href="../opcaoResposta/index.php">Resposta</a>                 
+            </div>
         </div>
-    </div>         
+        
+    </div>  
         
     <script>
         /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
@@ -98,41 +118,44 @@ $assembleias = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
-        <div class="row" style="margin-top: 50px; margin-left:100px;">
-            <fieldset>
-                <legend>Cadastro das Assembléias</legend>
-                <form method="post" action="index.php"><!-- Form -->                    
-                    <div class="form-row"><!-- Div1 -->                        
-                        <label for="tipoAssembleia" class="required">Tipo de Assembléia</label><br><!-- Tipo de Assembleia -->
-                        <div class="col-12">
-                            <div class="form-group">
-                                <?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="<?=$tipoAssembleia->getNome();?>" name="tipoAssembleia" value=<?=$tipoAssembleia->getId();?> class="custom-control-input" <?php if ($tipoAssembleia->getId() == 1):?> checked <?php endif; ?>/>
-                                        <label class="custom-control-label" for="<?=$tipoAssembleia->getNome();?>"><?=$tipoAssembleia->getNome();?></label>
-                                    </div>
-                                <?php endforeach; ?>                                    
+        <div class="row" style="margin-top: 50px; ">
+            <div class="col-md-12 mb-3">
+                <fieldset>
+                    <legend>Cadastro das Assembléias</legend>
+                    <form method="post" action="index.php"><!-- Form -->                    
+                        <div class="form-row"><!-- Div1 -->                        
+                            <label for="tipoAssembleia" class="required">Tipo de Assembléia</label><br><!-- Tipo de Assembleia -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="<?=$tipoAssembleia->getNome();?>" name="tipoAssembleia" value=<?=$tipoAssembleia->getId();?> class="custom-control-input" <?php if ($tipoAssembleia->getId() == 1):?> checked <?php endif; ?>/>
+                                            <label class="custom-control-label" for="<?=$tipoAssembleia->getNome();?>"><?=$tipoAssembleia->getNome();?></label>
+                                        </div>
+                                    <?php endforeach; ?>                                    
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-9"><!-- Nome da assembléia -->
-                            <label for="nome" class="required">Nome da Assembléia</label>
-                            <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
-                        </div>
-                        <div class="col-3">
-                            <label for="data" class="required">Data da Assembléia</label>
-                        </div>
-                        <div class="col-md-9 mb-3">
-                            <input type="text" class="form-control" id="nome" name="nome" value="<?=$assembleia->getNome();?>" maxlength="100" placeholder="Assembléia Ordinária" required />
-                        </div><!-- Fim da assembléia  -->                         
-                        <div class="col-md-3 mb-3"><!-- Data da assembléia -->
-                            <input type="date" class="form-control" id="data" name="data" value="<?=$assembleia->getData();?>" required />
-                        </div><!-- Fim data da assembléia -->
-                    </div> <!-- Fim Div1 -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                </div><!-- Fim Botões -->
-		    </form><!-- Fim Form -->
-        </fieldset>        
+                            <div class="col-9"><!-- Nome da assembléia -->
+                                <label for="nome" class="required">Nome da Assembléia</label>
+                                <input type="hidden" name="id" value="<?=$assembleia->getId();?>">
+                            </div>
+                            <div class="col-3">
+                                <label for="data" class="required">Data da Assembléia</label>
+                            </div>
+                            <div class="col-md-9 mb-3">
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$assembleia->getNome();?>" maxlength="100" placeholder="Assembléia Ordinária" required />
+                            </div><!-- Fim da assembléia  -->                         
+                            <div class="col-md-3 mb-3"><!-- Data da assembléia -->
+                                <input type="date" class="form-control" id="data" name="data" value="<?=$assembleia->getData();?>" required />
+                            </div><!-- Fim data da assembléia -->
+                        </div> <!-- Fim Div1 -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                        </div><!-- Fim Botões -->
+                    </form><!-- Fim Form -->
+                </fieldset>  
+            </div>
+        </div>      
         <div class="col-12"> <!-- Tabela -->
             <fieldset>
                 <legend>Lista de Assembléias</legend>
@@ -177,7 +200,6 @@ $assembleias = $dao->findAll();
                 </table>
             </fieldset>
         </div> <!-- Fim Tabela -->
-    </div>  
-    <!-- Fim do container -->
+    </div><!-- Fim do container -->
 </body>
 </html> 

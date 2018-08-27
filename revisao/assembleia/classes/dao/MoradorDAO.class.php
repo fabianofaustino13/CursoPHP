@@ -61,6 +61,27 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             }
             return $morador;
         }
+        
+        public function findSindico() {
+            $sql = "SELECT * FROM TB_MORADORES ORDER BY PK_MOR ASC LIMIT 1";
+            $statement = Conexao::get()->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $sindicos = array();
+            foreach ($result as $row) {
+                $morador = new Morador();
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setSenha($row['MOR_SENHA']);
+                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
+                $morador->setFoto($row['MOR_FOTO']);
+                $morador->setFkMorSin($row['FK_MOR_SIN']);
+              
+                array_push($sindicos, $morador);
+            }
+            return $sindicos;
+        }
 
         public function save(Morador $morador) {
             if ($morador->getId() == null) {
