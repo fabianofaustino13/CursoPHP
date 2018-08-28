@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Assembleia.class.php';
+
 class Pauta {
 
     private $id;
@@ -7,7 +9,7 @@ class Pauta {
     private $descricao;
     private $status;
     private $voto;
-    private $fkPauAss;
+    private $assembleia;
 
 
     public function getId() {
@@ -23,7 +25,7 @@ class Pauta {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getDescricao() {
@@ -31,7 +33,7 @@ class Pauta {
     }
     
     public function setDescricao($descricao) {
-        $this->descricao = $descricao;
+        $this->descricao = strtoupper($descricao);
     }
 
     public function getStatus() {
@@ -39,7 +41,7 @@ class Pauta {
     }
     
     public function setStatus($status) {
-        $this->status = $status;
+        $this->status = strtoupper($status);
     }
 
     public function getVoto() {
@@ -51,10 +53,10 @@ class Pauta {
     }
 
     public function getFkPauAss() {
-        return $this->fkPauAss;
+        return $this->assembleia;
     }
     
-    public function setFkPauAss($fkPauAss) {
-        $this->fkPauAss = $fkPauAss;
+    public function setFkPauAss(Assembleia $assembleia) {
+        $this->assembleia = $assembleia;
     }
 }

@@ -19,24 +19,26 @@
 */
     //Inserindo os dados
     $dao = new SexoDAO();
+    echo("<pre>");
+    var_dump($dao->findAll());
+    echo("<pre>");
+    // $sexo = new Sexo();
+    // $sexo = $dao->findByNome('VIADO');
+    // //echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
 
-    $sexo = new Sexo();
-    $sexo = $dao->findByNome('VIADO');
-    //echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-
-    $sexo->setId($sexo->getId());
-    //echo("{$sexo->getId()}");
-    $sexo->setNome('VIADO');
-    $sexo->setSigla('VIA');
+    // $sexo->setId($sexo->getId());
+    // //echo("{$sexo->getId()}");
+    // $sexo->setNome('VIADO');
+    // $sexo->setSigla('VIA');
     
-    $sexo = $dao->save($sexo);
+    // $sexo = $dao->save($sexo);
     
-    $dao = new SexoDAO();
-    $sexos = $dao->findAll();
+    // $dao = new SexoDAO();
+    // $sexos = $dao->findAll();
 
-    foreach ($sexos as $sexo) {
-        echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-    }
+    // foreach ($sexos as $sexo) {
+    //     echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
+    // }
 /*
     //Atualizando os dados
     $dao = new SexoDAO();   

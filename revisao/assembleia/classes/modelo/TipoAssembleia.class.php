@@ -18,6 +18,6 @@ class TipoAssembleia {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 }

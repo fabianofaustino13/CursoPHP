@@ -5,9 +5,15 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
 
     class TipoAssembleiaDAO {
 
+        private $conexao;
+
+        function __construct() {
+            $this->conexao = Conexao::get();
+        }
+
         public function findAll() {
             $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS ORDER BY PK_TDA ASC";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $tipoAssembleias = array();
@@ -21,8 +27,9 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA = $id";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA = :ID";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id);
             $statement->execute();
             $result = $statement->fetchAll();
             $tipoAssembleia = new TipoAssembleia();
@@ -34,8 +41,9 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE TDA_NOME = '$nome'";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_TIPOS_ASSEMBLEIAS WHERE TDA_NOME = :NOME";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':NOME', $nome);
             $statement->execute();
             $result = $statement->fetchAll();
             $tipoAssembleia = new TipoAssembleia();
@@ -55,29 +63,44 @@ require_once __DIR__ . "/../modelo/TipoAssembleia.class.php";
         }
 
         private function insert(TipoAssembleia $tipoAssembleia) {
-            $sql = "INSERT INTO TB_TIPOS_ASSEMBLEIAS (TDA_NOME) VALUES ('{$tipoAssembleia->getNome()}')";
+            $sql = "INSERT INTO TB_TIPOS_ASSEMBLEIAS (TDA_NOME) VALUES (:NOME)";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $tipoAssembleia->getNome();
+                $statement->bindParam(':NOME', $nome);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         private function update(TipoAssembleia $tipoAssembleia) {
-            $sql = "UPDATE TB_TIPOS_ASSEMBLEIAS SET TDA_NOME ='{$tipoAssembleia->getNome()}' WHERE PK_TDA='{$tipoAssembleia->getId()}'";
+            $sql = "UPDATE TB_TIPOS_ASSEMBLEIAS SET TDA_NOME = :NOME WHERE PK_TDA= :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $tipoAssembleia->getNome();
+                $id = $tipoAssembleia->getId();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA=$id";
+            $sql = "DELETE FROM TB_TIPOS_ASSEMBLEIAS WHERE PK_TDA = :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
     }

@@ -4,9 +4,15 @@
 
     class SexoDAO {
 
+        private $conexao;
+
+        function __construct() {
+            $this->conexao = Conexao::get();
+        }
+
         public function findAll() {
             $sql = "SELECT * FROM TB_SEXOS";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $sexos = array();
@@ -22,7 +28,7 @@
 
         public function findById($id) {
             $sql = "SELECT * FROM TB_SEXOS WHERE PK_SEX = :ID";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
@@ -38,7 +44,7 @@
 
         public function findByNome($nome) {
             $sql = "SELECT * FROM TB_SEXOS WHERE SEX_NOME = ':NOME'";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
@@ -63,9 +69,9 @@
         private function insert(Sexo $sexo) {
             $sql = "INSERT INTO TB_SEXOS (SEX_NOME, SEX_SIGLA) VALUES (:NOME, :SIGLA')";
             try {
-                $statement = Conexao::get()->prepare($sql);
-                $statement->bindParam(':NOME', $sexo->getNome());
-                $statement->bindParam(':SIGLA', $sexo->getSigla());
+                $statement = $this->conexao->prepare($sql);
+                $statement->bindParam(':NOME', $sexo->setNome());
+                $statement->bindParam(':SIGLA', $sexo->setSigla());
                 $statement->execute();
                 $id = Conexao::get()->lastInsertId();
                 return $this->findById($id);
@@ -78,7 +84,7 @@
         private function update(Sexo $sexo) {
             $sql = "UPDATE TB_SEXOS SET SEX_NOME = :NOME, SEX_SIGLA = :SIGLA WHERE PK_SEX = ID";
             try {
-                $statement = Conexao::get()->prepare($sql);
+                $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':NOME', $sexo->getNome());
                 $statement->bindParam(':SIGLA', $sexo->getSigla());
                 $statement->bindParam(':ID', $sexo->getId());
@@ -93,7 +99,7 @@
         public function remove($id) {
             $sql = "DELETE FROM TB_SEXOS WHERE PK_SEX=:ID";
             try {
-                $statement = Conexao::get()->prepare($sql);
+                $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $sexo->getId());
                 $statement->execute();
             } catch(PDOException $e) {

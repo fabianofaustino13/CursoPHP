@@ -12,7 +12,7 @@ $tipoAssembleias = $dao2->findAll();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $assembleia->setNome(strtoupper($_POST['nome']));
     $assembleia->setData($_POST['data']);
-    $assembleia->setFkTda($_POST['tipoAssembleia']);
+    $assembleia->setTipoAssembleia($_POST['tipoAssembleia']);
     if ($_POST['id'] != '') {
         $assembleia->setId($_POST['id']);
     }
@@ -174,7 +174,7 @@ $assembleias = $dao->findAll();
                                 <td><?=$assembleia->getNome()?></td>
                                 <td><?=$assembleia->getData()?></td>
                                 <?php foreach ($tipoAssembleias as $tipoAssembleia):
-                                    if ($assembleia->getFkTda() == $tipoAssembleia->getId()): ?>
+                                    if ($assembleia->getTipoAssembleia() == $tipoAssembleia->getId()): ?>
                                         <td><?=$tipoAssembleia->getNome()?></td> 
                                     <?php endif; ?>
                                 <?php endforeach; ?>

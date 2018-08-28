@@ -4,9 +4,15 @@
 
     class MarcaDAO {
 
+        private $conexao;
+
+        function __construct() {
+            $this->conexao = Conexao::get();
+        }
+
         public function findAll() {
             $sql = "SELECT * FROM TB_MARCAS";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $marcas = array();
@@ -21,7 +27,7 @@
 
         public function findById($id) {
             $sql = "SELECT * FROM TB_MARCAS WHERE PK_MAR = :ID";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
@@ -35,7 +41,7 @@
 
         public function findByNome($nome) {
             $sql = "SELECT * FROM TB_MARCAS WHERE MAR_NOME = ':NOME'";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
@@ -58,7 +64,7 @@
         private function insert(Marca $marca) {
             $sql = "INSERT INTO TB_MARCAS (MAR_NOME) VALUES (':NOME')";
             try {                
-                $statement = Conexao::get()->prepare($sql);
+                $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':NOME', $marca->getNome());                
                 $statement->execute();
                 $id = Conexao::get()->lastInsertId();
@@ -72,7 +78,7 @@
         private function update(Marca $marca) {
             $sql = "UPDATE TB_MARCAS SET MAR_NOME = :NOME WHERE PK_MAR = :ID";
             try {
-                $statement = Conexao::get()->prepare($sql);
+                $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':NOME', $marca->getNome());                
                 $statement->execute();
                 $id = Conexao::get()->lastInsertId();
@@ -85,7 +91,7 @@
         public function remove($id) {
             $sql = "DELETE FROM TB_MARCAS WHERE PK_MAR = :ID";
             try {
-                $statement = Conexao::get()->prepare($sql);
+                $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id); //Proteção contra sql injetct
                 $statement->execute();
             } catch(PDOException $e) {

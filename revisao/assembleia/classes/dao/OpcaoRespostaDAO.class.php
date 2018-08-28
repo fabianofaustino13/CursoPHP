@@ -5,9 +5,15 @@ require_once (__DIR__ . "/../modelo/OpcaoResposta.class.php");
 
     class OpcaoRespostaDAO {
 
+        private $conexao;
+
+        function __construct() {
+            $this->conexao = Conexao::get();
+        }
+
         public function findAll() {
             $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS ORDER BY PK_ODR ASC";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $opcaoRespostas = array();
@@ -23,8 +29,9 @@ require_once (__DIR__ . "/../modelo/OpcaoResposta.class.php");
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = $id";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = :ID";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id);
             $statement->execute();
             $result = $statement->fetchAll();
             $opcaoResposta = new OpcaoResposta();
@@ -37,8 +44,9 @@ require_once (__DIR__ . "/../modelo/OpcaoResposta.class.php");
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE ODR_NOME = '$nome'";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE ODR_NOME = :NOME";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':NOME', $nome);
             $statement->execute();
             $result = $statement->fetchAll();
             $opcaoResposta = new OpcaoResposta();
@@ -59,29 +67,50 @@ require_once (__DIR__ . "/../modelo/OpcaoResposta.class.php");
         }
 
         private function insert(OpcaoResposta $opcaoResposta) {
-            $sql = "INSERT INTO TB_OPCOES_RESPOSTAS (ODR_NOME, ODR_IMAGEM) VALUES ('{$opcaoResposta->getNome()}', '{$opcaoResposta->getImagem()}')";
+            $sql = "INSERT INTO TB_OPCOES_RESPOSTAS (ODR_NOME, ODR_IMAGEM) VALUES (:NOME, :IMAGEM)";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $opcaoResposta->getNome();
+                $imagem = $opcaoResposta->getImagem();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':IMAGEM', $imagem);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         private function update(OpcaoResposta $opcaoResposta) {
-            $sql = "UPDATE TB_OPCOES_RESPOSTAS SET ODR_NOME ='{$opcaoResposta->getNome()}', ODR_IMAGEM ='{$opcaoResposta->getImagem()}' WHERE PK_ODR ='{$opcaoResposta->getId()}'";
+            $sql = "UPDATE TB_OPCOES_RESPOSTAS SET ODR_NOME = :NOME, ODR_IMAGEM = :IMAGEM WHERE PK_ODR = :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $opcaoResposta->getNome();
+                $imagem = $opcaoResposta->getImagem();
+                $id = $opcaoResposta->getId();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':IMAGEM', $imagem);
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR=$id";
+            $sql = "DELETE FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $id = $opcaoResposta->getId();
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
     }

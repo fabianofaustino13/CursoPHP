@@ -19,7 +19,7 @@ class Bloco {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getApelido() {
@@ -27,6 +27,6 @@ class Bloco {
     }
     
     public function setApelido($apelido) {
-        $this->apelido = $apelido;
+        $this->apelido = strtoupper($apelido);
     }
 }

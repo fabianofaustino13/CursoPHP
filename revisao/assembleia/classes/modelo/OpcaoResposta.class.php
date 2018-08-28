@@ -19,7 +19,7 @@ class OpcaoResposta {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getImagem() {

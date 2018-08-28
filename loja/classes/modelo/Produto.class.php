@@ -1,5 +1,8 @@
 <?php
 
+require_once 'Marca.class.php';
+require_once 'Departamento.class.php';
+
 class Produto {
 
     private $id;
@@ -24,7 +27,7 @@ class Produto {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getPreco() {
@@ -40,7 +43,7 @@ class Produto {
     }
     
     public function setDescricao($descricao) {
-        $this->descricao = $descricao;
+        $this->descricao = strtoupper($descricao);
     }
 
     public function getQntMinima() {

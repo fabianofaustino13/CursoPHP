@@ -19,7 +19,7 @@ class Sexo {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getSigla() {
@@ -27,7 +27,7 @@ class Sexo {
     }
     
     public function setSigla($sigla) {
-        $this->sigla = $sigla;
+        $this->sigla = strtoupper($sigla);
     }
 
 }

@@ -5,9 +5,15 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
 
     class AdimplenteDAO {
 
+        private $conexao;
+
+        function __construct() {
+            $this->conexao = Conexao::get();
+        }
+
         public function findAll() {
             $sql = "SELECT * FROM TB_ADIMPLENTES ORDER BY PK_ADI ASC";
-            $statement = Conexao::get()->prepare($sql);
+            $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $adimplentes = array();
@@ -23,8 +29,9 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE PK_ADI = $id";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE PK_ADI = :Id";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
             $adimplente = new Adimplente();
@@ -37,8 +44,9 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE ADI_NOME = '$nome'";
-            $statement = Conexao::get()->prepare($sql);
+            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE ADI_NOME = :NOME";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
             $adimplente = new Adimplente();
@@ -59,29 +67,48 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
         }
 
         private function insert(Adimplente $adimplente) {
-            $sql = "INSERT INTO TB_ADIMPLENTES (ADI_NOME, ADI_IMAGEM) VALUES ('{$adimplente->getNome()}', '{$adimplente->getImagem()}')";
+            $sql = "INSERT INTO TB_ADIMPLENTES (ADI_NOME, ADI_IMAGEM) VALUES (:NOME, :IMAGEM)";             
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $adimplente->getNome();
+                $imagem = $adimplente->getImagem();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':IMAGEM', $imagem);
+                $statement->execute();
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         private function update(Adimplente $adimplente) {
-            $sql = "UPDATE TB_ADIMPLENTES SET ADI_NOME ='{$adimplente->getNome()}', ADI_IMAGEM ='{$adimplente->getImagem()}' WHERE PK_ADI ='{$adimplente->getId()}'";
+            $sql = "UPDATE TB_ADIMPLENTES SET ADI_NOME = :NOME, ADI_IMAGEM = :IMAGEM WHERE PK_ADI = :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $nome = $adimplente->getNome();
+                $imagem = $adimplente->getImagem();
+                $id = $adimplente->getId();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':IMAGEM', $imagem);
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_ADIMPLENTES WHERE PK_ADI=$id";
+            $sql = "DELETE FROM TB_ADIMPLENTES WHERE PK_ADI = :ID";
             try {
-                Conexao::get()->exec($sql);
+                $statement = $this->conexao->prepare($sql);
+                $id = $adimplente->getId();
+                $statement->bindParam(':ID', $id);
+                $statement->execute();
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
     }

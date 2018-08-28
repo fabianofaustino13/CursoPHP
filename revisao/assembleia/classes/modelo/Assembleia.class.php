@@ -1,11 +1,13 @@
 <?php
 
+require_once 'TipoAssembleia.class.php';
+
 class Assembleia {
 
     private $id;
     private $nome;
     private $data;
-    private $fkTda;
+    private $tipoAssembleia;
 
     public function getId() {
         return $this->id;
@@ -20,7 +22,7 @@ class Assembleia {
     }
     
     public function setNome($nome) {
-        $this->nome = $nome;
+        $this->nome = strtoupper($nome);
     }
 
     public function getData() {
@@ -31,11 +33,11 @@ class Assembleia {
         $this->data = $data;
     }
 
-    public function getFkTda() {
-        return $this->fkTda;
+    public function getTipoAssembleia() {
+        return $this->tipoAssembleia;
     }
     
-    public function setFkTda($fkTda) {
-        $this->fkTda = $fkTda;
+    public function setTipoAssembleia($tipoAssembleia) {
+        $this->tipoAssembleia = $tipoAssembleia;
     }
 }
