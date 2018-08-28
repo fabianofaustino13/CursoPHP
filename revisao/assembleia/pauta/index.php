@@ -173,20 +173,20 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                                     <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
                                 </div><!-- Fim Nome da pauta -->
 
-                                <div class="col-md-12 mb-3">
+                                <!-- <div class="col-md-12 mb-3">
                                 <label for="descricao">Descrição</label>
                                     <input type="textarea" class="form-control" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>" maxlength="1000" placeholder="Descrição..."/>
                                 </div>
                                 <?php 
                                     
-                                ?> 
+                                ?>  -->
                     
-                            <!-- <div class="col-md-12 mb-3"> 
+                            <div class="col-md-12 mb-3"> 
                                 <label for="descricao">Descrição</label>
                                 <br/>
-                                <textarea placeholder="Descrição...." cols="124" rows="2" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>"></textarea>
+                                <textarea placeholder="Descrição...." cols="133" rows="2" id="descricao" name="descricao"><?=$pauta->getDescricao();?></textarea>
                                 <br/>
-                            </div> -->
+                            </div>
 
 
                         </div><!-- Fim Div1 -->

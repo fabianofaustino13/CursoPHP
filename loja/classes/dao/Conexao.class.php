@@ -6,7 +6,7 @@ class Conexao {
         $senha = "";
         $db = "db_loja";
         try {
-            $conn = new PDO("mysql:host=$servidor; dbname=$db", $usuario, $senha);
+            $conn = new PDO("mysql:host=$servidor; dbname=$db; charset=utf8;", $usuario, $senha);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //echo("Conexão com sucesso!!!");
             return $conn;
