@@ -35,6 +35,10 @@ class Produto {
         $this->nome = strtoupper($nome);
     }
 
+    public function getPrecoFormatado() {
+        return 'R$ ' . number_format($this->preco, 2, ',', '.');
+    }
+    
     public function getPreco() {
         return $this->preco;
     }

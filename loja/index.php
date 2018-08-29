@@ -1,70 +1,31 @@
-<?php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loja</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="./assets/css/all.css">
+    <link rel="stylesheet" href="./assets/css/navbar.css">
 
-    require_once __DIR__ . "/classes/modelo/Sexo.class.php";
-    require_once __DIR__ . "/classes/dao/SexoDAO.class.php";
+</head>
+<body>
+    <div class="navbar">
+    <a href="./index.php">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn">Produto 
+        <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+        <a href="./produto/index.php">Produto</a>
+        <a href="./departamento/index.php">Departamento</a>
+        <a href="./marca/index.php">Marca</a>
+        </div>
+    </div> 
+    <a href="./sexo/index.php">Sexo</a>
+    </div>
 
-    /*
-    //Mostrando todos os dados
-    $dao = new SexoDAO();
-    $sexos = $dao->findAll();
+    <h3>Loja de Esportes</h3>
 
-    foreach ($sexos as $sexo) {
-        echo("{$sexo->getId()} - {$sexo->getNome()} ");
-    }
-    
-    //Mostrando apenas 1 dado
-    $dao = new SexoDAO();
-    $sexo = $dao->findById(2);
-    echo("<br> {$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-*/
-    //Inserindo os dados
-    $dao = new SexoDAO();
-    echo("<pre>");
-    var_dump($dao->findAll());
-    echo("<pre>");
-    // $sexo = new Sexo();
-    // $sexo = $dao->findByNome('VIADO');
-    // //echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
 
-    // $sexo->setId($sexo->getId());
-    // //echo("{$sexo->getId()}");
-    // $sexo->setNome('VIADO');
-    // $sexo->setSigla('VIA');
-    
-    // $sexo = $dao->save($sexo);
-    
-    // $dao = new SexoDAO();
-    // $sexos = $dao->findAll();
-
-    // foreach ($sexos as $sexo) {
-    //     echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-    // }
-/*
-    //Atualizando os dados
-    $dao = new SexoDAO();   
-    $sexo = $dao->findById(3);
-
-    $sexo->setNome('Outros');
-    
-    $sexo = $dao->update($sexo);
-    
-    $dao = new SexoDAO();
-    $sexos = $dao->findAll();
-
-    foreach ($sexos as $sexo) {
-        echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-    }
-
-    //Removendo um dado
-    $dao = new SexoDAO();   
-    //$sexo = $dao->findById(3);
-   
-    $sexo = $dao->remove(3);
-    
-    $dao = new SexoDAO();
-    $sexos = $dao->findAll();
-
-    foreach ($sexos as $sexo) {
-        echo("{$sexo->getId()} - {$sexo->getNome()} - {$sexo->getSigla()} <br>");
-    }
-*/
+</body>
+</html>

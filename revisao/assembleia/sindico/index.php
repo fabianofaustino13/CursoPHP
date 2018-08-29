@@ -134,7 +134,7 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
 
 	<!-- Início do container -->
 	<div class="container">
-        <div class="row" style="margin-top: 50px;">
+        <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Síndico</legend>

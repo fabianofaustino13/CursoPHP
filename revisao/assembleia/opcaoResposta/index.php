@@ -111,27 +111,27 @@ $opcaoRespostas = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
-        <div style="margin-top: 50px;">
-        <div class="col-md-12 mb-3">
-            <fieldset>
-                <legend>Opções de Respostas</legend>
-                <form method="post" action="index.php"><!-- Form Geral Opção Resposta -->
-                    <div class="form-row"><!-- Div1 -->
-                        <div class="col-md-6 mb-3"><!-- Nome da Opção -->
-                            <label for="nome" class="required">Resposta</label>
-                            <input type="hidden" name="id" value="<?=$opcaoResposta->getId();?>">
-                            <input type="text" class="form-control" id="nome" name="nome" value="<?=$opcaoResposta->getNome();?>" maxlength="25" placeholder="Nome breve para resposta" required />
-                        </div><!-- Fim Nome da Opção -->
-                        <div class="col-md-6 mb-3">
-                            <label for="imagem">Imagem</label>
-                            <input type="text" class="form-control" id="imagem" name="imagem" value="<?=$opcaoResposta->getImagem();?>" />
-                        </div>
-                    </div><!-- Fim Div1 -->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                    </div><!-- Fim Botões -->
-                </form> <!-- Fim Form Opção Resposta-->
-            </fieldset>
+        <div class="row" style="margin-top: 5%;">
+            <div class="col-md-12 mb-3">
+                <fieldset>
+                    <legend>Opções de Respostas</legend>
+                    <form method="post" action="index.php"><!-- Form Geral Opção Resposta -->
+                        <div class="form-row"><!-- Div1 -->
+                            <div class="col-md-6 mb-3"><!-- Nome da Opção -->
+                                <label for="nome" class="required">Resposta</label>
+                                <input type="hidden" name="id" value="<?=$opcaoResposta->getId();?>">
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$opcaoResposta->getNome();?>" maxlength="25" placeholder="Nome breve para resposta" required />
+                            </div><!-- Fim Nome da Opção -->
+                            <div class="col-md-6 mb-3">
+                                <label for="imagem">Imagem</label>
+                                <input type="text" class="form-control" id="imagem" name="imagem" value="<?=$opcaoResposta->getImagem();?>" />
+                            </div>
+                        </div><!-- Fim Div1 -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                        </div><!-- Fim Botões -->
+                    </form> <!-- Fim Form Opção Resposta-->
+                </fieldset>
             </div>
             <div class="col-12"> <!-- Tabela -->
                 <fieldset>

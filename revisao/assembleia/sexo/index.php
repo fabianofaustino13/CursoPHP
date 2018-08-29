@@ -41,7 +41,7 @@ $sexos = $dao->findAll();
 <body>
 
     <div class="conteiner">
-        <div class="row" style="margin:50px;">
+        <div class="row" style="margin-top: 5%;">
             <div class="col-6"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Sexo</legend>

@@ -56,7 +56,7 @@ class Pauta {
         return $this->assembleia;
     }
     
-    public function setFkPauAss(Assembleia $assembleia) {
+    public function setFkPauAss($assembleia) {
         $this->assembleia = $assembleia;
     }
 }

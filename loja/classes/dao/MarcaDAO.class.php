@@ -40,7 +40,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_MARCAS WHERE MAR_NOME = ':NOME'";
+            $sql = "SELECT * FROM TB_MARCAS WHERE MAR_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $rows->execute();

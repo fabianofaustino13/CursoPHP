@@ -134,7 +134,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 	<!-- Início do container -->
 	<div class="container">
-        <div class="row" style="margin-top: 50px; ">
+        <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Moradores</legend>

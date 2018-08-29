@@ -22,14 +22,13 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
                 $adimplente->setId($row['PK_ADI']);
                 $adimplente->setNome($row['ADI_NOME']);
                 $adimplente->setImagem($row['ADI_IMAGEM']);
-                
                 array_push($adimplentes, $adimplente);
             }
             return $adimplentes;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE PK_ADI = :Id";
+            $sql = "SELECT * FROM TB_ADIMPLENTES WHERE PK_ADI = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();

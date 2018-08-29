@@ -114,9 +114,9 @@ $tipoAssembleias = $dao->findAll();
     <!-- Fim menu lateral -->
 
     <!-- Início do container -->
-    <div class="conteiner">
-        <div class="row" style="margin-top: 50px; margin-left:390px;">
-            <div class="col-md-9 mb-3"> <!-- Form -->
+    <div class="container">
+        <div class="row" style="margin-top: 5%;">
+            <div class="col-md-12 mb-3"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Tipo de Assembléia</legend>
                     <form action="index.php" method="post">
@@ -132,7 +132,7 @@ $tipoAssembleias = $dao->findAll();
                     </form>
                 </fieldset>
             </div> <!-- Fim Form -->
-            <div class="col-md-9 mb-3"> <!-- Tabela -->
+            <div class="col-md-12 mb-3"> <!-- Tabela -->
                 <fieldset>
                     <legend>Lista do Tipo de Assembléia</legend>
                     <table class="table table-striped table-hover">

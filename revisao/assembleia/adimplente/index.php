@@ -5,7 +5,7 @@ $dao = new AdimplenteDAO();
 $adimplente = new Adimplente();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $adimplente->setNome(strtoupper($_POST['nome']));
+    $adimplente->setNome($_POST['nome']);
     $adimplente->setImagem($_POST['imagem']);
     // $adimplente->setImagem($_FILES['imagem']['nome']);
     if ($_POST['id'] != '') {
@@ -112,30 +112,32 @@ $adimplentes = $dao->findAll();
 
 	<!-- Início do container -->
 	<div class="container">
-        <div style="margin-top: 50px; margin-left:100px;">
-            <fieldset>
-                <legend>Situação Financeira</legend>
-                <form method="post" action="index.php"><!-- Form Geral -->
-                    <div class="form-row"><!-- Div1 -->
-                        <div class="col-md-6 mb-3"><!-- Nome -->
-                            <label for="nome" class="required">Nome</label>
-                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
-                            <input type="text" class="form-control" id="nome" name="nome" value="<?=$adimplente->getNome();?>" maxlength="25" placeholder="Adimplente" required />
-                        </div><!-- Fim Nome -->     
-                        <div class="col-md-6 mb-3"><!-- Imagem -->
-                            <label for="imagem">Imagem</label>
-                            <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
-                            <!-- <input type="hidden" name="MAX_FILE_SIZE" value="99999999" />
-                            <div><input type="file" name="imagem"></div> -->
+        <div class="row" style="margin-top: 5%;">   
+            <div class="col-md-12 mb-3">
+                <fieldset>
+                    <legend>Situação Financeira</legend>
+                    <form method="post" action="index.php"><!-- Form Geral -->
+                        <div class="form-row"><!-- Div1 -->
+                            <div class="col-md-6 mb-3"><!-- Nome -->
+                                <label for="nome" class="required">Nome</label>
+                                <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$adimplente->getNome();?>" maxlength="25" placeholder="Adimplente" required />
+                            </div><!-- Fim Nome -->     
+                            <div class="col-md-6 mb-3"><!-- Imagem -->
+                                <label for="imagem">Imagem</label>
+                                <input type="hidden" name="id" value="<?=$adimplente->getId();?>">
+                                <!-- <input type="hidden" name="MAX_FILE_SIZE" value="99999999" />
+                                <div><input type="file" name="imagem"></div> -->
 
-                            <input type="text" class="form-control" id="imagem" name="imagem" value="<?=$adimplente->getImagem();?>" />
-                        </div><!-- Fim Nome -->                     
-                    </div><!-- Fim Div1 -->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                    </div><!-- Fim Botões -->
-                </form> <!-- Fim Form Geral -->
-            </fieldset>
+                                <input type="text" class="form-control" id="imagem" name="imagem" value="<?=$adimplente->getImagem();?>" />
+                            </div><!-- Fim Nome -->                     
+                        </div><!-- Fim Div1 -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                        </div><!-- Fim Botões -->
+                    </form> <!-- Fim Form Geral -->
+                </fieldset>
+            </div>
             <div class="col-12"> <!-- Tabela -->
                 <fieldset>
                     <legend>Situações Financeiras</legend>

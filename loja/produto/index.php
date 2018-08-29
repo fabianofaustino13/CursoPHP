@@ -1,17 +1,24 @@
+<?php
+require_once(__DIR__ . "/../classes/modelo/Marca.class.php");
+require_once(__DIR__ . "/../classes/dao/MarcaDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Produto.class.php");
+require_once(__DIR__ . "/../classes/dao/ProdutoDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/DepartamentoDAO.class.php");
 
-<?php require_once(__DIR__ . "/../classes/modelo/Marca.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/MarcaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Departamento.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/DepartamentoDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Produto.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/ProdutoDAO.class.php"); ?>
-<?php 
-
+$home = "/loja/produto/";
 $produto = new Produto();
 $marcaDao = new MarcaDAO();
 $produtoDao = new ProdutoDAO();
 $departamentoDao = new DepartamentoDAO();
 
+if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
+    $produto = $produtoDao->findById($_POST['id']);
+}
+
+if (isset($_POST['remover']) && $_POST['remover'] == 'remover') {
+    $produtoDao->remove($_POST['id']);
+    header("location: index.php");
+}
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $produto->setNome($_POST['nome']);
@@ -20,36 +27,23 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $produto->setQntEstoque($_POST['estoque']);
     $produto->setPreco($_POST['preco']);
     $produto->getMarca()->setId($_POST['marcaId']);
-    $produto->getDepartamento()->setId($_POST['departamentoId']);
-
-    if($produto->getMarca()->getId() == 0) {
+    if ($produto->getMarca()->getId() == 0) {
         $produto->getMarca()->setId(null);
     }
-
-    if($produto->getDepartamento()->getId() == 0) {
+    $produto->getDepartamento()->setId($_POST['departamentoId']);
+    if ($produto->getDepartamento()->getId() == 0) {
         $produto->getDepartamento()->setId(null);
     }
-    // $produto->setMarca($marcaDao->findById($_POST['marca']));
-    // $produto->SetDepartamento($departamentoDao->findById($_POST['departamento']));
-    
+
     if ($_POST['id'] != '') {
         $produto->setId($_POST['id']);
     }
-    
     $produtoDao->save($produto);
-    header('location: index.php');
-}
-if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $produto = $produtoDao->findById($_POST['id']);
+    header("location: index.php");
 }
 
-if (isset($_POST['remover']) && $_POST['remover'] == 'remover') {
-    $produtoDao->remove($_POST['id']);
-    header('location: index.php');
-}
-
-$produtos = $produtoDao->findAll();
 $marcas = $marcaDao->findAll();
+$produtos = $produtoDao->findAll();
 $departamentos = $departamentoDao->findAll();
 
 ?>
@@ -63,12 +57,12 @@ $departamentos = $departamentoDao->findAll();
     <link rel="stylesheet" href="../assets/css/all.css">
 </head>
 <body>
-    <div class="container">
-        <div class="row" style="margin-top: 50px;">
+    <div class="container-fluid">
+        <div class="row col-md-12 mb-3" style="padding: 5% 5% 0 5%;">
             <div class="col-6"><!-- form -->
                 <fieldset>
                     <legend>Dados do Produto</legend>
-                    <form action="index.php" method="post">
+                    <form action="index.php" method="post" id="form-salvar">
                         <input type="hidden" name="id" value="<?=$produto->getId();?>">
                         <div class="form-group"> <!-- input Produto -->
                             <label for="nome">Produto</label >
@@ -79,15 +73,7 @@ $departamentos = $departamentoDao->findAll();
                             <select class="form-control" name="marcaId" id="marcaId">
                                 <option value="0" disabled selected>Selecione uma marca...</option>
                                 <?php foreach($marcas as $marca): ?>
-                                    <?php 
-                                        $selected = "";
-                                        if ($marca->getId() == $produto->getMarca()->getId()) {
-                                            $selected = "selected";
-                                        }
-                                    ?>
-                                    <option value="<?=$marca->getId();?>" <?=$selected;?>>
-                                        <?=$marca->getNome();?>
-                                    </option>
+                                    <option value="<?=$marca->getId();?>" <?=$marca->getId() == $produto->getMarca()->getId() ? "selected": "";?>><?=$marca->getNome();?></option>  
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -96,15 +82,7 @@ $departamentos = $departamentoDao->findAll();
                             <select class="form-control" name="departamentoId" id="departamentoId">
                                 <option value="0" disabled selected>Selecione um departamento...</option>
                                 <?php foreach($departamentos as $departamento): ?>
-                                    <?php 
-                                        $selected = "";
-                                        if ($departamento->getId() == $produto->getDepartamento()->getId()) {
-                                            $selected = "selected";
-                                        }
-                                    ?>
-                                    <option value="<?=$departamento->getId()?>" <?=$selected;?>>
-                                        <?=$departamento->getNome()?>
-                                    </option>
+                                    <option value="<?=$departamento->getId();?>" <?=$departamento->getId() == $produto->getDepartamento()->getId() ? "selected": "";?>><?=$departamento->getNome();?></option>  
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -125,7 +103,7 @@ $departamentos = $departamentoDao->findAll();
                             <input type="text" class="form-control" name="preco" id="preco" required value="<?=$produto->getPreco();?>">
                         </div>
                         <div class="form-group"> <!-- Botão -->
-                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">
+                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar" onclick="return confirmaSalvar();">
                                 <i class="fas fa-save"></i> Salvar
                             </button>
                         </div>
@@ -159,17 +137,17 @@ $departamentos = $departamentoDao->findAll();
                                     <td><?=$produto->getDescricao();?></td>
                                     <td><?=$produto->getQntMinima();?></td>
                                     <td><?=$produto->getQntEstoque();?></td>
-                                    <td><?=$produto->getPreco();?></td>
+                                    <td><?=$produto->getPrecoFormatado();?></td>
                                     <td>
-                                        <form action="index.php" method="post">
+                                        <form action="index.php" method="post" id="form-editar">
                                             <input type="hidden" name="id" value="<?=$produto->getId();?>">
                                             <button type="submit" class="btn btn-sm btn-success" name="editar" value="editar"><i class="fas fa-edit"></i></button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="index.php" method="post">
+                                        <form action="index.php" method="post" id="form-remover">
                                             <input type="hidden" name="id" value="<?=$produto->getId();?>">
-                                            <button type="submit" class="btn btn-sm btn-danger" name="remover" value="remover"><i class="fas fa-trash-alt"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-danger" name="remover" value="remover" onclick="return confirmaRemover();"><i class="fas fa-trash-alt"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -180,5 +158,6 @@ $departamentos = $departamentoDao->findAll();
             </div>
         </div>
     </div>
+    <script src="../assets/js/produto.js"></script>
 </body>
 </html>

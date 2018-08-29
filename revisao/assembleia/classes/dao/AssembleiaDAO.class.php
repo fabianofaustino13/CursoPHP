@@ -13,7 +13,7 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT PK_ASS, ASS_NOME, ASS_DATA, PK_TDA, TDA_NOME FROM TB_ASSEMBLEIAS JOIN TB_TIPOS_ASSEMBLEIAS ON PK_TDA = FK_ASS_TDA ORDER BY ASS_DATA DESC";
+            $sql = "SELECT * FROM TB_ASSEMBLEIAS JOIN TB_TIPOS_ASSEMBLEIAS ON PK_TDA = FK_ASS_TDA ORDER BY ASS_DATA DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();

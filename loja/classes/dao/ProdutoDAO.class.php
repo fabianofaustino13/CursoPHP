@@ -13,7 +13,7 @@
         }
         
         public function findAll() {
-            $sql = "SELECT * FROM TB_PRODUTOS JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP ORDER BY PK_PRO ASC";
+            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR = FK_PRO_MAR LEFT JOIN TB_DEPARTAMENTOS ON PK_DEP = FK_PRO_DEP ORDER BY PK_PRO ASC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $rows = $statement->fetchAll();
@@ -40,7 +40,7 @@
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR = FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP = FK_PRO_DEP WHERE PK_PRO = :ID";
+            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR = FK_PRO_MAR LEFT JOIN TB_DEPARTAMENTOS ON PK_DEP = FK_PRO_DEP WHERE PK_PRO = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -65,7 +65,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP WHERE PRO_NOME LIKE :NOME";
+            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR LEFT JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP WHERE PRO_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -123,7 +123,7 @@
         }
 
         private function update(produto $produto) {
-            $sql = "UPDATE TB_PRODUTOS SET (PRO_NOME = :NOME, PRO_PRECO = :PRECO, PRO_DESCRICAO = :DESCRICAO, PRO_QUANTIDADE_MINIMA = :QNT_MINIMA, PRO_QUANTIDADE_ESTOQUE = :QNT_ESTOQUE, FK_PRO_MAR = :MARCA, FK_PRO_DEP = :DEPARTAMENTO) WHERE PK_PRO = :ID";
+            $sql = "UPDATE TB_PRODUTOS SET PRO_NOME=:NOME, PRO_PRECO=:PRECO, PRO_DESCRICAO=:DESCRICAO, PRO_QUANTIDADE_MINIMA=:QNT_MINIMA, PRO_QUANTIDADE_ESTOQUE=:QNT_ESTOQUE, FK_PRO_MAR=:MARCA, FK_PRO_DEP=:DEPARTAMENTO WHERE PK_PRO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $produto->getNome();
@@ -152,7 +152,7 @@
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_PRODUTOS WHERE PK_PRO=:ID";
+            $sql = "DELETE FROM TB_PRODUTOS WHERE PK_PRO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id); //Proteção contra sql injetct

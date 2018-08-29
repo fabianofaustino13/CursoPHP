@@ -40,7 +40,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_DEPARTAMENTOS WHERE DEP_NOME = :NOME";
+            $sql = "SELECT * FROM TB_DEPARTAMENTOS WHERE DEP_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -80,8 +80,8 @@
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':NOME', $departamento->getNome());                
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
-            } catch(PDOException $e) {
+                return $this->findById($id);
+                } catch(PDOException $e) {
                 echo $e->getMessage();
             }
         }

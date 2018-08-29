@@ -43,7 +43,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_SEXOS WHERE SEX_NOME = ':NOME'";
+            $sql = "SELECT * FROM TB_SEXOS WHERE SEX_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -67,7 +67,7 @@
         }
 
         private function insert(Sexo $sexo) {
-            $sql = "INSERT INTO TB_SEXOS (SEX_NOME, SEX_SIGLA) VALUES (:NOME, :SIGLA')";
+            $sql = "INSERT INTO TB_SEXOS (SEX_NOME, SEX_SIGLA) VALUES (:NOME, :SIGLA)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':NOME', $sexo->setNome());
@@ -88,7 +88,7 @@
                 $statement->bindParam(':SIGLA', $sexo->getSigla());
                 $statement->bindParam(':ID', $sexo->getId());
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                return $this->findById($id);
             } catch(PDOException $e) {
                 echo $e->getMessage();
             }

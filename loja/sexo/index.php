@@ -28,21 +28,35 @@ $sexos = $dao->findAll();
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sexos</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/loja.css">
     <link rel="stylesheet" href="../assets/css/all.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous"> -->
-
+    
 </head>
 <body>
 
-    <div class="conteiner">
-        <div class="row" style="margin:50px;">
-            <div class="col-6"> <!-- Form -->
+    <div class="navbar"> <!-- div menu -->
+    <a href="../index.php">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn">Produto 
+        <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+        <a href="./produto/index.php">Produto</a>
+        <a href="./departamento/index.php">Departamento</a>
+        <a href="./marca/index.php">Marca</a>
+        </div>
+    </div> <!-- fim da div menu -->
+    <a href="./sexo/index.php">Sexo</a>
+    </div>
+    <div class="container">
+        <div class="row" style="margin: 5%;">
+            <div class="col-12"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Sexo</legend>
                     <form action="index.php" method="post">

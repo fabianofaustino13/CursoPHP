@@ -143,7 +143,7 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
 
 	<!-- Início do container -->
 	<div class="container">
-        <div class="row" style="margin-top: 50px; margin-left:0px">
+        <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Pautas</legend>
@@ -158,10 +158,10 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                                                 $data2 = date ("d-m-Y"); //Data de hoje no formato BR
                                                 //echo"<input type='date' value='$data' name='date'";
                                                 foreach ($assembleias as $assembleia): ?>
-                                                <?php if ($assembleia->getData() >= $data):  ?> 
-                                                <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
-                                                    <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $assembleia->getData(); ?> <?php endif;?>
-                                                </option> 
+                                                    <?php if ($assembleia->getData() >= $data):  ?> 
+                                                        <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
+                                                            <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $assembleia->getData(); ?> <?php endif;?>
+                                                        </option> 
                                                 <?php endforeach; 
                                             ?>                                    
                                         </select> 
@@ -173,21 +173,12 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                                     <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
                                 </div><!-- Fim Nome da pauta -->
 
-                                <!-- <div class="col-md-12 mb-3">
-                                <label for="descricao">Descrição</label>
-                                    <input type="textarea" class="form-control" id="descricao" name="descricao" value="<?=$pauta->getDescricao();?>" maxlength="1000" placeholder="Descrição..."/>
-                                </div>
-                                <?php 
-                                    
-                                ?>  -->
-                    
                             <div class="col-md-12 mb-3"> 
                                 <label for="descricao">Descrição</label>
                                 <br/>
-                                <textarea placeholder="Descrição...." cols="133" rows="2" id="descricao" name="descricao"><?=$pauta->getDescricao();?></textarea>
+                                <textarea placeholder="Descrição...." cols="135" rows="3" id="descricao" name="descricao"><?=$pauta->getDescricao();?></textarea>
                                 <br/>
                             </div>
-
 
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
