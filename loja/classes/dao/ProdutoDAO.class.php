@@ -2,6 +2,7 @@
     require_once (__DIR__ . "/./Conexao.class.php");
     require_once (__DIR__ . "/../modelo/Produto.class.php");
     require_once (__DIR__ . "/../modelo/Marca.class.php");
+    require_once (__DIR__ . "/../modelo/Departamento.class.php");
 
     class ProdutoDAO {
 
@@ -12,7 +13,7 @@
         }
         
         public function findAll() {
-            $sql = "SELECT PK_PRO, PRO_NOME, PRO_PRECO, PRO_DESCRICAO, PRO_QUANTIDADE_MINIMA, PRO_QUANTIDADE_ESTOQUE, PK_MAR, MAR_NOME, PK_DEP, DEP_NOME FROM TB_PRODUTOS JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP ORDER BY PK_PRO DESC";
+            $sql = "SELECT * FROM TB_PRODUTOS JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP ORDER BY PK_PRO ASC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $rows = $statement->fetchAll();
@@ -39,7 +40,7 @@
         }
 
         public function findById($id) {
-            $sql = "SELECT PK_PRO, PRO_NOME, PRO_PRECO, PRO_DESCRICAO, PRO_QUANTIDADE_MINIMA, PRO_QUANTIDADE_ESTOQUE, PK_MAR, MAR_NOME, PK_DEP, DEP_NOME FROM TB_PRODUTOS JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP WHERE PK_PRO = :ID";
+            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR = FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP = FK_PRO_DEP WHERE PK_PRO = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -51,8 +52,6 @@
             $departamento->setId($row['PK_DEP']);
             $departamento->setNome($row['DEP_NOME']);
             $produto = new produto();
-            $marca->setId($row['PK_MAR']);
-            $marca->setNome($row['MAR_NOME']);
             $produto->setId($row['PK_PRO']);
             $produto->setNome($row['PRO_NOME']);
             $produto->setPreco($row['PRO_PRECO']);
@@ -66,7 +65,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT PK_PRO, PRO_NOME, PRO_PRECO, PRO_DESCRICAO, PRO_QUANTIDADE_MINIMA, PRO_QUANTIDADE_ESTOQUE, PK_MAR, MAR_NOME, PK_DEP, DEP_NOME FROM TB_PRODUTOS JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP WHERE PRO_NOME LIKE ':NOME'";
+            $sql = "SELECT * FROM TB_PRODUTOS LEFT JOIN TB_MARCAS ON PK_MAR=FK_PRO_MAR JOIN TB_DEPARTAMENTOS ON PK_DEP=FK_PRO_DEP WHERE PRO_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -124,21 +123,31 @@
         }
 
         private function update(produto $produto) {
-            $sql = "UPDATE TB_PRODUTOS SET (PRO_NOME = :NOME, PRO_PRECO, PRO_DESCRICAO = :DESCRICAO, PRO_QUANTIDADE_MINIMA = :QNT_MINIMA, PRO_QUANTIDADE_ESTOQUE = :QNT_ESTOQUE, FK_PRO_MAR = :MARCA, FK_PRO_DEP = :DEPARTAMENTO) WHERE PK_PRO = :ID";
+            $sql = "UPDATE TB_PRODUTOS SET (PRO_NOME = :NOME, PRO_PRECO = :PRECO, PRO_DESCRICAO = :DESCRICAO, PRO_QUANTIDADE_MINIMA = :QNT_MINIMA, PRO_QUANTIDADE_ESTOQUE = :QNT_ESTOQUE, FK_PRO_MAR = :MARCA, FK_PRO_DEP = :DEPARTAMENTO) WHERE PK_PRO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $statement->bindParam(':NOME', $produto->getNome());
-                $statement->bindParam(':PRECO', $produto->getPreco());
-                $statement->bindParam(':DESCRICAO', $produto->getDescricao());
-                $statement->bindParam(':QNT_MINIMA', $produto->getQntMinima());
-                $statement->bindParam(':QNT_ESTOQUE', $produto->getQntEstoque());
-                $statement->bindParam(':MARCA', $produto->getMarca()->getId());
-                $statement->bindParam(':DEPARTAMENTO', $produto->getDepartamento()->getId());
-                $statement->bindParam(':ID', $produto->getId());
+                $nome = $produto->getNome();
+                $preco = $produto->getPreco();
+                $descricao = $produto->getDescricao();
+                $qntMinima = $produto->getQntMinima();
+                $qntEstoque = $produto->getQntEstoque();
+                $marca = $produto->getMarca()->getId();
+                $departamento = $produto->getDepartamento()->getId();
+                $id = $produto->getId();
+                $departamento = $produto->getDepartamento()->getId();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':PRECO', $preco);
+                $statement->bindParam(':DESCRICAO', $descricao);
+                $statement->bindParam(':QNT_MINIMA', $qntMinima);
+                $statement->bindParam(':QNT_ESTOQUE', $qntEstoque);
+                $statement->bindParam(':MARCA', $marca);
+                $statement->bindParam(':DEPARTAMENTO', $departamento);
+                $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($produto->getId());
-            } catch(PDOException $e) {
+                } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 

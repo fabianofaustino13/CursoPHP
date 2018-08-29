@@ -30,9 +30,9 @@
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
-            $result = $statement->fetchAll();
+            $rows = $statement->fetchAll();
             $marca = new Marca();
-            foreach ($result as $row) {
+            foreach ($rows as $row) {
                 $marca->setId($row['PK_MAR']);
                 $marca->setNome($row['MAR_NOME']);
             }
@@ -43,10 +43,10 @@
             $sql = "SELECT * FROM TB_MARCAS WHERE MAR_NOME = ':NOME'";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
-            $statement->execute();
+            $rows->execute();
             $result = $statement->fetchAll();
             $marca = new Marca();
-            foreach ($result as $row) {
+            foreach ($rows as $row) {
                 $marca->setId($row['PK_MAR']);
                 $marca->setNome($row['MAR_NOME']);
             }
@@ -54,21 +54,21 @@
         }
 
         public function save(Marca $marca) {
-            if ($marca->getId() == null) {
-                $this->insert($marca);
+            if (is_null($marca->getId())) {
+                return $this->insert($marca);
             } else {
-                $this->update($marca);
+                return $this->update($marca);
             }
         }
 
         private function insert(Marca $marca) {
-            $sql = "INSERT INTO TB_MARCAS (MAR_NOME) VALUES (':NOME')";
+            $sql = "INSERT INTO TB_MARCAS (MAR_NOME) VALUES (:NOME)";
             try {                
                 $statement = $this->conexao->prepare($sql);
-                $statement->bindParam(':NOME', $marca->getNome());                
+                $nome = $marca->getNome();
+                $statement->bindParam(':NOME', $nome);
                 $statement->execute();
-                $id = Conexao::get()->lastInsertId();
-                return $this->findById($id);
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -79,12 +79,15 @@
             $sql = "UPDATE TB_MARCAS SET MAR_NOME = :NOME WHERE PK_MAR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $statement->bindParam(':NOME', $marca->getNome());                
+                $nome = $marca->getNome();
+                $id = $marca->getId();
+                $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':ID', $id);
                 $statement->execute();
-                $id = Conexao::get()->lastInsertId();
                 return $this->findById($id);
             } catch(PDOException $e) {
                 echo $e->getMessage();
+                return null;
             }
         }
 

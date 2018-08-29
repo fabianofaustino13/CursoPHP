@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Marca.class.php';
-require_once 'Departamento.class.php';
+require_once(__DIR__ . "/./Marca.class.php");
+require_once(__DIR__ . "/./Departamento.class.php");
 
 class Produto {
 
@@ -13,6 +13,11 @@ class Produto {
     private $qntEstoque;
     private $marca;
     private $departamento;
+
+    public function __construct() {
+        $this->marca = new Marca();
+        $this->departamento = new Departamento();
+    }
 
     public function getId() {
         return $this->id;

@@ -73,8 +73,7 @@
                 $statement->bindParam(':NOME', $sexo->setNome());
                 $statement->bindParam(':SIGLA', $sexo->setSigla());
                 $statement->execute();
-                $id = Conexao::get()->lastInsertId();
-                return $this->findById($id);
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -89,8 +88,7 @@
                 $statement->bindParam(':SIGLA', $sexo->getSigla());
                 $statement->bindParam(':ID', $sexo->getId());
                 $statement->execute();
-                $id = Conexao::get()->lastInsertId();
-                return $this->findById($id);
+                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
             }
