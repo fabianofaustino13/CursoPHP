@@ -5,7 +5,7 @@ require_once(__DIR__ . "/../classes/modelo/Produto.class.php");
 require_once(__DIR__ . "/../classes/dao/ProdutoDAO.class.php");
 require_once(__DIR__ . "/../classes/dao/DepartamentoDAO.class.php");
 
-include(__DIR__ . "/../logado.php");
+include(__DIR__ . "/../administracao/logado.php");
 
 $home = "/cursoPHP/loja/produto/";
 $produto = new Produto();
@@ -55,45 +55,29 @@ $departamentos = $departamentoDao->findAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/all.css">
-    
+
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-            <a class="navbar-brand" href="#">Loja</a>
-            </div>
-            <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Produto</a></li>
-            <li><a href="#">Sexo</a></li>
-            <li><a href="#">Page 2</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            </ul>
-        </div>
-    </nav>
-
+    <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?>
     <div class="container-fluid">
-        <div class="row col-md-12 mb-3" style="padding: 5% 5% 0 5%;">
-            <div class="col-6"><!-- form -->
+        <div class="row" style="padding: 2% 2% 0 2%;">
+            <div class="col-4"><!-- form -->
                 <fieldset>
                     <legend>Dados do Produto</legend>
                     <form action="index.php" method="post" id="form-salvar">
                         <input type="hidden" name="id" value="<?=$produto->getId();?>">
                         <div class="form-group"> <!-- input Produto -->
                             <label for="nome">Produto</label >
-                            <input type="text" class="form-control" name="nome" id="nome" maxlength="12" required value="<?=$produto->getNome();?>">
+                            <input type="text" class="form-control" name="nome" id="nome" maxlength="25" required value="<?=$produto->getNome();?>">
                         </div>
                         <div class="form-group"> <!-- input Marca -->
                             <label for="marcaId">Marca</label>
                             <select class="form-control" name="marcaId" id="marcaId">
-                                <option value="0" disabled selected>Selecione uma marca...</option>
+                                <option value="0" selected>Selecione uma marca...</option>
                                 <?php foreach($marcas as $marca): ?>
                                     <option value="<?=$marca->getId();?>" <?=$marca->getId() == $produto->getMarca()->getId() ? "selected": "";?>><?=$marca->getNome();?></option>  
                                 <?php endforeach; ?>
@@ -102,7 +86,7 @@ $departamentos = $departamentoDao->findAll();
                         <div class="form-group"> <!-- input Marca -->
                             <label for="departamentoId">Departamento</label>
                             <select class="form-control" name="departamentoId" id="departamentoId">
-                                <option value="0" disabled selected>Selecione um departamento...</option>
+                                <option value="0" selected>Selecione um departamento...</option>
                                 <?php foreach($departamentos as $departamento): ?>
                                     <option value="<?=$departamento->getId();?>" <?=$departamento->getId() == $produto->getDepartamento()->getId() ? "selected": "";?>><?=$departamento->getNome();?></option>  
                                 <?php endforeach; ?>
@@ -110,7 +94,7 @@ $departamentos = $departamentoDao->findAll();
                         </div>
                         <div class="form-group"> <!-- input Descrição -->
                             <label for="descricao">Descrição</label>
-                            <input type="text" class="form-control" name="descricao" id="descricao" value="<?=$produto->getDescricao();?>">
+                            <input type="text" class="form-control" name="descricao" id="descricao" maxlength="200" value="<?=$produto->getDescricao();?>">
                         </div>
                         <div class="form-group"> <!-- input Quantidade Mínima -->
                             <label for="qntMinima">Quantidade Mínima</label>
@@ -132,7 +116,7 @@ $departamentos = $departamentoDao->findAll();
                     </form>
                 </fieldset>
             </div>
-            <div class="col-6"><!-- table -->
+            <div class="col-8"><!-- table -->
                 <fieldset>
                     <legend>Lista de Produtos</legend>
                     <table class="table table-striped table-hover">
@@ -180,8 +164,7 @@ $departamentos = $departamentoDao->findAll();
             </div>
         </div>
     </div>
-    <!-- <script src="../assets/js/produto.js"></script> -->
-    <!-- <script src="../assets/js/jquery.js"></script>
-	<script src="../assets/js/bootstrap.js"></script> -->
+    <script src="../assets/js/produto.js"></script>
+
 </body>
 </html>

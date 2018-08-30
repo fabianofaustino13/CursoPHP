@@ -1,8 +1,10 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Sexo.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/SexoDAO.class.php"); ?>
 <?php 
-$dao = new SexoDAO();
+include(__DIR__ . "/../administracao/logado.php");
+
 $sexo = new Sexo();
+$dao = new SexoDAO();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $sexo->setNome($_POST['sexo']);
     $sexo->setSigla($_POST['sigla']);
@@ -31,23 +33,20 @@ $sexos = $dao->findAll();
     <title>Sexos</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../assets/css/loja.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous"> -->
-    
+ 
 </head>
 <body>
-    
-    <?php include '../index.php';?> <!-- Include Menu -->
+    <!-- Include Menu -->
+    <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?> 
     
     <div class="container">
         <div class="row" style="margin: 5%;">
             <div class="col-md-12 mb-3"> <!-- Form -->
                 <fieldset>
                     <legend>Dados do Sexo</legend>
-                    <form action="index.php" method="post">
+                    <form action="index.php" method="post" id="form-salvar">
                         <div class="form-group">
                             <input type="hidden" name="id" value="<?=$sexo->getId();?>">
                             <label for="sexo">Sexo</label>
@@ -58,7 +57,7 @@ $sexos = $dao->findAll();
                             <input type="text" class="form-control" name="sigla" id="sigla" maxlength="4" required value="<?=$sexo->getSigla();?>">
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar" onclick="return confirmaSalvar();">Salvar</button>
                         </div>
                     </form>
                 </fieldset>
@@ -80,19 +79,15 @@ $sexos = $dao->findAll();
                                     <td><?=$sexo->getNome()?></td>
                                     <td><?=$sexo->getSigla()?></td>
                                     <td>
-                                        <form method="post" action="index.php">
+                                        <form action="index.php" method="post" >
                                             <input type="hidden" name="id" value="<?=$sexo->getId();?>">
-                                            <button type="submit" class="btn btn-primary" name="editar" value="editar">
-                                                <i class="far fa-edit"></i>
-                                            </button>
+                                            <button type="submit" class="btn btn-sm btn-success" name="editar" value="editar"><i class="fas fa-edit"></i></button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form method="post" action="index.php"> 
+                                        <form action="index.php" method="post">
                                             <input type="hidden" name="id" value="<?=$sexo->getId();?>">
-                                            <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
+                                            <button type="submit" class="btn btn-sm btn-danger" name="excluir" value="excluir"><i class="fas fa-trash-alt"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -103,5 +98,6 @@ $sexos = $dao->findAll();
             </div> <!-- Fim Tabela -->
         </div>
     </div>
+    <script src="../assets/js/produto.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/./classes/modelo/User.class.php");
+require_once(__DIR__ . "/../classes/modelo/User.class.php");
 
 session_start();
 

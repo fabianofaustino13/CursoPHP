@@ -1,0 +1,5 @@
+/* Campo requerido/obrigatório */
+.required label, label.required {
+    font-weight: bold;
+    color: #333;
+}

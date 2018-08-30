@@ -2,6 +2,7 @@
 class User {
     private $login;
     private $senha;
+    
     public function __construct($login, $senha) {
         $this->setLogin($login);
         $this->setSenha($senha);

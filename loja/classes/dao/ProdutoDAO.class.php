@@ -88,7 +88,7 @@
             return $produto;
         }
 
-        public function save(produto $produto) {
+        public function save(Produto $produto) {
             if ($produto->getId() == null) {
                 $this->insert($produto);
             } else {
@@ -96,7 +96,7 @@
             }
         }
 
-        private function insert(produto $produto) {
+        private function insert(Produto $produto) {
             $sql = "INSERT INTO TB_PRODUTOS (PRO_NOME, PRO_PRECO, PRO_DESCRICAO, PRO_QUANTIDADE_MINIMA, PRO_QUANTIDADE_ESTOQUE, FK_PRO_MAR, FK_PRO_DEP) VALUES (:NOME, :PRECO, :DESCRICAO, :QNT_MINIMA, :QNT_ESTOQUE, :MARCA, :DEPARTAMENTO)";
             try {
                 $statement = $this->conexao->prepare($sql);
@@ -122,7 +122,7 @@
             }
         }
 
-        private function update(produto $produto) {
+        private function update(Produto $produto) {
             $sql = "UPDATE TB_PRODUTOS SET PRO_NOME=:NOME, PRO_PRECO=:PRECO, PRO_DESCRICAO=:DESCRICAO, PRO_QUANTIDADE_MINIMA=:QNT_MINIMA, PRO_QUANTIDADE_ESTOQUE=:QNT_ESTOQUE, FK_PRO_MAR=:MARCA, FK_PRO_DEP=:DEPARTAMENTO WHERE PK_PRO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);

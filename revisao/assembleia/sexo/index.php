@@ -39,7 +39,7 @@ $sexos = $dao->findAll();
 
 </head>
 <body>
-
+    
     <div class="conteiner">
         <div class="row" style="margin-top: 5%;">
             <div class="col-6"> <!-- Form -->
@@ -100,33 +100,31 @@ $sexos = $dao->findAll();
                 </fieldset>
             </div> <!-- Fim Tabela -->
             <!-- Sexo -->
-				<div class="col-md-6 mb-3">
-					<div class="form-group">
-						<label for="sexo2" class="required">Sexos</label>
-						<form method="post" action="index.php">
-                            <select class="form-control" name="sexo2">
-                                <?php
-                                    $sexos = $dao->findAll();
-                                    foreach ($sexos as $sexo): ?>
-                                        <option value="<?=$sexo->getId();?>"> <?=$sexo->getNome();?></option> 
-                                    <?php endforeach; ?>
-    						</select> 
-                                <input type="hidden" name="id" value="<?=$sexo->getId();?>">
-                                <button type="submit" class="btn btn-success" name="editar" value="editar">
-                                    <i class="far fa-edit"></i>
-                                </button>
-                            
-                                <input type="hidden" name="id" value="<?=$sexo->getId();?>">
-                                <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
-                                                    <i class="far fa-trash-alt"></i>
-                                </button>
-                        </form>
-
-					</div>
-				</div>
-
-
+            <div class="col-md-6 mb-3">
+                <div class="form-group">
+                    <label for="sexo2" class="required">Sexos</label>
+                    <form method="post" action="index.php">
+                        <select class="form-control" name="sexo2">
+                            <?php
+                                $sexos = $dao->findAll();
+                                foreach ($sexos as $sexo): ?>
+                                    <option value="<?=$sexo->getId();?>"> <?=$sexo->getNome();?></option> 
+                                <?php endforeach; ?>
+                        </select> 
+                            <input type="hidden" name="id" value="<?=$sexo->getId();?>">
+                            <button type="submit" class="btn btn-success" name="editar" value="editar">
+                                <i class="far fa-edit"></i>
+                            </button>
+                        
+                            <input type="hidden" name="id" value="<?=$sexo->getId();?>">
+                            <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
+                                                <i class="far fa-trash-alt"></i>
+                            </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
 </body>
 </html>

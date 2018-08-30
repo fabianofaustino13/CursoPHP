@@ -2,6 +2,9 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Marca.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/MarcaDAO.class.php"); ?>
 <?php 
+
+include(__DIR__ . "/../administracao/logado.php");
+
 $dao = new MarcaDAO();
 $marca = new Marca();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
@@ -15,7 +18,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
     $marca = $dao->findById($_POST['id']);
 }
-if (isset($_POST['remover']) && $_POST['remover'] == 'remover') {
+if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
     $dao->remove($_POST['id']);
     header('location: index.php');
 }
@@ -27,19 +30,20 @@ $marcas = $dao->findAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marcas</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
 </head>
 <body>
+    <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?>
     <div class="container">
-        <div class="row" style="margin-top: 50px;">
+        <div class="row" style="margin-top: 5%;">
             <div class="col-6"><!-- form -->
                 <fieldset>
                     <legend>Dados da Marca</legend>
                     <form action="index.php" method="post">
                         <input type="hidden" name="id" value="<?=$marca->getId();?>">
                         <div class="form-group">
-                            <label for="marca">Marca</label>
+                            <label for="marca" class="required">Nome da Marca</label>
                             <input type="text" class="form-control" name="marca" id="marca" maxlength="12" required value="<?=$marca->getNome();?>">
                         </div>
                         <div class="form-group">
@@ -57,8 +61,8 @@ $marcas = $dao->findAll();
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>marca</th>
-                                <th colspan="2">ações</th>
+                                <th>Marca</th>
+                                <th colspan="2">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,7 +79,7 @@ $marcas = $dao->findAll();
                                     <td>
                                         <form action="index.php" method="post">
                                             <input type="hidden" name="id" value="<?=$marca->getId();?>">
-                                            <button type="submit" class="btn btn-sm btn-danger" name="remover" value="remover"><i class="fas fa-trash-alt"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-danger" name="excluir" value="excluir"><i class="fas fa-trash-alt"></i></button>
                                         </form>
                                     </td>
                                 </tr>
