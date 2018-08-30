@@ -5,7 +5,9 @@ require_once(__DIR__ . "/../classes/modelo/Produto.class.php");
 require_once(__DIR__ . "/../classes/dao/ProdutoDAO.class.php");
 require_once(__DIR__ . "/../classes/dao/DepartamentoDAO.class.php");
 
-$home = "/loja/produto/";
+include(__DIR__ . "/../logado.php");
+
+$home = "/cursoPHP/loja/produto/";
 $produto = new Produto();
 $marcaDao = new MarcaDAO();
 $produtoDao = new ProdutoDAO();
@@ -17,7 +19,7 @@ if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
 
 if (isset($_POST['remover']) && $_POST['remover'] == 'remover') {
     $produtoDao->remove($_POST['id']);
-    header("location: index.php");
+    header("location: $home");
 }
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
@@ -39,7 +41,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
         $produto->setId($_POST['id']);
     }
     $produtoDao->save($produto);
-    header("location: index.php");
+    header("location: $home");
 }
 
 $marcas = $marcaDao->findAll();
@@ -53,10 +55,30 @@ $departamentos = $departamentoDao->findAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all.css">
+    
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#">Loja</a>
+            </div>
+            <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Produto</a></li>
+            <li><a href="#">Sexo</a></li>
+            <li><a href="#">Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container-fluid">
         <div class="row col-md-12 mb-3" style="padding: 5% 5% 0 5%;">
             <div class="col-6"><!-- form -->
@@ -158,6 +180,8 @@ $departamentos = $departamentoDao->findAll();
             </div>
         </div>
     </div>
-    <script src="../assets/js/produto.js"></script>
+    <!-- <script src="../assets/js/produto.js"></script> -->
+    <!-- <script src="../assets/js/jquery.js"></script>
+	<script src="../assets/js/bootstrap.js"></script> -->
 </body>
 </html>
