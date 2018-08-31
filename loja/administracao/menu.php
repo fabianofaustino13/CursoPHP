@@ -35,6 +35,10 @@
               <a class="dropdown-item" href="../marca/">Marca</a>
               <a class="dropdown-item" href="../vendedor/">Vendedor</a>
               <a class="dropdown-item" href="../sexo/">Sexo</a>
+              <a class="dropdown-item" href="../Bairro/">Bairro</a>
+              <a class="dropdown-item" href="../Cidade/">Cidade</a>
+              <a class="dropdown-item" href="../Estado/">Estado</a>
+              <a class="dropdown-item" href="../Cep/">Cep</a>
           </div>
           </li>
           <li class="nav-item">

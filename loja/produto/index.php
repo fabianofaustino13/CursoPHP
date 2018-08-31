@@ -77,7 +77,7 @@ $departamentos = $departamentoDao->findAll();
                         <div class="form-group"> <!-- input Marca -->
                             <label for="marcaId">Marca</label>
                             <select class="form-control" name="marcaId" id="marcaId">
-                                <option value="0" selected>Selecione uma marca...</option>
+                                <option value="0" disabled selected>Selecione uma marca...</option>
                                 <?php foreach($marcas as $marca): ?>
                                     <option value="<?=$marca->getId();?>" <?=$marca->getId() == $produto->getMarca()->getId() ? "selected": "";?>><?=$marca->getNome();?></option>  
                                 <?php endforeach; ?>

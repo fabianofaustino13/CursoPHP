@@ -2,6 +2,10 @@
     require_once (__DIR__ . "/./Conexao.class.php");
     require_once (__DIR__ . "/../modelo/Vendedor.class.php");
     require_once (__DIR__ . "/../modelo/Sexo.class.php");
+    require_once (__DIR__ . "/../modelo/Cep.class.php");
+    require_once (__DIR__ . "/../modelo/Bairro.class.php");
+    require_once (__DIR__ . "/../modelo/Cidade.class.php");
+    require_once (__DIR__ . "/../modelo/Estado.class.php");
 
     class VendedorDAO {
 
@@ -12,7 +16,7 @@
         }
         
         public function findAll() {
-            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX ORDER BY PK_VEN ASC";
+            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX LEFT JOIN TB_CEPS ON PK_CEP = FK_VEN_CEP LEFT JOIN TB_BAIRROS ON PK_BAI = FK_BAI_CEP LEFT JOIN TB_CIDADES ON PK_CID = FK_BAI_CID LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID ORDER BY PK_VEN ASC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $rows = $statement->fetchAll();
@@ -21,20 +25,42 @@
                 $sexo = new Sexo();
                 $sexo->setId($row['PK_SEX']);
                 $sexo->setNome($row['SEX_NOME']);
-                $sexo->setSigla($row['SEX_SIGLA']);
+                $sexo->setSigla($row['SEX_SIGLA']);           
+                
+                $estado = new Estado();
+                $estado->setId($row['PK_EST']);
+                $estado->setNome($row['EST_NOME']);
+                $estado->setSigla($row['EST_SIGLA']);
+                
+                $cidade = new Cidade();
+                $cidade->setId($row['PK_CID']);
+                $cidade->setNome($row['CID_NOME']);
+                $cidade->setEstado($estado);
+                
+                $bairro = new Bairro();
+                $bairro->setId($row['PK_BAI']);
+                $bairro->setNome($row['BAI_NOME']);
+                $bairro->setCidade($cidade);
+
+                $cep = new Cep();
+                $cep->setId($row['PK_CEP']);
+                $cep->setLogradouro($row['CEP_LOGRADOURO']);
+                $cep->setBairro($bairro);
+                
                 $vendedor = new Vendedor();
                 $vendedor->setId($row['PK_VEN']);
                 $vendedor->setNome($row['VEN_NOME']);
                 $vendedor->setCpf($row['VEN_CPF']);
                 $vendedor->setMatricula($row['VEN_MATRICULA']);
                 $vendedor->setSexo($sexo);
+                $vendedor->setCep($cep);
                 array_push($vendedores, $vendedor);
             }
             return $vendedores;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX WHERE PK_VEN = :ID";
+            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX LEFT JOIN TB_CEPS ON PK_CEP = FK_VEN_CEP LEFT JOIN TB_BAIRROS ON PK_BAI = FK_BAI_CEP LEFT JOIN TB_CIDADES ON PK_CID = FK_BAI_CID LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE PK_VEN = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -54,7 +80,7 @@
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX WHERE SEX_NOME LIKE :NOME";
+            $sql = "SELECT * FROM TB_VENDEDORES LEFT JOIN TB_SEXOS ON PK_SEX = FK_VEN_SEX LEFT JOIN TB_CEPS ON PK_CEP = FK_VEN_CEP LEFT JOIN TB_BAIRROS ON PK_BAI = FK_BAI_CEP LEFT JOIN TB_CIDADES ON PK_CID = FK_BAI_CID LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE VEN_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
