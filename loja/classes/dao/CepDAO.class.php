@@ -73,11 +73,13 @@
         }
 
         private function insert(Cep $cep) {
-            $sql = "INSERT INTO TB_CEPS (CEP_LOGRADOURO, FK_BAI_CEP) VALUES (:LOGRADOURO, :BAIRRO)";
+            $sql = "INSERT INTO TB_CEPS (PK_CEP, CEP_LOGRADOURO, FK_BAI_CEP) VALUES (:CEP :LOGRADOURO, :BAIRRO)";
             try {
                 $statement = $this->conexao->prepare($sql);
+                $cepId = $cep->getLogradouro();
                 $logradouro = $cep->getLogradouro();
                 $bairro = $cep->getBairro()->getId();
+                $statement->bindParam(':CEP', $cepId);
                 $statement->bindParam(':LOGRADOURO', $logradouro);
                 $statement->bindParam(':BAIRRO', $bairro);
                 $statement->execute();

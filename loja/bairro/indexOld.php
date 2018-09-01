@@ -84,13 +84,16 @@ $bairros = $bairroDao->findAll();
                             <input type="text" class="form-control" name="nome" id="nome" maxlength="25" required value="<?=$bairro->getNome();?>">
                         </div>
                         <div class="form-group"> <!-- input Marca -->
-                            <label for="cidadeId">Cidade</label>
-                            <select class="form-control" name="cidadeId" id="cidadeId">
-                                <option value="0" disabled selected>Selecione uma cidade...</option>
-                                <?php foreach($cidades as $cidade): ?>
-                                    <option value="<?=$cidade->getId();?>" <?=$cidade->getId() == $bairro->getCidade()->getId() ? "selected": "";?>><?=$cidade->getNome();?></option>  
+                            <label for="estadoId">Estado</label>
+                            <select class="form-control" name="estadoId" id="estadoId" onchange="estado(this.value)">
+                                <option value="0" disabled selected>Selecione um estado...</option>
+                                <?php foreach($estados as $estado): ?>
+                                    <option value="<?=$estado->getId();?>" <?=$estado->getId() == $cidade->getEstado()->getId() ? "selected": "";?>><?=$estado->getNome() ." - ". $estado->getSigla();?></option>  
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                        <div class="form-group" id="cidadeId"> <!-- input Cidades -->
+                           
                         </div>
 
                         <div class="form-group">
@@ -107,16 +110,19 @@ $bairros = $bairroDao->findAll();
                             <th>#</th>
                             <th>Bairro</th>
                             <th>Cidade</th>
+                            <th>Estado</th>
+                            <th>Sigla</th>
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
+
                             <?php 
+
                                 foreach ($bairros as $bairro): ?>
                                 <tr>
                                     <td><?=$bairro->getId()?></td>
                                     <td><?=$bairro->getNome()?></td>
-                                    <td><?php foreach ($cidades as $cidade):?> <?php if ($bairro->getCidade()->getId() == $cidade->getId()):?> <?=$bairro->getCidade()->getNome();?></td> <?php endif; endforeach;?>
-                                
+                                    <td><?php foreach($cidades as $cidade){ if ($bairro->getCidade()->getId() == $cidade->getId()) { $bairro->getNome(); }} ?></td>
                                     <td>
                                         <form action="index.php" method="post" >
                                             <input type="hidden" name="id" value="<?=$cidade->getId();?>">
