@@ -3,13 +3,17 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Sindico.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/SindicoDAO.class.php"); ?>
 
-<?php 
-$morador = new Sindico();
+<?php  
+
+include(__DIR__ . "/../administracao/logado.php");
+
+$morador = new Morador();
+$moradorDao = new MoradorDao();
 $dao = new SindicoDAO();
 $sindicoNome = '';
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $morador->setNome(strtoupper($_POST['nome']));
+    $morador->setNome($_POST['nome']);
     $morador->setFkMorSin($_POST['sindico']);
     // if ($_POST['id'] != '') {
     //     $morador->setId($_POST['id']);
@@ -38,7 +42,7 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 }
 
 if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome') {
-    // $morador->setFkMorSin($_POST['fk']);
+    // $morador->setSindico($_POST['fk']);
     $moradores = $dao->findByNome($_POST['nome']);
 
 } else {
@@ -52,85 +56,12 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
 <html lang="pt-br">
 <head>
     <title>Cadastrar Síndico</title>
-	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/login.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/home.css">
 </head>
 <body>
-   <!-- Menu lateral -->
-   <div class="sidenav">
-        <li>
-            <a href="index.php"><i class="fa fa-home"></i> <span>Home</span></a>
-        </li>  
-        
-        <!-- <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
-            <i class="fa fa-caret-down"></i>
-        </button> -->
-        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../assembleia/index.php">Assembléia</a>  
-                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
-            </div>
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../pauta/index.php">Pauta</a>
-                <a href="../opcaoResposta/index.php">Resposta</a>                 
-            </div>
-            <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
-            <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
-        </div>
-        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Visualizar</span>  
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../assembleia/index.php">Assembléia</a>  
-                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
-            </div>
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../pauta/index.php">Pauta</a>
-                <a href="../opcaoResposta/index.php">Resposta</a>                 
-            </div>
-        </div>
-        
-    </div>
-    <script>
-        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        var i;
-
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-    </script>
-    <!-- Fim menu lateral -->
+   <!-- include Menu -->
+   <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?>
 
 	<!-- Início do container -->
 	<div class="container">
@@ -171,8 +102,8 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
                     <div class="form-row">
                         <div class="col-md-5 mb-3">
                             <!-- <label for="nome" class="required">Nome do Morador</label> -->
-                            <!-- <input type="hidden" name="id" value="<?=$morador->getNome();?>"> -->
-                            <!-- <input type="hidden" name="fk" value="<?=$morador->getFkMorSin();?>"> -->
+                            <!-- <input type="hidden" name="id" value="<//?=$morador->getNome();?>"> -->
+                            <!-- <input type="hidden" name="fk" value="<//?=$morador->getSindico();?>"> -->
                             <input type="text" class="form-control" id="nome" name="nome" maxlength="35" placeholder="Informe o nome do morador..." />
                             </div>
                             <div class="col-md-2 mb-3">
@@ -202,7 +133,7 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
                                             foreach ($moradores2 as $morador) {
                                                 $moradorId = $morador->getId();
                                                 // $sindico = $morador->getId();
-                                                // $sindicoId = $morador->getFkMorSin(); 
+                                                // $sindicoId = $morador->getSindico(); 
                                                 // $sindicoNome = $morador->getNome();
                                                 // echo "<script>alert($sindicoId);</script>";
                                                 // echo "<script>alert($moradorId);</script>";

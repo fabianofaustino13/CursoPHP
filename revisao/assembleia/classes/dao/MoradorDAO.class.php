@@ -52,7 +52,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME = :NOME";
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -69,7 +69,25 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             }
             return $morador;
         }
-        
+
+        public function findByLogin($login) {
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_LOGIN = :USERNAME";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':USERNAME', $login); //Proteção contra sql injetct
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $morador = new Morador();
+            foreach ($result as $row) {
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setSenha($row['MOR_SENHA']);
+                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
+                $morador->setFoto($row['MOR_FOTO']);
+                $morador->setFkMorSin($row['FK_MOR_SIN']);
+            }
+            return $morador;
+        }
         public function findSindico() {
             $sql = "SELECT * FROM TB_MORADORES ORDER BY PK_MOR ASC LIMIT 1";
             $statement = $this->conexao->prepare($sql);
@@ -124,7 +142,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         private function update(Morador $morador) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME = :NOME, MOR_LOGIN = :USERNAME, MOR_SENHA = SENHA, MOR_ULTIMO_ACESSO = ULTIMOACESSO, MOR_FOTO = FOTO, FK_MOR_SIN = SINDICO WHERE PK_MOR = :ID";
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME = :NOME, MOR_LOGIN = :USERNAME, MOR_SENHA = :SENHA, MOR_ULTIMO_ACESSO = :ULTIMOACESSO, MOR_FOTO = :FOTO, FK_MOR_SIN = :SINDICO WHERE PK_MOR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
@@ -142,7 +160,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $statement->bindParam(':SINDICO', $sindico);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                return $this->findById($morador->getId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -153,13 +171,10 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             $sql = "DELETE FROM TB_MORADORES WHERE PK_MOR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $morador->getId();
-                $statement->bindParam(':ID', $id);
+                $statement->bindParam(':ID', $id); //Proteção contra sql injetct
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
-                return null;
             }
         }
     }

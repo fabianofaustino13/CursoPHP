@@ -60,6 +60,7 @@ $departamentos = $departamentoDao->findAll();
 
 </head>
 <body>
+    <!-- include Menu -->
     <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>

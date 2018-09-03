@@ -104,7 +104,6 @@ require_once (__DIR__ . "/../modelo/Bloco.class.php");
             $sql = "DELETE FROM TB_BLOCOS WHERE PK_BLO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $bloco->getId();
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
             } catch(PDOException $e) {

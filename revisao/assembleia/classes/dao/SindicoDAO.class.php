@@ -23,6 +23,8 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setFkMorSin($row['FK_MOR_SIN']);
+                $sindico = new sindico();
+                $sindico->setId($morador);
               
                 array_push($moradores, $morador);
             }

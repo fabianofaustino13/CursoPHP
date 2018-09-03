@@ -14,19 +14,23 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_PAUTAS ORDER BY PK_PAU DESC";
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS ORDER BY PK_PAU DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $pautas = array();
             foreach ($result as $row) {
+                $assembleia = new Assembleia();
+                $assembleia->setId($row['PK_ASS']);
+                $assembleia->setNome($row['ASS_NOME']);
+                $assembleia->setData($row['ASS_DATA']);
                 $pauta = new Pauta();
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
                 $pauta->setDescricao($row['PAU_DESCRICAO']);
                 $pauta->setStatus($row['PAU_STATUS']);
                 $pauta->setVoto($row['PAU_VOTOS']);
-                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                $pauta->setAssembleia($assembleia);
 
                 array_push($pautas, $pauta);
             }
@@ -34,18 +38,24 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
         }
 
         public function findAllAssembleia($assembleia) {
-            $sql = "SELECT * FROM TB_PAUTAS WHERE FK_PAU_ASS = :ASSEMBLEIA";
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE FK_PAU_ASS = :ASSEMBLEIA";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ASSEMBLEIA', $assembleia);
             $statement->execute();
             $result = $statement->fetchAll();
             $pautas = array();
             foreach ($result as $row) {
+                $assembleia = new Assembleia();
+                $assembleia->setId($row['PK_ASS']);
+                $assembleia->setNome($row['ASS_NOME']);
+                $assembleia->setData($row['ASS_DATA']);
                 $pauta = new Pauta();
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
                 $pauta->setDescricao($row['PAU_DESCRICAO']);
-                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                $pauta->setStatus($row['PAU_STATUS']);
+                $pauta->setVoto($row['PAU_VOTOS']);
+                $pauta->setAssembleia($assembleia);
 
                 array_push($pautas, $pauta);
             }
@@ -53,54 +63,69 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_PAUTAS WHERE PK_PAU = :ID";
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE PK_PAU = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
             $result = $statement->fetchAll();
+            $assembleia = new Assembleia();
             $pauta = new Pauta();
             foreach ($result as $row) {
+                $assembleia->setId($row['PK_ASS']);
+                $assembleia->setNome($row['ASS_NOME']);
+                $assembleia->setData($row['ASS_DATA']);
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
                 $pauta->setDescricao($row['PAU_DESCRICAO']);
                 $pauta->setStatus($row['PAU_STATUS']);
                 $pauta->setVoto($row['PAU_VOTOS']);
-                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                $pauta->setAssembleia($assembleia);
             }
             return $pauta;
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_PAUTAS WHERE PAU_NOME = :NOME";
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE PAU_NOME = :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome);
             $statement->execute();
             $result = $statement->fetchAll();
+            $assembleia = new Assembleia();
             $pauta = new Pauta();
             foreach ($result as $row) {
+                $assembleia->setId($row['PK_ASS']);
+                $assembleia->setNome($row['ASS_NOME']);
+                $assembleia->setData($row['ASS_DATA']);
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
                 $pauta->setDescricao($row['PAU_DESCRICAO']);
                 $pauta->setStatus($row['PAU_STATUS']);
                 $pauta->setVoto($row['PAU_VOTOS']);
-                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                $pauta->setAssembleia($assembleia);
             }
             return $pauta;
         }
         
         public function findPautaAssembleia($assembleiaId) {
-            $sql = "SELECT * FROM TB_PAUTAS WHERE FK_PAU_ASS = :ASSEMBLEIA";
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE FK_PAU_ASS = :ASSEMBLEIA";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ASSEMBLEIA', $assembleiaId);
             $statement->execute();
             $result = $statement->fetchAll();
             $pautas = array();
             foreach ($result as $row) {
+                $assembleia = new Assembleia();
+                $assembleia->setId($row['PK_ASS']);
+                $assembleia->setNome($row['ASS_NOME']);
+                $assembleia->setData($row['ASS_DATA']);
                 $pauta = new Pauta();
                 $pauta->setId($row['PK_PAU']);
                 $pauta->setNome($row['PAU_NOME']);
                 $pauta->setDescricao($row['PAU_DESCRICAO']);
-                $pauta->setFkPauAss($row['FK_PAU_ASS']);
+                $pauta->setStatus($row['PAU_STATUS']);
+                $pauta->setVoto($row['PAU_VOTOS']);
+                $pauta->setAssembleia($assembleia);
+
                 array_push($pautas, $pauta);
             }
             return $pautas;
@@ -120,10 +145,10 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $nome = $pauta->getNome();
                 $descricao = $pauta->getDescricao();
-                $id = $pauta->getFkPauAss();
+                $assembleia = $pauta->getAssembleia()->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':DESCRICAO', $descricao);
-                $statement->bindParam(':ASSEMBLEIA', $id);
+                $statement->bindParam(':ASSEMBLEIA', $assembleia);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
@@ -138,9 +163,11 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $nome = $pauta->getNome();
                 $descricao = $pauta->getDescricao();
+                $assembleia = $pauta->getAssembleia()->getId();
                 $id = $pauta->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':DESCRICAO', $descricao);
+                $statement->bindParam(':ASSEMBLEIA', $assembleia);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
@@ -154,7 +181,6 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
             $sql = "DELETE FROM TB_PAUTAS WHERE PK_PAU = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $pauta->getId();
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
             } catch(PDOException $e) {

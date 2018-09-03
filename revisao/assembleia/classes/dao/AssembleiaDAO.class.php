@@ -19,34 +19,40 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
             $result = $statement->fetchAll();
             $assembleias = array();
             foreach ($result as $row) {
+                $tipo = new TipoAssembleia();
+                $tipo->setId($row['PK_TDA']);
+                $tipo->setNome($row['TDA_NOME']);
                 $assembleia = new Assembleia();
                 $assembleia->setId($row['PK_ASS']);
                 $assembleia->setNome($row['ASS_NOME']);
                 $assembleia->setData($row['ASS_DATA']);
-                $assembleia->setTipoAssembleia($row['PK_TDA']);
+                $assembleia->setTipoAssembleia($tipo);
                 array_push($assembleias, $assembleia);
             }
             return $assembleias;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_ASSEMBLEIAS WHERE PK_ASS = :ID";
+            $sql = "SELECT * FROM TB_ASSEMBLEIAS JOIN TB_TIPOS_ASSEMBLEIAS ON PK_TDA = FK_ASS_TDA WHERE PK_ASS = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
+            $tipo = new TipoAssembleia();
             $assembleia = new Assembleia();
             foreach ($result as $row) {
+                $tipo->setId($row['PK_TDA']);
+                $tipo->setNome($row['TDA_NOME']);
                 $assembleia->setId($row['PK_ASS']);
                 $assembleia->setNome($row['ASS_NOME']);
                 $assembleia->setData($row['ASS_DATA']);
-                $assembleia->setTipoAssembleia($row['FK_ASS_TDA']);
+                $assembleia->setTipoAssembleia($tipo);
             }
             return $assembleia;
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_ASSEMBLEIAS WHERE ASS_NOME = NOME";
+            $sql = "SELECT * FROM TB_ASSEMBLEIAS WHERE ASS_NOME = :NOME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
@@ -75,7 +81,7 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $nome = $assembleia->getNome();
                 $data = $assembleia->getData();
-                $tipo = $assembleia->getTipoAssembleia();
+                $tipo = $assembleia->getTipoAssembleia()->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':DATAASSEMBLEIA', $data);
                 $statement->bindParam(':TIPOASSEMBLEIA', $tipo);
@@ -93,7 +99,7 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $nome = $assembleia->getNome();
                 $data = $assembleia->getData();
-                $tipo = $assembleia->getTda();
+                $tipo = $assembleia->getAssembleia()->getId();
                 $id = $assembleia->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':DATAASSEMBLEIA', $data);
@@ -111,7 +117,6 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
             $sql = "DELETE FROM TB_ASSEMBLEIAS WHERE PK_ASS = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $assembleia->getId();
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());

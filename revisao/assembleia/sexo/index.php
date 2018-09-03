@@ -1,6 +1,9 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Sexo.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/SexoDAO.class.php"); ?>
 <?php 
+
+include(__DIR__ . "/../administracao/logado.php");
+
 $dao = new SexoDAO();
 $sexo = new Sexo();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
@@ -28,18 +31,13 @@ $sexos = $dao->findAll();
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sexos</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous"> -->
-
 </head>
 <body>
-    
+    <!-- include Menu -->
+    <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?>
     <div class="conteiner">
         <div class="row" style="margin-top: 5%;">
             <div class="col-6"> <!-- Form -->

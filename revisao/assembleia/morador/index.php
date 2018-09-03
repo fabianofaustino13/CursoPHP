@@ -1,12 +1,15 @@
 <?php require_once(__DIR__ . "/../classes/modelo/Morador.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php"); ?>
 <?php 
+
+include(__DIR__ . "/../administracao/logado.php");
+
 $dao = new MoradorDAO();
 $morador = new Morador();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $morador->setNome(strtoupper($_POST['nome']));
-    $morador->setLogin(strtoupper($_POST['login']));
+    $morador->setNome($_POST['nome']);
+    $morador->setLogin($_POST['login']);
 
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
@@ -42,6 +45,7 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
     $dao->remove($_POST['id']);
     header('location: index.php');
 }
+
 $moradores = $dao->findAll();
 $sindicos = $dao->findSindico();
 date_default_timezone_set('America/Sao_Paulo');
@@ -52,85 +56,12 @@ date_default_timezone_set('America/Sao_Paulo');
 <html lang="pt-br">
 <head>
     <title>Cadastrar Morador</title>
-	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/login.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/home.css">
 </head>
 <body>
-    <!-- Menu lateral -->
-    <div class="sidenav">
-        <li>
-            <a href="index.php"><i class="fa fa-home"></i> <span>Home</span></a>
-        </li>  
-        
-        <!-- <button class="dropdown-btn"><i class="fa fa-bars"></i> <span>Assembléia</span>  
-            <i class="fa fa-caret-down"></i>
-        </button> -->
-        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../assembleia/index.php">Assembléia</a>  
-                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
-            </div>
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../pauta/index.php">Pauta</a>
-                <a href="../opcaoResposta/index.php">Resposta</a>                 
-            </div>
-            <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
-            <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
-        </div>
-        <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Visualizar</span>  
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <button class="dropdown-btn"> <i class="fas fa-hotel"></i> <span>Assembléias</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../assembleia/index.php">Assembléia</a>  
-                <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
-            </div>
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Pautas</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../pauta/index.php">Pauta</a>
-                <a href="../opcaoResposta/index.php">Resposta</a>                 
-            </div>
-        </div>
-        
-    </div>
-    <script>
-        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        var i;
-
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-    </script>
-    <!-- Fim menu lateral -->
+   <!-- include Menu -->
+   <?php
+        include(__DIR__ . "/../administracao/menu.php");
+    ?>
 
 	<!-- Início do container -->
 	<div class="container">
@@ -161,11 +92,11 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <label class="required ">Síndico?</label>
                                 <div class="form-group">                           
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoNao" name="sindico" value="<?=$morador->getFkMorSin();?>" class="custom-control-input" checked/>
+                                            <input type="radio" id="sindicoNao" name="sindico" value="<//?=$morador->getFkMorSin();?>" class="custom-control-input" checked/>
                                             <label class="custom-control-label" for="sindicoNao">Não</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoSim" name="sindico" value="<?=$morador->getId();?>" class="custom-control-input" />
+                                            <input type="radio" id="sindicoSim" name="sindico" value="<//?=$morador->getId();?>" class="custom-control-input" />
                                             <label class="custom-control-label" for="sindicoSim">Sim</label>
                                         </div>                           
                                 </div>
@@ -177,11 +108,11 @@ date_default_timezone_set('America/Sao_Paulo');
                             </div>   
                             <div class="col-md-12 mb-3"><!-- Nome do Morador -->
                                 <!-- Pegar os dados do síndico ja cadastrado e adicionar no novo usuário -->                               
-                                <?php foreach ($sindicos as $morador) {
-                                    $morador->getFkMorSin();
-                                } ?>                                                            
-                                <input type="hidden" name="fkSindico" value="<?=$morador->getFkMorSin();?>">
-                                <!-- <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required /> -->
+                                <!-- <//?php foreach ($sindicos as $morador) { -->
+                                    <!-- $morador->getFkMorSin(); -->
+                                <!-- } ?>                                                             -->
+                                <!-- <input type="hidden" name="fkSindico" value="<//?=$morador->getFkMorSin();?>"> -->
+                                <!-- <input type="text" class="form-control" id="nome" name="nome" value="<//?=$morador->getNome();?>" maxlength="100" required /> -->
                             </div><!-- Fim Nome do Morador -->
                         </div><!-- Fim Div1 -->
                         <div class="form-group">

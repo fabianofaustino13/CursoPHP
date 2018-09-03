@@ -11,6 +11,10 @@ class Pauta {
     private $voto;
     private $assembleia;
 
+    public function __construct() {
+        $this->assembleia = new Assembleia();
+    }
+
 
     public function getId() {
         return $this->id;
@@ -52,11 +56,11 @@ class Pauta {
         $this->voto = $voto;
     }
 
-    public function getFkPauAss() {
+    public function getAssembleia() {
         return $this->assembleia;
     }
     
-    public function setFkPauAss($assembleia) {
+    public function setAssembleia(Assembleia $assembleia) {
         $this->assembleia = $assembleia;
     }
 }

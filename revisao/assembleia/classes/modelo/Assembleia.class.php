@@ -9,6 +9,10 @@ class Assembleia {
     private $data;
     private $tipoAssembleia;
 
+    public function __construct() {
+        $this->tipoAssembleia = new TipoAssembleia();
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -37,7 +41,7 @@ class Assembleia {
         return $this->tipoAssembleia;
     }
     
-    public function setTipoAssembleia($tipoAssembleia) {
+    public function setTipoAssembleia(TipoAssembleia $tipoAssembleia) {
         $this->tipoAssembleia = $tipoAssembleia;
     }
 }

@@ -82,7 +82,7 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
         }
 
         private function update(Adimplente $adimplente) {
-            $sql = "UPDATE TB_ADIMPLENTES SET ADI_NOME = :NOME, ADI_IMAGEM = :IMAGEM WHERE PK_ADI = :ID";
+            $sql = "UPDATE TB_ADIMPLENTES SET ADI_NOME=:NOME, ADI_IMAGEM=:IMAGEM WHERE PK_ADI=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $adimplente->getNome();
@@ -92,6 +92,7 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
                 $statement->bindParam(':IMAGEM', $imagem);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
+                return $this->findById($adimplente->getId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -102,7 +103,6 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
             $sql = "DELETE FROM TB_ADIMPLENTES WHERE PK_ADI = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $adimplente->getId();
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
             } catch(PDOException $e) {

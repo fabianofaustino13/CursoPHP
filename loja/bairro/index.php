@@ -16,7 +16,7 @@ $bairroDao = new BairroDAO();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $bairro->setNome($_POST['nome']);
-    $bairro->getCidade()->setId($_POST['cidadeId']);
+    $bairro->getCidade()->setId($_POST['cidade']);
     if ($_POST['id'] != '') {
         $bairro->setId($_POST['id']);
     }
@@ -44,26 +44,34 @@ $bairros = $bairroDao->findAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-        function estado(estadoId) { 
-            
-            if (estadoId=="") {
-                document.getElementById("cidadeId").innerHTML="";
-                return;
-            } 
-            if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            } else { // code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        $(function(){
+    $('#estadoId').change(function(){
+        alert(estadoId);
+      if( $(this).val() ) {
+        $('#estadoId').hide();
+        $('.carregando').show();
+        $.getJSON(
+          'cidades.ajax.php?search=',
+          {
+            estadoId: $(this).val(),
+            ajax: 'true'
+          }, function(j){
+            var options = '<option value=""></option>';
+            for (var i = 0; i < j.length; i++) {
+              options += '<option value="' +
+                j[i].cidadeId + '">' +
+                j[i].nome + '</option>';
             }
-            xmlhttp.onreadystatechange=function() {
-                if (this.readyState==4 && this.status==200) {
-                document.getElementById("cidadeId").innerHTML=this.responseText;
-                }
-            }
-            xmlhttp.open("GET","getCidades.php?result="+estadoId,true);
-            xmlhttp.send();
-        }
+            $('#cidadeId').html(options).show();
+            $('.carregando').hide();
+          });
+      } else {
+        $('#cidadeId').html(
+          '<option value="">-- Escolha um estado --</option>'
+        );
+      }
+    });
+  });
     </script>
 </head>
 <body>
@@ -83,15 +91,29 @@ $bairros = $bairroDao->findAll();
                             <label for="nome" class="required">Bairro</label>
                             <input type="text" class="form-control" name="nome" id="nome" maxlength="25" required value="<?=$bairro->getNome();?>">
                         </div>
+                        
                         <div class="form-group"> <!-- input Marca -->
                             <label for="cidadeId">Cidade</label>
                             <select class="form-control" name="cidadeId" id="cidadeId">
-                                <option value="0" disabled selected>Selecione uma cidade...</option>
+                                <option value="" disabled selected>Selecione uma cidade...</option>
                                 <?php foreach($cidades as $cidade): ?>
                                     <option value="<?=$cidade->getId();?>" <?=$cidade->getId() == $bairro->getCidade()->getId() ? "selected": "";?>><?=$cidade->getNome();?></option>  
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <!-- <div>
+                            <label for="uf" class="input-label">Estado</label>
+                            <select name="uf" id="uf" disabled data-target="#cidade">
+                                <option value="">Estado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cidade" class="input-label">Cidade</label>
+                            <select name="cidade" id="cidade" disabled>
+                                    <option value="">Cidade</option>
+                            </select>
+                        </div> -->
+
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar" onclick="return confirmaSalvar();">Salvar</button>

@@ -19,7 +19,7 @@ class Adimplente {
     }
     
     public function setNome($nome) {
-        $this->nome = strtoupper($nome);
+        $this->nome = $nome;
     }
 
     public function getImagem() {

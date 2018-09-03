@@ -104,7 +104,6 @@ require_once (__DIR__ . "/../modelo/OpcaoResposta.class.php");
             $sql = "DELETE FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $id = $opcaoResposta->getId();
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());

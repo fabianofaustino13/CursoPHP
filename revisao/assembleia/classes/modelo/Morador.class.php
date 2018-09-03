@@ -10,6 +10,7 @@ class Morador {
     private $foto;
     private $fkMorSin;
    
+    
     public function getId() {
         return $this->id;
     }

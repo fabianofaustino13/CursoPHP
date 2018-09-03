@@ -11,10 +11,10 @@ $cidades = $cidadeDao->findCidadeEstado($_GET['result']);
 // return $cidades;
 // $cidades = $cidadeDao->findAll();
 // return $cidade;
-echo "<label for='cidadeId'>Cidade</label>";
-echo "<select class='form-control' name='cidadeId' id='cidadeId'>";
-echo "<option value='0' disabled selected>Selecione uma cidade...</option>";
-foreach($cidades as $cidade) {
-    echo "<option value='{$cidade->getNome()}'> {$cidade->getNome()}</option>";
-}
-echo "</select>";
+// echo "<label for='cidadeId'>Cidade</label>";
+// echo "<select class='form-control' name='cidadeId' id='cidadeId'>";
+// echo "<option value='0' disabled selected>Selecione uma cidade...</option>";
+// foreach($cidades as $cidade) {
+//     echo "<option value='{$cidade->getNome()}'> {$cidade->getNome()}</option>";
+// }
+// echo "</select>";
