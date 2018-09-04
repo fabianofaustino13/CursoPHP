@@ -1,6 +1,7 @@
 <?php
     require_once (__DIR__ . "/./Conexao.class.php");
-    require_once (__DIR__ . "/../modelo/Estado.class.php");
+    require_once (__DIR__ . "/../modelo/Cidade.class.php");
+    require_once (__DIR__ . "/../modelo/UnidadeFederativa.class.php");
 
     class CidadeDAO {
 
@@ -17,73 +18,56 @@
             $rows = $statement->fetchAll();
             $cidades = array();
             foreach ($rows as $row) {
-                $estado = new Estado();
-                $estado->setId($row['PK_EST']);
-                $estado->setNome($row['EST_NOME']);
-                $estado->setSigla($row['EST_SIGLA']);
+                $uf = new UnidadeFederativa();
+                $uf->setId($row['PK_EST']);
+                $uf->setNome($row['EST_NOME']);
+                $uf->setSigla($row['EST_SIGLA']);
                 $cidade = new Cidade();
                 $cidade->setId($row['PK_CID']);
                 $cidade->setNome($row['CID_NOME']);
-                $cidade->setEstado($estado);
+                $cidade->setUnidadeFederativa($uf);
                 array_push($cidades, $cidade);
             }
             return $cidades;
         }
 
-        public function findById($id) {
-            $sql = "SELECT * FROM TB_CIDADES LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE PK_CID = :ID";
+        public function findByUnidadeFederativa(UnidadeFederativa $uf) {
+            $sql = "SELECT * FROM TB_CIDADES LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE PK_EST = :ID_EST";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
-            $statement->execute();
-            $row = $statement->fetch();
-            $estado = new Estado();
-            $estado->setId($row['PK_EST']);
-            $estado->setNome($row['EST_NOME']);
-            $estado->setSigla($row['EST_SIGLA']);
-            $cidade = new Cidade();
-            $cidade->setId($row['PK_CID']);
-            $cidade->setNome($row['CID_NOME']);
-            $cidade->setEstado($estado);
-            
-            return $cidade;
-        }
-
-        public function findCidadeEstado($id) {
-            $sql = "SELECT * FROM TB_CIDADES RIGHT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE PK_EST = :ID";
-            $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
+            $id_uf = $uf->getId();
+            $statement->bindParam(':ID_EST', $id_uf);
             $statement->execute();
             $rows = $statement->fetchAll();
             $cidades = array();
             foreach ($rows as $row) {
-                $estado = new Estado();
-                $estado->setId($row['PK_EST']);
-                $estado->setNome($row['EST_NOME']);
-                $estado->setSigla($row['EST_SIGLA']);
+                $uf = new UnidadeFederativa();
+                $uf->setId($row['PK_EST']);
+                $uf->setNome($row['EST_NOME']);
+                $uf->setSigla($row['EST_SIGLA']);
                 $cidade = new Cidade();
                 $cidade->setId($row['PK_CID']);
                 $cidade->setNome($row['CID_NOME']);
-                $cidade->setEstado($estado);
+                $cidade->setUnidadeFederativa($uf);
                 array_push($cidades, $cidade);
             }
             return $cidades;
         }
-
-        public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_CIDADES LEFT JOIN TB_ESTADOS ON PK_EST=FK_EST_CID WHERE CID_NOME LIKE :NOME";
+        
+        public function findById($id) {
+            $sql = "SELECT * FROM TB_CIDADES LEFT JOIN TB_ESTADOS ON PK_EST = FK_EST_CID WHERE PK_EST = :ID_EST";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
+            $statement->bindParam(':ID_EST', $id);
             $statement->execute();
             $rows = $statement->fetchAll();
+            $uf = new UnidadeFederativa();
+            $uf->setId($row['PK_EST']);
+            $uf->setNome($row['EST_NOME']);
+            $uf->setSigla($row['EST_SIGLA']);
             $cidade = new Cidade();
-            $estado = new Estado();
-            foreach ($rows as $row) {
-                $cidade->setId($row['PK_CID']);
-                $cidade->setNome($row['CID_NOME']);               
-                $cidade->setEstado()->setId($row['PK_EST']);
-                $cidade->setEstado()->setNome($row['EST_NOME']);
-                $cidade->setEstado()->setSigla($row['EST_SIGLA']);
-            }
+            $cidade->setId($row['PK_CID']);
+            $cidade->setNome($row['CID_NOME']);
+            $cidade->setUnidadeFederativa($uf);
+            
             return $cidade;
         }
 

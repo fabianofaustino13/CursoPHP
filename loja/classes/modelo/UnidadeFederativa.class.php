@@ -1,17 +1,15 @@
 <?php
 
-require_once(__DIR__ . "/./Cidade.class.php");
-
-class Bairro {
+class UnidadeFederativa {
 
     private $id;
     private $nome;
-    private $cidade;
+    private $sigla;
 
     public function getId() {
         return $this->id;
     }
-    
+
     public function setId($id) {
         $this->id = $id;
     }
@@ -19,16 +17,16 @@ class Bairro {
     public function getNome() {
         return $this->nome;
     }
-    
+
     public function setNome($nome) {
         $this->nome = strtoupper($nome);
     }
 
-    public function getCidade() {
-        return $this->cidade;
+    public function getSigla() {
+        return $this->sigla;
     }
-    
-    public function setCidade(Cidade $cidade) {
-        $this->cidade = $cidade;
+
+    public function setSigla($sigla) {
+        $this->sigla = strtoupper($sigla);
     }
 }

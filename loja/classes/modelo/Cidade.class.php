@@ -1,16 +1,12 @@
 <?php
 
-require_once(__DIR__ . "/./Estado.class.php");
+require_once(__DIR__ . "/./UnidadeFederativa.class.php");
 
 class Cidade {
 
     private $id;
     private $nome;
-    private $estado;
-
-    public function __construct() {
-        $this->estado = new Estado();
-    }
+    private $uf;
 
     public function getId() {
         return $this->id;
@@ -28,11 +24,11 @@ class Cidade {
         $this->nome = strtoupper($nome);
     }
 
-    public function getEstado() {
-        return $this->estado;
+    public function getUnidadeFederativa() {
+        return $this->uf;
     }
     
-    public function setEstado(Estado $estado) {
-        $this->estado = $estado;
+    public function setUnidadeFederativa(UnidadeFederativa $uf) {
+        $this->uf = $uf;
     }
 }

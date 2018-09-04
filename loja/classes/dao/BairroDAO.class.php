@@ -29,10 +29,12 @@
             }
             return $bairros;
         }
-
-        public function findBairrosCidades() {
-            $sql = "SELECT * FROM TB_BAIRROS LEFT JOIN TB_CIDADES ON PK_BAI = FK_BAI_CID ORDER BY PK_BAI ASC";
+        
+        public function findByCidade(Cidade $cidade) {
+            $sql = "SELECT * FROM TB_BAIRROS JOIN TB_CIDADES ON PK_CID = FK_BAI_CID WHERE PK_CID = :ID_CID";
             $statement = $this->conexao->prepare($sql);
+            $id_cidade = $cidade->getId();
+            $statement->bindParam(':ID_CID', $id_cidade);
             $statement->execute();
             $rows = $statement->fetchAll();
             $bairros = array();
@@ -51,7 +53,7 @@
 
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_BAIRROS LEFT JOIN TB_CIDADES ON PK_CID = FK_BAI_CID WHERE PK_BAI = :ID";
+            $sql = "SELECT * FROM TB_BAIRROS LEFT JOIN TB_CIDADES ON PK_CID = FK_BAI_CID WHERE PK_CID = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -85,57 +87,6 @@
             return $bairro;
         }
 
-        public function save(Bairro $bairro) {
-            if ($bairro->getId() == null) {
-                $this->insert($bairro);
-            } else {
-                $this->update($bairro);
-            }
-        }
-
-        private function insert(Bairro $bairro) {
-            $sql = "INSERT INTO TB_BAIRROS (BAI_NOME, FK_BAI_CID) VALUES (:NOME, :CIDADE)";
-            try {
-                $statement = $this->conexao->prepare($sql);
-                $nome = $bairro->getNome();
-                $cidade = $bairro->getCidade()->getId();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':CIDADE', $cidade);
-                $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
-            } catch(PDOException $e) {
-                echo $e->getMessage();
-                return null;
-            }
-        }
-
-        private function update(Bairro $bairro) {
-            $sql = "UPDATE TB_BAIRROS SET BAI_NOME = :NOME, FK_BAI_CID = :CIDADE WHERE PK_BAI = :ID";
-            try {
-                $statement = $this->conexao->prepare($sql);
-                $nome = $bairro->getNome();
-                $cidade = $bairro->getCidade()->getId();
-                $id = $bairro->getId();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':CIDADE', $cidade);
-                $statement->bindParam(':ID', $id);
-                $statement->execute();
-                return $this->findById($bairro->getId());
-                } catch(PDOException $e) {
-                echo $e->getMessage();
-                return null;
-            }
-        }
-
-        public function remove($id) {
-            $sql = "DELETE FROM TB_BAIRROS WHERE PK_BAI = :ID";
-            try {
-                $statement = $this->conexao->prepare($sql);
-                $statement->bindParam(':ID', $id); //Proteção contra sql injetct
-                $statement->execute();
-            } catch(PDOException $e) {
-                echo $e->getMessage();
-            }
-        }
+       
     }
 ?>
