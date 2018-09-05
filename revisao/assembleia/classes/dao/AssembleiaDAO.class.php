@@ -99,7 +99,7 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $nome = $assembleia->getNome();
                 $data = $assembleia->getData();
-                $tipo = $assembleia->getAssembleia()->getId();
+                $tipo = $assembleia->getTipoAssembleia()->getId();
                 $id = $assembleia->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':DATAASSEMBLEIA', $data);

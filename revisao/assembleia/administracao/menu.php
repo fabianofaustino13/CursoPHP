@@ -41,6 +41,7 @@
             </div>
             <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
             <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
+            <a href="../apartamento/index.php"><i class="fa fa-users"></i> <span>Apartamento</span> </a>
         </div>
 
         <a href="../administracao/logout.php" style="color: red"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>

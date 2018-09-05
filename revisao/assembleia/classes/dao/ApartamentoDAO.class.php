@@ -3,6 +3,7 @@
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once (__DIR__ . "/../modelo/Bloco.class.php");
 require_once (__DIR__ . "/../modelo/Adimplente.class.php");
+require_once (__DIR__ . "/../modelo/Morador.class.php");
 
     class ApartamentoDAO {
 
@@ -13,7 +14,7 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI ORDER BY BLO_NOME ASC";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI ORDER BY APA_NOME ASC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -58,7 +59,28 @@ require_once (__DIR__ . "/../modelo/Adimplente.class.php");
                 $apartamento->setAdimplente($adimplente);
 
             }
-            return $adimplente;
+            return $apartamento;
+        }
+
+        public function findApartamentoBloco(Bloco $bloco) {
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_BLO = :ID_BLOCO";
+            $statement = $this->conexao->prepare($sql);
+            $id_bloco = $bloco->getId();
+            $statement->bindParam(':ID_BLOCO', $id_bloco); //Proteção contra sql injetct
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $apartamentos = array();
+            foreach ($result as $row) {
+                $bloco = new Bloco();
+                $bloco->setId($row['PK_BLO']);
+                $bloco->setNome($row['BLO_NOME']);
+                $apartamento = new Apartamento();
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $apartamento->setBloco($bloco);
+                array_push($apartamentos, $apartamento);
+            }
+            return $apartamentos;
         }
 
         public function findByNome($nome) {

@@ -51,14 +51,14 @@ $assembleias = $dao->findAll();
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro das Assembléias</legend>
-                    <form method="post" action="index.php"><!-- Form -->                    
+                    <form method="get" action="index.php"><!-- Form -->                    
                         <div class="form-row"><!-- Div1 -->                        
                             <label for="tipoAssembleia" class="required">Tipo de Assembléia</label><br><!-- Tipo de Assembleia -->
                             <div class="col-12">
                                 <div class="form-group">
                                     <?php foreach ($tipoAssembleias as $tipoAssembleia): ?>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="<?=$tipoAssembleia->getNome();?>" name="tipoAssembleia" value=<?=$tipoAssembleia->getId();?> class="custom-control-input" <?php if ($tipoAssembleia->getId() == 1):?> checked <?php endif; ?>/>
+                                            <input type="radio" id="<?=$tipoAssembleia->getNome();?>" name="tipoAssembleia" value=<?=$tipoAssembleia->getId();?> <?=$tipoAssembleia->getId() == $assembleia->getTipoAssembleia()->getId() ? 'checked': "";?> class="custom-control-input" <?php if ($tipoAssembleia->getId() == 1):?> checked <?php endif; ?> required/>
                                             <label class="custom-control-label" for="<?=$tipoAssembleia->getNome();?>"><?=$tipoAssembleia->getNome();?></label>
                                         </div>
                                     <?php endforeach; ?>                                    
@@ -85,6 +85,7 @@ $assembleias = $dao->findAll();
                 </fieldset>  
             </div>
         </div>      
+        
         <div class="col-12"> <!-- Tabela -->
             <fieldset>
                 <legend>Lista de Assembléias</legend>

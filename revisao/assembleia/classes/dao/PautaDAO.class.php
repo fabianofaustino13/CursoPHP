@@ -106,10 +106,11 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
             return $pauta;
         }
         
-        public function findPautaAssembleia($assembleiaId) {
-            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE FK_PAU_ASS = :ASSEMBLEIA";
+        public function findPautaAssembleia(Assembleia $assembleia) {
+            $sql = "SELECT * FROM TB_PAUTAS JOIN TB_ASSEMBLEIAS ON PK_ASS = FK_PAU_ASS WHERE PK_ASS = :ASSEMBLEIA";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':ASSEMBLEIA', $assembleiaId);
+            $id_assembleia = $assembleia->getId();
+            $statement->bindParam(':ASSEMBLEIA', $id_assembleia);
             $statement->execute();
             $result = $statement->fetchAll();
             $pautas = array();
@@ -156,9 +157,11 @@ require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
                 return null;
             }
         }
+        
+        
 
         private function update(Pauta $pauta) {
-            $sql = "UPDATE TB_PAUTAS SET PAU_NOME = :NOME, PAU_DESCRICAO = :DESCRICAO WHERE PK_PAU = :ID";
+            $sql = "UPDATE TB_PAUTAS SET PAU_NOME=:NOME, PAU_DESCRICAO=:DESCRICAO, FK_PAU_ASS=:ASSEMBLEIA WHERE PK_PAU=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $pauta->getNome();

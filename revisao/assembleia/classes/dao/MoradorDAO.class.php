@@ -2,6 +2,7 @@
 
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once (__DIR__ . "/../modelo/Morador.class.php");
+require_once (__DIR__ . "/../modelo/Apartamento.class.php");
 
     class MoradorDAO {
 
@@ -47,6 +48,29 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
                 $morador->setFkMorSin($row['FK_MOR_SIN']);
+            }
+            return $morador;
+        }
+
+        public function findByApartamento($id) {
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA WHERE PK_MOR = :ID";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $apartamento = new Apartamento();
+            $morador = new Morador();
+            foreach ($result as $row) {
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setSenha($row['MOR_SENHA']);
+                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
+                $morador->setFoto($row['MOR_FOTO']);
+                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                $morador->setApartamento($apartamento);
             }
             return $morador;
         }

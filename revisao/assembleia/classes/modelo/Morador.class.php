@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Apartamento.class.php';
+
 class Morador {
 
     private $id;
@@ -9,8 +11,12 @@ class Morador {
     private $ultimoAcesso;
     private $foto;
     private $fkMorSin;
+    private $apartamento;
+
+    public function __construct() {
+        $this->apartamento = new Apartamento();
+    }
    
-    
     public function getId() {
         return $this->id;
     }
@@ -65,5 +71,13 @@ class Morador {
     
     public function setFkMorSin($fkMorSin) {
         $this->fkMorSin = $fkMorSin;
+    }
+
+    public function getApartamento() {
+        return $this->apartamento;
+    }
+    
+    public function setApartamento(Apartamento $apartamento) {
+        $this->apartamento = $apartamento;
     }
 }

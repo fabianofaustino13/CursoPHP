@@ -1,16 +1,28 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Morador.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php"); ?>
 <?php 
+require_once(__DIR__ . "/../classes/modelo/Morador.class.php");
+require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
+require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
+require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 
 include(__DIR__ . "/../administracao/logado.php");
 
-$dao = new MoradorDAO();
+$blocoDao = new BlocoDAO();
+$bloco = new Bloco();
+
+$apartamentoDao = new ApartamentoDAO();
+$apartamento = new Apartamento();
+
+$moradorDao = new MoradorDAO();
 $morador = new Morador();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
+    $apartamento->getBloco()->setId($_POST['blocoId']);
+    $apartamento->setId($_POST['apartamentoId']);
+    
     $morador->setNome($_POST['nome']);
     $morador->setLogin($_POST['login']);
-
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
     if ($senha == $senha2) {
@@ -21,10 +33,11 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setUltimoAcesso($_POST['ultimoAcesso']);
     $morador->setFoto($_POST['foto']);
     $morador->setFkMorSin($_POST['fkSindico']);
+    $morador->setApartamento($apartamento);
     if ($_POST['id'] != '') {
         $morador->setId($_POST['id']);
     }
-    $dao->save($morador);
+    $moradorDao->save($morador);
     //header('location: index.php');
 
         // $moradores = $dao->findAll();
@@ -38,16 +51,18 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
 } 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $morador = $dao->findById($_POST['id']);
+    $morador = $moradorDao->findById($_POST['id']);
 }
 
 if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
-    $dao->remove($_POST['id']);
+    $moradorDao->remove($_POST['id']);
     header('location: index.php');
 }
 
-$moradores = $dao->findAll();
-$sindicos = $dao->findSindico();
+$moradores = $moradorDao->findAll();
+$sindicos = $moradorDao->findSindico();
+$apartamentos = $apartamentoDao->findAll();
+$blocos = $blocoDao->findAll();
 date_default_timezone_set('America/Sao_Paulo');
 // $dataLocal = date('d/m/Y H:i:s', time());
 ?>
@@ -101,19 +116,39 @@ date_default_timezone_set('America/Sao_Paulo');
                                         </div>                           
                                 </div>
                             </div> -->
-                            <div class="col-md-3 mb-3">
-                                <?php  $data = date("Y-m-d H:i:s"); //Data de hoje no formato do banco
+                            <!-- <div class="col-md-3 mb-3">
+                                <//?php  $data = date("Y-m-d H:i:s"); //Data de hoje no formato do banco
                                         $data2 = date("d-m-Y H:i:s"); //Data de hoje no formato BR?>
-                                <input type="hidden" class="form-control" id="ultimoAcesso" name="ultimoAcesso" value="<?=$data;?>" />
-                            </div>   
-                            <div class="col-md-12 mb-3"><!-- Nome do Morador -->
+                                <input type="hidden" class="form-control" id="ultimoAcesso" name="ultimoAcesso" value="<//?=$data;?>" />
+                            </div>    -->
+                            <!-- <div class="col-md-12 mb-3">Nome do Morador -->
                                 <!-- Pegar os dados do síndico ja cadastrado e adicionar no novo usuário -->                               
                                 <!-- <//?php foreach ($sindicos as $morador) { -->
                                     <!-- $morador->getFkMorSin(); -->
                                 <!-- } ?>                                                             -->
                                 <!-- <input type="hidden" name="fkSindico" value="<//?=$morador->getFkMorSin();?>"> -->
                                 <!-- <input type="text" class="form-control" id="nome" name="nome" value="<//?=$morador->getNome();?>" maxlength="100" required /> -->
-                            </div><!-- Fim Nome do Morador -->
+                            <!-- </div>Fim Nome do Morador -->
+                        <div class="col-md-2 mb-3" id="div_bloco"><!-- select Apartamento -->
+                            <label for="blocoId">Bloco</label>
+                            <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
+                                <option value="0" selected disabled>--SELECIONE--</option>
+                                <?php foreach ($blocos as $bloco): ?>                                                    
+                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
+                                    <?php endforeach; 
+                                ?>                                    
+                            </select> 
+                        </div>  
+                        <div class="col-md-2 mb-3" id="div_apartamento"><!-- select Apartamento -->
+                            <label for="apartamentoId">Apartamento</label>
+                            <select class="form-control" name="apartamentoId">
+                                <option value="0" selected disabled>--SELECIONE--</option>
+                                <?php foreach ($apartamentos as $apartamento): ?>                                                    
+                                        <option id="<?=$apartamento->getId();?>" value="<?=$apartamento->getId();?>"><?=$apartamento->getNome();?></option> 
+                                    <?php endforeach; 
+                                ?>                                    
+                            </select> 
+                        </div>  
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>

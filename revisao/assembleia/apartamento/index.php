@@ -78,7 +78,7 @@ $adimplentes = $adimplenteDao->findAll();
                                 <div class="form-group">
                                     <?php foreach ($blocos as $bloco): ?>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="<?=$bloco->getApelido();?>" name="blocoId" value=<?=$bloco->getId();?> class="custom-control-input" <?php if ($bloco->getId() == 1):?> checked <?php endif; ?>/>
+                                            <input type="radio" id="<?=$bloco->getApelido();?>" name="blocoId" value=<?=$bloco->getId();?> <?=$bloco->getId() == $apartamento->getBloco()->getId() ? 'checked': "";?> class="custom-control-input" <?php if ($bloco->getId() == 1):?> checked <?php endif; ?> required/>
                                             <label class="custom-control-label" for="<?=$bloco->getApelido();?>"><?=$bloco->getApelido();?></label>
                                         </div>
                                     <?php endforeach; ?>                                    
@@ -89,7 +89,7 @@ $adimplentes = $adimplenteDao->findAll();
                                 <div class="form-group">
                                     <?php foreach ($adimplentes as $adimplente): ?>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="<?=$adimplente->getNome();?>" name="adimplenteId" value=<?=$adimplente->getId();?> class="custom-control-input" <?php if ($adimplente->getId() == 1):?> checked <?php endif; ?>/>
+                                            <input type="radio" id="<?=$adimplente->getNome();?>" name="adimplenteId" value=<?=$adimplente->getId();?> <?=$adimplente->getId() == $apartamento->getAdimplente()->getId() ? 'checked': "";?> class="custom-control-input" <?php if ($adimplente->getId() == 1):?> checked <?php endif; ?> required/>
                                             <label class="custom-control-label" for="<?=$adimplente->getNome();?>"><?=$adimplente->getNome();?></label>
                                         </div>
                                     <?php endforeach; ?>                                    
@@ -129,7 +129,7 @@ $adimplentes = $adimplenteDao->findAll();
                                 <td><?=$apartamento->getAdimplente()->getNome();?></td>
                                 
                                 <td>
-                                    <form method="get" action="index.php">
+                                    <form method="post" action="index.php">
                                         <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
                                         <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                             <i class="far fa-edit"></i>
