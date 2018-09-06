@@ -27,7 +27,6 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
     <link rel="stylesheet" href="../assets/css/home.css">
 </head>
 <body>    
-    <div class="col-md-2 mb-3" id="div_apartamento"><!-- select Apartamento -->
         <label for="apartamentoId">Apartamento</label>
         <select class="form-control" name="apartamentoId">
             <option value="0" selected disabled>--SELECIONE--</option>
@@ -36,6 +35,6 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
                 <?php endforeach; 
             ?>                                    
         </select> 
-    </div> 
+
 </body>
 </html>

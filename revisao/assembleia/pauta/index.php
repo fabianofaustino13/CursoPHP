@@ -145,10 +145,10 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                             }
                         }
                         foreach ($pautas as $pauta): ?>
-                            <!-- //$numAssembleia = $pauta->getAssembleia()->getId();
-                            //echo "<script>alert('Pautas '+{$pauta->getId()})</script>";
-                            //echo "<script>alert('Assembleias '+{$pauta->getAssembleia()->getId()})</script>"; -->
-                            <?php if ($pauta->getAssembleia()->getId() == ($j-1)): ?> <!--comparando se as pautas fazem parte da última assembleia cadastrada -->
+                            <!-- <//?php $numAssembleia = $pauta->getAssembleia()->getId(); -->
+                            <!-- echo "<script>alert('Pautas '+{$pauta->getId()})</script>"; -->
+                             <!-- echo "<script>alert('Assembleias '+{$pauta->getAssembleia()->getId()})</script>"; ?> -->
+                            <?php if ($pauta->getAssembleia()->getId() == ($j)): ?> <!--comparando se as pautas fazem parte da última assembleia cadastrada -->
                                 <!-- //echo "<script>alert('Pautas '+{$pauta->getId()})</script>"; -->
                                 <tr>
                                     <!-- <td><//?=$pauta->getId();?></td> -->

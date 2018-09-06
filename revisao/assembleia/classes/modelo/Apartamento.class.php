@@ -2,6 +2,7 @@
 
 require_once 'Adimplente.class.php';
 require_once 'Bloco.class.php';
+require_once 'Morador.class.php';
 
 class Apartamento {
 
@@ -9,10 +10,12 @@ class Apartamento {
     private $nome;
     private $adimplente;
     private $bloco;
+    private $morador;
    
     public function __construct() {
         $this->adimplente = new Adimplente();
         $this->bloco = new Bloco();
+        $this->morador = new Morador();
     }
 
     public function getId() {
@@ -45,5 +48,13 @@ class Apartamento {
     
     public function setBloco(Bloco $bloco) {
         $this->bloco = $bloco;
+    }
+
+    public function getMorador() {
+        return $this->morador;
+    }
+    
+    public function setMorador(Morador $morador) {
+        $this->morador = $morador;
     }
 }

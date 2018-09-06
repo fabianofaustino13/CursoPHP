@@ -26,7 +26,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
               
                 array_push($moradores, $morador);
             }
@@ -47,7 +47,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
             }
             return $morador;
         }
@@ -69,7 +69,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
                 $morador->setApartamento($apartamento);
             }
             return $morador;
@@ -89,7 +89,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
             }
             return $morador;
         }
@@ -108,7 +108,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
             }
             return $morador;
         }
@@ -126,7 +126,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                // $morador->setSindico($row['FK_MOR_SIN']);
               
                 array_push($sindicos, $morador);
             }
@@ -142,21 +142,21 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
         }
 
         private function insert(Morador $morador) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA, MOR_ULTIMO_ACESSO, MOR_FOTO, FK_MOR_SIN) VALUES (:NOME, :USERNAME, :SENHA, :ULTIMOACESSO, :FOTO, :SINDICO)";
+            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA) VALUES (:NOME, :USERNAME, :SENHA)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
-                $ultimoAcesso = $morador->getUltimoAcesso();
-                $foto = $morador->getFoto();
-                $sindico = $morador->getFkMorSin();
+                // $ultimoAcesso = $morador->getUltimoAcesso();
+                // $foto = $morador->getFoto();
+                // $sindico = $morador->getSindico();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
-                $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
-                $statement->bindParam(':FOTO', $foto);
-                $statement->bindParam(':SINDICO', $sindico);
+                // $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
+                // $statement->bindParam(':FOTO', $foto);
+                // $statement->bindParam(':SINDICO', $sindico);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
@@ -174,14 +174,14 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $senha = $morador->getSenha();
                 $ultimoAcesso = $morador->getUltimoAcesso();
                 $foto = $morador->getFoto();
-                $sindico = $morador->getFkMorSin();
+                // $sindico = $morador->getSindico();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
                 $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
                 $statement->bindParam(':FOTO', $foto);
-                $statement->bindParam(':SINDICO', $sindico);
+                // $statement->bindParam(':SINDICO', $sindico);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($morador->getId());

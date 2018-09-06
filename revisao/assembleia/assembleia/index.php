@@ -51,7 +51,7 @@ $assembleias = $dao->findAll();
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro das Assembléias</legend>
-                    <form method="get" action="index.php"><!-- Form -->                    
+                    <form method="post" action="index.php"><!-- Form -->                    
                         <div class="form-row"><!-- Div1 -->                        
                             <label for="tipoAssembleia" class="required">Tipo de Assembléia</label><br><!-- Tipo de Assembleia -->
                             <div class="col-12">
