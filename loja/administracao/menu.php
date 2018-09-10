@@ -25,6 +25,9 @@
           <li class="nav-item">
               <a class="nav-link" href="#">Departamento</a>
           </li>
+          <li class="nav-item">
+              <a class="nav-link" href="../venda/">Vendas</a>
+          </li>
 
           <!-- Dropdown -->
           <li class="nav-item dropdown">

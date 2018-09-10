@@ -1,13 +1,13 @@
 <?php
-    require_once (__DIR__ . "/./Conexao.class.php");
-    require_once (__DIR__ . "/../modelo/Vendedor.class.php");
-    require_once (__DIR__ . "/../modelo/Sexo.class.php");
-    require_once (__DIR__ . "/../modelo/Cep.class.php");
-    require_once (__DIR__ . "/../modelo/Bairro.class.php");
-    require_once (__DIR__ . "/../modelo/Cidade.class.php");
-    require_once (__DIR__ . "/../modelo/Estado.class.php");
+    require_once(__DIR__ . "/./Conexao.class.php");
+    require_once(__DIR__ . "/../modelo/Funcionario.class.php");
+    require_once(__DIR__ . "/../modelo/Sexo.class.php");
+    require_once(__DIR__ . "/../modelo/Cep.class.php");
+    require_once(__DIR__ . "/../modelo/Bairro.class.php");
+    require_once(__DIR__ . "/../modelo/Cidade.class.php");
+    require_once(__DIR__ . "/../modelo/Estado.class.php");
 
-    class VendedorDAO {
+    class FuncionarioDAO {
 
         private $conexao;
 
