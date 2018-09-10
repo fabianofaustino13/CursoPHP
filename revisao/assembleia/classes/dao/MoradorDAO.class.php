@@ -53,7 +53,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
         }
 
         public function findByApartamento($id) {
-            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA WHERE PK_MOR = :ID";
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA WHERE PK_APA = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -67,10 +67,6 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
-                $morador->setApartamento($apartamento);
             }
             return $morador;
         }
@@ -133,40 +129,44 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
             return $sindicos;
         }
 
-        public function save(Morador $morador) {
+        public function save(Morador $morador, Apartamento $apartamento) {
             if ($morador->getId() == null) {
-                $this->insert($morador);
+                $this->insert($morador, $apartamento);
             } else {
-                $this->update($morador);
+                $this->update($morador, $apartamento);
             }
         }
 
-        private function insert(Morador $morador) {
+        private function insert(Morador $morador, Apartamento $apartamento) {
             $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA) VALUES (:NOME, :USERNAME, :SENHA)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
-                // $ultimoAcesso = $morador->getUltimoAcesso();
-                // $foto = $morador->getFoto();
-                // $sindico = $morador->getSindico();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
-                // $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
-                // $statement->bindParam(':FOTO', $foto);
-                // $statement->bindParam(':SINDICO', $sindico);
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                $morador->setId($this->conexao->lastInsertId());
+
+                $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
+                $statement = $this->conexao->prepare($sql);
+                $apartamento_id = $apartamento->getId();
+                $morador_id = $morador->getId();
+                $statement->bindParam(':APARTAMENTO', $apartamento_id);
+                $statement->bindParam(':MORADOR', $morador_id);
+                $statement->execute();
+
+                return $morador;
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
             }
         }
 
-        private function update(Morador $morador) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME = :NOME, MOR_LOGIN = :USERNAME, MOR_SENHA = :SENHA, MOR_ULTIMO_ACESSO = :ULTIMOACESSO, MOR_FOTO = :FOTO, FK_MOR_SIN = :SINDICO WHERE PK_MOR = :ID";
+        private function update(Morador $morador, Apartamento $apartamento) {
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA WHERE PK_MOR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
@@ -174,17 +174,22 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $senha = $morador->getSenha();
                 $ultimoAcesso = $morador->getUltimoAcesso();
                 $foto = $morador->getFoto();
-                // $sindico = $morador->getSindico();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
-                $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
-                $statement->bindParam(':FOTO', $foto);
-                // $statement->bindParam(':SINDICO', $sindico);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($morador->getId());
+                $morador->getId($this->conexao->lastInsertId());
+                
+                $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
+                $statement = $this->conexao->prepare($sql);
+                $apartamento_id = $apartamento->getId();
+                $morador_id = $morador->getId();
+                $statement->bindParam(':APARTAMENTO', $apartamento_id);
+                $statement->bindParam(':MORADOR', $morador_id);
+                $statement->execute();
+
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -192,7 +197,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_MORADORES WHERE PK_MOR = :ID";
+            $sql = "DELETE FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA WHERE PK_APA = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id); //Proteção contra sql injetct

@@ -5,6 +5,10 @@ require_once(__DIR__ . "/../classes/modelo/Cliente.class.php");
 require_once(__DIR__ . "/../classes/modelo/Produto.class.php");
 require_once(__DIR__ . "/../classes/modelo/Venda.class.php");
 require_once(__DIR__ . "/../classes/dao/VendaDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/FuncionarioDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/ProdutoDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/ClienteDAO.class.php");
+
 
 include(__DIR__ . "/../administracao/logado.php");
 
@@ -39,7 +43,8 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
     $vendaDao->remove($_POST['id']);
     header('location: index.php');
 }
-$vendas = $vendaDao->findAll();
+// $vendas = $vendaDao->findAll();
+$funcionarios = $funcionarioDao->findAll();
 
 ?>
 
@@ -61,12 +66,23 @@ $vendas = $vendaDao->findAll();
         <div class="row" style="margin: 5%;">
             <div class="col-md-12 mb-3"> <!-- Form -->
                 <fieldset>
-                    <legend>Vendedor</legend>
+                    <legend>Vendas</legend>
                     <form action="index.php" method="post" id="form-salvar">
-                        <div class="form-group">
-                            <!-- <input type="hidden" name="id" value="<//?=$sexo->getId();?>"> -->
-                            <label for="funcionario">Funcionário</label>
-                            <input type="text" class="form-control" name="funcionario" id="funcionario" maxlength="50" required value="<?=$vendedor->getMatricula();?>">
+                        
+                        <div class="row">
+                            <div class="form-group col-md-2 mb-3">
+                                <!-- <input type="hidden" name="id" value="<//?=$sexo->getId();?>"> -->
+                                <label for="matricula">Matrícula</label>
+                                <input type="text" class="form-control" name="matricula" id="matricula" maxlength="10" required value="<?=$funcionario->getMatricula();?>" onkeyup="show_Funcionarios(this.value)">
+                            </div>
+                            <div class="form-group col-md-10 mb-3" id="div_nomeFuncionarios">
+                                <!-- <input type="hidden" name="id" value="<//?=$sexo->getId();?>"> -->
+                                <label for="nomeFuncionario">Nome do Funcionário</label>
+                                <input type="text" class="form-control" name="nomeFuncionario" id="nomeFuncionario" maxlength="50" required value="<?=$funcionario->getNome();?>">
+                            </div>
+                        </div>
+                        <div >
+                        
                         </div>
                         <!-- <div class="form-group">
                             <label for="sigla">Sigla</label>
@@ -80,7 +96,7 @@ $vendas = $vendaDao->findAll();
             </div> <!-- Fim Form -->
             <div class="col-md-12 mb-3 "> <!-- Tabela -->
                 <fieldset>
-                    <legend>Lista de Sexos</legend>
+                    <legend>Itens Vendidos</legend>
                     <table class="table table-striped table-hover">
                         <thead>
                             <th>#</th>
@@ -114,6 +130,7 @@ $vendas = $vendaDao->findAll();
             </div> <!-- Fim Tabela -->
         </div>
     </div>
-    <script src="../assets/js/produto.js"></script>
+    
+    <script src="../assets/js/ajax_enderecos.js"></script>
 </body>
 </html>

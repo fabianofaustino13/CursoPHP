@@ -4,6 +4,7 @@
     require_once(__DIR__ . "/../modelo/Cliente.class.php");
     require_once(__DIR__ . "/../modelo/Produto.class.php");
 
+
     class VendaDAO {
 
         private $conexao;
@@ -18,15 +19,14 @@
             $statement->execute();
             $result = $statement->fetchAll();
             $vendas = array();
-            foreach ($result as $row) {
+            foreach ($result as $row) {               
                 $funcionario = new Funcionario();
-                $funcionario->setMatricula($row['PK_VEN']);
-                $funcionario->setNome($row['VEN_NOME']);
+                $funcionario->setMatricula($row['PK_MATRICULA']);
+                $funcionario->setNome($row['FUN_NOME']);
                 $cliente = new Cliente();
-                $cliente->setId($row['PK_CLI']);
-                $cliente->setNome($row['CLI_NOME']);
-                $cliente->setCpf($row['CLI_CPF']);
-                $cliente->setSexo($row['CLI_SEXO']);
+                $cliente->setId($row['PK_PFC']);
+                $cliente->setNome($row['PFC_NOME']);
+                $cliente->setCpf($row['PFC_CPF']);
                 $produto = new Produto();
                 $produto->setId($row['PK_PRO']);
                 $produto->setNome($row['PRO_NOME']);
@@ -51,8 +51,8 @@
             $cliente->setId($row['PK_CLI']);
             $cliente->setNome($row['CLI_NOME']);
             $funcionario = new Funcionario();
-            $funcionario->setMatricula($row['PK_VEN']);
-            $funcionario->setNome($row['VEN_NOME']);
+            $funcionario->setMatricula($row['PK_MATRICULA']);
+            $funcionario->setNome($row['FUN_NOME']);
             $produto = new Produto();
             $produto->setId($row['PK_PRO']);
             $produto->setNome($row['PRO_NOME']);

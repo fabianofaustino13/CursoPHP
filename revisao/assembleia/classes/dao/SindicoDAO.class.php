@@ -22,7 +22,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                $morador->setSindico($row['FK_MOR_SIN']);
                 $sindico = new sindico();
                 $sindico->setId($morador);
               
@@ -41,15 +41,14 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             foreach ($result as $row) {
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                $morador->setSindico($row['FK_MOR_SIN']);
             }
             return $morador;
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE %:NOME%";
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE '%$nome%'";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':NOME', $nome);
             $statement->execute();
             $result = $statement->fetchAll();
             $moradores = array();
@@ -57,7 +56,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setFkMorSin($row['FK_MOR_SIN']);
+                $morador->setSindico($row['FK_MOR_SIN']);
                 array_push($moradores, $morador);
             }
             return $moradores;
@@ -102,7 +101,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $senha = $morador->getSenha();
                 $ultimoAcesso = $morador->getUltimoAcesso();
                 $foto = $morador->getFoto();
-                $sindico = $morador->getFkMorSin();
+                $sindico = $morador->getSindico();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
@@ -121,7 +120,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             $sql = "UPDATE TB_MORADORES SET FK_MOR_SIN = :SINDICO";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $sindico = $morador->getFkMorSin();
+                $sindico = $morador->getSindico();
                 $statement->bindParam(':SINDICO', $sindico);
                 $statement->execute();
             } catch(PDOException $e) {

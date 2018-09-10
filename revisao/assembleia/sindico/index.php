@@ -14,15 +14,12 @@ $sindicoNome = '';
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setNome($_POST['nome']);
-    $morador->setFkMorSin($_POST['sindico']);
-    // if ($_POST['id'] != '') {
-    //     $morador->setId($_POST['id']);
-    // }
-    
+    $morador->setSindico($_POST['sindico']);
+      
     if ($_POST['id'] != null) {
     $moradores = $dao->findAll();
     foreach ($moradores as $morador) {
-            $morador->setFkMorSin($_POST['sindico']);
+            $morador->setSindico($_POST['sindico']);
             header('location: index.php');
             $dao->save($morador);
 
@@ -42,13 +39,11 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 }
 
 if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome') {
-    // $morador->setSindico($_POST['fk']);
     $moradores = $dao->findByNome($_POST['nome']);
 
 } else {
     $moradores = $dao->findAll();
 }
-
 
 ?>
 
@@ -81,7 +76,7 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
                                 <label class="required ">Síndico?</label>
                                 <div class="form-group">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoNao" name="sindico" class="custom-control-input" value="<?=$morador->getFkMorSin();?>" checked/>
+                                            <input type="radio" id="sindicoNao" name="sindico" class="custom-control-input" value="<?=$morador->getSindico();?>" checked/>
                                             <label class="custom-control-label" for="sindicoNao">Não</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
@@ -126,7 +121,7 @@ if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome
                                         <?php 
                                         
                                             foreach ($moradores as $morador) {
-                                                $sindicoId = $morador->getFkMorSin();
+                                                $sindicoId = $morador->getSindico();
                                                 // echo "<script>alert('$sindicoId');</script>";
                                             }
                                             $moradores2 = $dao->findAll();

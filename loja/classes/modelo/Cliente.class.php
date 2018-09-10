@@ -1,6 +1,6 @@
 <?php
 
-    require "Sexo.class.php";
+    require_once(__DIR__ . "/./Sexo.class.php");
 
     class Cliente {
 

@@ -36,7 +36,7 @@
               <a class="dropdown-item" href="../produto/">Produto</a>
               <a class="dropdown-item" href="../departamento/">Departamento</a>
               <a class="dropdown-item" href="../marca/">Marca</a>
-              <a class="dropdown-item" href="../vendedor/">Vendedor</a>
+              <a class="dropdown-item" href="../funcionario/">Vendedor</a>
               <a class="dropdown-item" href="../sexo/">Sexo</a>
               <a class="dropdown-item" href="../Bairro/">Bairro</a>
               <a class="dropdown-item" href="../Cidade/">Cidade</a>

@@ -10,7 +10,7 @@ class Apartamento {
     private $nome;
     private $adimplente;
     private $bloco;
-    private $morador;
+  
    
     public function __construct() {
         $this->adimplente = new Adimplente();

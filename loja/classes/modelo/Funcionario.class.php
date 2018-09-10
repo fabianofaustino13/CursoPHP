@@ -1,6 +1,6 @@
 <?php
 
-//require_once(__DIR__ . "/./Sexo.class.php");
+require_once(__DIR__ . "/./Sexo.class.php");
 // require_once(__DIR__ . "/./Cep.class.php");
 
 class Funcionario {

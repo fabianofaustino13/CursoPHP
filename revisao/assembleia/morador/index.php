@@ -18,53 +18,38 @@ $moradorDao = new MoradorDAO();
 $morador = new Morador();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-    $apartamento->getBloco()->setId($_POST['blocoId']);
-    $apartamento->setId($_POST['apartamentoId']);
     $morador->setNome($_POST['nome']);
     $morador->setLogin($_POST['login']);
-    // $morador->setNome($_POST['nome']);
-    // $morador->setLogin($_POST['login']);
+  
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
     if ($senha == $senha2) {
         $morador->setSenha($_POST['senha']);
-        // $morador->setSenha($_POST['senha']);
+   
     } else {
         echo("senha não confere.");
     }
     
-    // $morador->setUltimoAcesso($_POST['ultimoAcesso']);
-    // $morador->setFoto($_POST['foto']);
-    // $morador->setSindico($_POST['sindico']);
-    // $morador->setApartamento($apartamento);
     if ($_POST['id'] != '') {
         $morador->setId($_POST['id']);
-        // $morador->setId($_POST['id']);
     }
-    $moradorDao->save($morador);
+    
+    $apartamento->getBloco()->setId($_POST['blocoId']);
+    $apartamento->setId($_POST['apartamentoId']);
 
-    $apartamento->setMorador($morador);
-    $apartamentoDao->update($apartamento);
+    $moradorDao->save($morador, $apartamento);
+
     
-    // $moradorDao->save($morador);
-    //header('location: index.php');
-    
-    // $moradores = $dao->findAll();
-    // foreach ($moradores as $morador) {
-        //         $morador->setFkMorSin($_POST['fkSindico']);
-        //         header('location: index.php');
-        //         $dao->save($morador);
-        
-        //     }
-        header('location: index.php');
+    header('location: index.php');
     } 
     
     if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-        $morador = $moradorDao->findById($_POST['id']);
+        $morador = $moradorDao->findByApartamento($_POST['id']);
+        // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
     }
     
     if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
-        $moradorDao->remove($_POST['id']);
+        $morador = $moradorDao->findByApartamento($_POST['id']);
         header('location: index.php');
     }
     
@@ -112,48 +97,23 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                 <label for="senha2">Confirme a Senha</label>
                                 <input type="text" class="form-control" id="senha2" name="senha2" maxlength="25" />
                             </div>            
-                            <!-- <div class="col-md-6 mb-3">
-                                <label class="required ">Síndico?</label>
-                                <div class="form-group">                           
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoNao" name="sindico" value="<//?=$morador->getSindico();?>" class="custom-control-input" checked/>
-                                            <label class="custom-control-label" for="sindicoNao">Não</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoSim" name="sindico" value="<//?=$morador->getId();?>" class="custom-control-input" />
-                                            <label class="custom-control-label" for="sindicoSim">Sim</label>
-                                        </div>                           
-                                </div>
-                            </div> -->
-                            <!-- <div class="col-md-3 mb-3">
-                                <//?php  $data = date("Y-m-d H:i:s"); //Data de hoje no formato do banco
-                                        $data2 = date("d-m-Y H:i:s"); //Data de hoje no formato BR?>
-                                <input type="hidden" class="form-control" id="ultimoAcesso" name="ultimoAcesso" value="<//?=$data;?>" />
-                            </div>    -->
-                            <!-- <div class="col-md-12 mb-3">Nome do Morador -->
-                                <!-- Pegar os dados do síndico ja cadastrado e adicionar no novo usuário -->                               
-                                <!-- <//?php foreach ($sindicos as $morador) { -->
-                                    <!-- $morador->getFkMorSin(); -->
-                                <!-- } ?>                                                             -->
-                                <!-- <input type="hidden" name="fkSindico" value="<//?=$morador->getFkMorSin();?>"> -->
-                                <!-- <input type="text" class="form-control" id="nome" name="nome" value="<//?=$morador->getNome();?>" maxlength="100" required /> -->
-                            <!-- </div>Fim Nome do Morador -->
-                        <div class="col-md-3 mb-3" id="div_blocos"><!-- select Apartamento -->
-                            <label for="blocoId">Bloco</label>
-                            <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
-                                <option value="0" selected disabled>--SELECIONE--</option>
-                                <?php foreach ($blocos as $bloco): ?>                                                    
-                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
-                                    <?php endforeach; 
-                                ?>                                    
-                            </select> 
-                        </div>  
-                        <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
-                            <label for="apartamentoId">Apartamento</label>
-                            <select class="form-control" name="apartamentoId">
-                                <option value="0" selected disabled>--Selecione um bloco--</option>                      
-                            </select> 
-                        </div>  
+                            
+                            <div class="col-md-3 mb-3" id="div_blocos"><!-- select Apartamento -->
+                                <label for="blocoId">Bloco</label>
+                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
+                                    <option value="0" selected disabled>--SELECIONE--</option>
+                                    <?php foreach ($blocos as $bloco): ?>                                                    
+                                            <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
+                                        <?php endforeach; 
+                                    ?>                                    
+                                </select> 
+                            </div>  
+                            <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
+                                <label for="apartamentoId">Apartamento</label>
+                                <select class="form-control" name="apartamentoId">
+                                    <option value="0" selected disabled>--Selecione um bloco--</option>                      
+                                </select> 
+                            </div>  
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>

@@ -1,7 +1,5 @@
 <?php
 
-// require_once 'Apartamento.class.php';
-
 class Morador {
 
     private $id;
@@ -10,13 +8,8 @@ class Morador {
     private $senha;
     private $ultimoAcesso;
     private $foto;
-    // private $sindico;
-    private $apartamento;
-
-    // public function __construct() {
-    //     $this->apartamento = new Apartamento();
-    // }
-   
+    private $sindico;
+    
     public function getId() {
         return $this->id;
     }
@@ -65,13 +58,13 @@ class Morador {
         $this->foto = $foto;
     }
 
-    // public function getSindico() {
-    //     return $this->sindico;
-    // }
+    public function getSindico() {
+        return $this->sindico;
+    }
     
-    // public function setSindico($sindico) {
-    //     $this->sindico = $sindico;
-    // }
+    public function setSindico($sindico) {
+        $this->sindico = $sindico;
+    }
 
     // public function getApartamento() {
     //     return $this->apartamento;
