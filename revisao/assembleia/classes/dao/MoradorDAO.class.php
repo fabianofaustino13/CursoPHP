@@ -3,6 +3,7 @@
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once (__DIR__ . "/../modelo/Morador.class.php");
 require_once (__DIR__ . "/../modelo/Apartamento.class.php");
+require_once (__DIR__ . "/../modelo/Sindico.class.php");
 
     class MoradorDAO {
 
@@ -109,7 +110,7 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
             return $morador;
         }
         public function findSindico() {
-            $sql = "SELECT * FROM TB_MORADORES ORDER BY PK_MOR ASC LIMIT 1";
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_SINDICOS ON FK_SIN_MOR = PK_MOR ORDER BY PK_SIN DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -122,7 +123,9 @@ require_once (__DIR__ . "/../modelo/Apartamento.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
                 $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
+                $sindico = new Sindico();
+                $sindico->setId($row['PK_SIN']);
+                $sindico->setSindico($morador);
               
                 array_push($sindicos, $morador);
             }

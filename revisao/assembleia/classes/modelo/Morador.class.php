@@ -8,7 +8,6 @@ class Morador {
     private $senha;
     private $ultimoAcesso;
     private $foto;
-    private $sindico;
     
     public function getId() {
         return $this->id;
@@ -56,14 +55,6 @@ class Morador {
     
     public function setFoto($foto) {
         $this->foto = $foto;
-    }
-
-    public function getSindico() {
-        return $this->sindico;
-    }
-    
-    public function setSindico($sindico) {
-        $this->sindico = $sindico;
     }
 
     // public function getApartamento() {

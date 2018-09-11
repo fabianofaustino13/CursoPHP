@@ -138,7 +138,7 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                         $j = count($assembleias);
                         // echo "<script>alert('número de assembléias: ' + ($j-1))</script>";
                         // $ultimaAssembleia = end($pautas);
-                        $num = 0;
+                        $num = 1;
                         foreach ($pautas as $pauta) {
                             if ($pauta->getAssembleia()->getId() == ($j-1)){
                                 $num++;

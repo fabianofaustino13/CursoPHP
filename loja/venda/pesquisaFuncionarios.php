@@ -23,13 +23,12 @@ $funcionarios = $funcionarioDao->findByFuncionario($funcionario);
 </head>
 <body>    
 
-        <div class="form-group col-md-10 mb-3" id="div_nomeFuncionarios">
             <!-- <input type="hidden" name="id" value="<//?=$sexo->getId();?>"> -->
             <label for="nomeFuncionario">Nome do Funcionário</label>
             <?php foreach($funcionarios as $funcionario): ?>
                 <input type="text" class="form-control" name="nomeFuncionario" id="nomeFuncionario" maxlength="50" required value="<?=$funcionario->getNome();?>">
             <?php endforeach;?>
-        </div> <!-- Fim Tabela -->
+             <!-- Fim Tabela -->
 
 </body>
 </html>

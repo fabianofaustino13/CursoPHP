@@ -1,14 +1,18 @@
 <?php
 
+require_once('Morador.class.php');
+
 class Sindico {
 
     private $id;
-    private $nome;
-    private $login;
-    private $senha;
-    private $ultimoAcesso;
-    private $foto;
+    private $data_inicio;
+    private $data_fim;
+    private $sindico;
    
+    public function __construct() {
+        $this->sindico = new Morador();
+    }
+    
     public function getId() {
         return $this->id;
     }
@@ -17,51 +21,27 @@ class Sindico {
         $this->id = $id;
     }
 
-    public function getNome() {
-        return $this->nome;
+    public function getDataInicio() {
+        return $this->data_inicio;
     }
     
-    public function setNome($nome) {
-        $this->nome = strtoupper($nome);
+    public function setDataInicio($data_inicio) {
+        $this->data_inicio = $data_inicio;
     }
 
-    public function getLogin() {
-        return $this->login;
+    public function getDataFim() {
+        return $this->data_fim;
     }
     
-    public function setLogin($login) {
-        $this->login = $login;
+    public function setDataFim($data_fim) {
+        $this->data_fim = $data_fim;
     }
 
-    public function getSenha() {
-        return $this->senha;
+    public function getSindico() {
+        return $this->sindico;
     }
     
-    public function setSenha($senha) {
-        $this->senha = $senha;
-    }
-
-    public function getUltimoAcesso() {
-        return $this->ultimoAcesso;
-    }
-    
-    public function setUltimoAcesso($ultimoAcesso) {
-        $this->ultimoAcesso = $ultimoAcesso;
-    }
-
-    public function getFoto() {
-        return $this->foto;
-    }
-    
-    public function setFoto($foto) {
-        $this->foto = $foto;
-    }
-
-    public function getFkMorSin() {
-        return $this->fkMorSin;
-    }
-    
-    public function setFkMorSin($fkMorSin) {
-        $this->fkMorSin = $fkMorSin;
+    public function setSindico(Morador $sindico) {
+        $this->sindico = $sindico;
     }
 }

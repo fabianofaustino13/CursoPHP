@@ -27,32 +27,32 @@
                 $sexo->setNome($row['SEX_NOME']);
                 $sexo->setSigla($row['SEX_SIGLA']);           
                 
-                $estado = new Estado();
-                $estado->setId($row['PK_EST']);
-                $estado->setNome($row['EST_NOME']);
-                $estado->setSigla($row['EST_SIGLA']);
+                // $estado = new Estado();
+                // $estado->setId($row['PK_EST']);
+                // $estado->setNome($row['EST_NOME']);
+                // $estado->setSigla($row['EST_SIGLA']);
                 
-                $cidade = new Cidade();
-                $cidade->setId($row['PK_CID']);
-                $cidade->setNome($row['CID_NOME']);
-                $cidade->setEstado($estado);
+                // $cidade = new Cidade();
+                // $cidade->setId($row['PK_CID']);
+                // $cidade->setNome($row['CID_NOME']);
+                // $cidade->setEstado($estado);
                 
-                $bairro = new Bairro();
-                $bairro->setId($row['PK_BAI']);
-                $bairro->setNome($row['BAI_NOME']);
-                $bairro->setCidade($cidade);
+                // $bairro = new Bairro();
+                // $bairro->setId($row['PK_BAI']);
+                // $bairro->setNome($row['BAI_NOME']);
+                // $bairro->setCidade($cidade);
 
-                $cep = new Cep();
-                $cep->setId($row['PK_CEP']);
-                $cep->setLogradouro($row['CEP_LOGRADOURO']);
-                $cep->setBairro($bairro);
+                // $cep = new Cep();
+                // $cep->setId($row['PK_CEP']);
+                // $cep->setLogradouro($row['CEP_LOGRADOURO']);
+                // $cep->setBairro($bairro);
                 
                 $funcionario = new Funcionario();
                 $funcionario->setMatricula($row['PK_MATRICULA']);
                 $funcionario->setNome($row['FUN_NOME']);
                 $funcionario->setCpf($row['FUN_CPF']);
                 $funcionario->setSexo($sexo);
-                $funcionario->setCep($cep);
+                // $funcionario->setCep($cep);
                 array_push($funcionarios, $funcionario);
             }
             return $funcionarios;

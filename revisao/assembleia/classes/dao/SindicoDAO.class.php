@@ -13,37 +13,45 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_MORADORES ORDER BY PK_MOR ASC";
+            $sql = "SELECT * FROM TB_SINDICOS LEFT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR ORDER BY PK_SIN DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $moradores = array();
+            $sindicos = array();
             foreach ($result as $row) {
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setLogin($row['MOR_LOGIN']);
                 $sindico = new sindico();
-                $sindico->setId($morador);
+                $sindico->setId($row['PK_SIN']);
+                $sindico->setDataInicio($row['SIN_DATA_INICIO']);
+                $sindico->setDataFim($row['SIN_DATA_FIM']);
+                $sindico->setSindico($morador);
               
-                array_push($moradores, $morador);
+                array_push($sindicos, $sindico);
             }
-            return $moradores;
+            return $sindicos;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE PK_MOR = :ID";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE FK_SIN_MOR = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
             $result = $statement->fetchAll();
             $morador = new Morador();
+            $sindico = new Sindico();
             foreach ($result as $row) {
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $sindico->setId($row['PK_SIN']);
+                $sindico->setDataInicio($row['SIN_DATA_INICIO']);
+                $sindico->setDataFim($row['SIN_DATA_FIM']);
+                $sindico->setSindico($morador);
             }
-            return $morador;
+            return $sindico;
         }
 
         public function findByNome($nome) {
@@ -62,54 +70,59 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             return $moradores;
         }
 
-        public function save(Morador $morador) {
-            if ($morador->getId() == null) {
-                // $this->insert($morador);
+        public function save(Sindico $sindico) {
+            if ($sindico->getId() == null) {
+                //$this->insert($sindico);
             } else {
-                $this->update2($morador);
+                $this->update($sindico);
             }
         }
 
-        private function insert(Morador $morador) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA, MOR_ULTIMO_ACESSO, MOR_FOTO, FK_MOR_SIN) VALUES (:NOME, :USERNAME, :SENHA, :ULTIMOACESSO, :FOTO, :SINDICO)";
+        private function insert(Sindico $sindico) {
+            // $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA) VALUES (:NOME, :USERNAME, :SENHA)";
+            $sql = "INSERT INTO TB_SINDICOS (SIN_DATA_INICIO, SIN_DATA_FIM, FK_SIN_MOR) VALUES (:DATA_INICIO, :DATA_FIM, :SINDICO)";
             try {
+                // $statement = $this->conexao->prepare($sql);
+                // $nome = $morador->getNome();
+                // $username = $morador->getLogin();
+                // $senha = $morador->getSenha();
+                // $statement->bindParam(':NOME', $nome);
+                // $statement->bindParam(':USERNAME', $username);
+                // $statement->bindParam(':SENHA', $senha);
+                // $statement->execute();
+                // $sindico_id = $morador->setId($this->conexao->lastInsertId());
+                // return $this->findById($this->conexao->lastInsertId());
+
                 $statement = $this->conexao->prepare($sql);
-                $nome = $morador->getNome();
-                $username = $morador->getLogin();
-                $senha = $morador->getSenha();
-                $ultimoAcesso = $morador->getUltimoAcesso();
-                $foto = $morador->getFoto();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':USERNAME', $username);
-                $statement->bindParam(':SENHA', $senha);
-                $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
-                $statement->bindParam(':FOTO', $foto);
+                $data_inicio = $sindico->getDataInicio();
+                $data_fim = $sindico->getDataFim();
+                $sindico = $sindico->getSindico();
+                $statement->bindParam(':DATA_INICIO', $data_inicio);
+                $statement->bindParam(':DATA_FIM', $data_fim);
+                $statement->bindParam(':SINDICO', $sindico);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
+
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
             }
         }
 
-        private function update(Morador $morador) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME = :NOME, MOR_LOGIN = :USERNAME, MOR_SENHA = :SENHA, MOR_ULTIMO_ACESSO = :ULTIMOACESSO, MOR_FOTO = :FOTO, MOR_MOR_SIN = :SINDICO WHERE PK_MOR = :ID";
+        private function update(Sindico $sindico) {
+            $sql = "UPDATE TB_SINDICOS SET SIN_DATA_INICIO=:DATA_INICIO, SIN_DATA_FIM=:DATA_FIM WHERE PK_SIN=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $nome = $morador->getNome();
-                $username = $morador->getLogin();
-                $senha = $morador->getSenha();
-                $ultimoAcesso = $morador->getUltimoAcesso();
-                $foto = $morador->getFoto();
-                $sindico = $morador->getSindico();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':USERNAME', $username);
-                $statement->bindParam(':SENHA', $senha);
-                $statement->bindParam(':ULTIMOACESSO', $ultimoAcesso);
-                $statement->bindParam(':FOTO', $foto);
-                $statement->bindParam(':SINDICO', $sindico);
+                $data_inicio = $sindico->getDataInicio();
+                $data_fim = $sindico->getDataFim();
+                $sindico = $sindico->getSindico()->getId();
+                $id = $sindico->getId();
+                $statement->bindParam(':DATA_INICIO', $data_inicio);
+                $statement->bindParam(':DATA_FIM', $data_fim);
+                //$statement->bindParam(':SINDICO', $sindico);
+                $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                return $this->findById($sindico->getId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -130,7 +143,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_MORADORES WHERE PK_MOR = :ID";
+            $sql = "DELETE FROM TB_SINDICOS WHERE PK_SIN = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id);

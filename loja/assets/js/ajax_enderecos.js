@@ -34,7 +34,7 @@ function show_bairros(cidade_id) {
 
 function show_Funcionarios(pesquisaFuncionario) {
     if (pesquisaFuncionario == 0) {
-        alert('Matrícula do Funcionário!');
+        //alert('Matrícula do Funcionário!');
         return;
     } else {
         let http_request = new XMLHttpRequest();
@@ -44,7 +44,7 @@ function show_Funcionarios(pesquisaFuncionario) {
                 document.getElementById("div_nomeFuncionarios").innerHTML = http_response;
             }
         };
-        http_request.open("GET","../venda/index.php?matricula=" + pesquisaFuncionario,true);
+        http_request.open("GET","../venda/pesquisaFuncionarios.php?matricula=" + pesquisaFuncionario,true);
         http_request.send();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Assembleia.class.php';
+require_once('Assembleia.class.php');
 
 class Pauta {
 
