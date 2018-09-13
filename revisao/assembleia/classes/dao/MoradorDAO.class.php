@@ -25,9 +25,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setStatus($row['MOR_STATUS']);
               
                 array_push($moradores, $morador);
             }
@@ -46,9 +44,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setStatus($row['MOR_STATUS']);
             }
             return $morador;
         }
@@ -68,6 +64,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
+                $morador->setStatus($row['MOR_STATUS']);
             }
             return $morador;
         }
@@ -84,9 +81,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setStatus($row['MOR_STATUS']);
             }
             return $morador;
         }
@@ -103,9 +98,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
-                // $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setStatus($row['MOR_STATUS']);
             }
             return $morador;
         }
@@ -121,11 +114,10 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
-                $morador->setUltimoAcesso($row['MOR_ULTIMO_ACESSO']);
-                $morador->setFoto($row['MOR_FOTO']);
+                $morador->setStatus($row['MOR_STATUS']);
                 $sindico = new Sindico();
                 $sindico->setId($row['PK_SIN']);
-                $sindico->setSindico($morador);
+                $sindico->setMorador($morador);
               
                 array_push($sindicos, $morador);
             }
@@ -141,15 +133,17 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         private function insert(Morador $morador, Apartamento $apartamento) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA) VALUES (:NOME, :USERNAME, :SENHA)";
+            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA, MOR_STATUS) VALUES (:NOME, :USERNAME, :SENHA, :STATUS_SINDICO)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
+                $status_sindico = $morador->getStatus();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
+                $statement->bindParam(':STATUS_SINDICO', $status_sindico);
                 $statement->execute();
                 $morador->setId($this->conexao->lastInsertId());
 
@@ -161,6 +155,14 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $statement->bindParam(':MORADOR', $morador_id);
                 $statement->execute();
 
+                if($status_sindico == 1) {
+                    $sql = "INSERT INTO TB_SINDICOS (FK_SIN_MOR) VALUES (:SINDICO)";
+                    $statement = $this->conexao->prepare($sql);
+                    $sindico = $morador->getId();
+                    $statement->bindParam(':SINDICO', $sindico);
+                    $statement->execute();
+                }
+
                 return $morador;
             } catch(PDOException $e) {
                 echo $e->getMessage();
@@ -169,18 +171,18 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         private function update(Morador $morador, Apartamento $apartamento) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA WHERE PK_MOR = :ID";
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_SINDICO WHERE PK_MOR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
-                $ultimoAcesso = $morador->getUltimoAcesso();
-                $foto = $morador->getFoto();
+                $status_sindico = $morador->getStatus();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
+                $statement->bindParam(':STATUS_SINDICO', $status_sindico);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 $morador->getId($this->conexao->lastInsertId());
@@ -192,6 +194,14 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $statement->bindParam(':APARTAMENTO', $apartamento_id);
                 $statement->bindParam(':MORADOR', $morador_id);
                 $statement->execute();
+
+                if($status_sindico == 1) {
+                    $sql = "INSERT INTO TB_SINDICOS (FK_SIN_MOR) VALUES (:SINDICO)";
+                    $statement = $this->conexao->prepare($sql);
+                    $sindico = $morador->getId();
+                    $statement->bindParam(':SINDICO', $sindico);
+                    $statement->execute();
+                }
 
             } catch(PDOException $e) {
                 echo $e->getMessage();

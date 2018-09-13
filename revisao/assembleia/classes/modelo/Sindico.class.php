@@ -7,10 +7,10 @@ class Sindico {
     private $id;
     private $data_inicio;
     private $data_fim;
-    private $sindico;
+    private $morador;
    
     public function __construct() {
-        $this->sindico = new Morador();
+        $this->morador = new Morador();
     }
     
     public function getId() {
@@ -37,11 +37,11 @@ class Sindico {
         $this->data_fim = $data_fim;
     }
 
-    public function getSindico() {
-        return $this->sindico;
+    public function getMorador() {
+        return $this->morador;
     }
     
-    public function setSindico(Morador $sindico) {
-        $this->sindico = $sindico;
+    public function setMorador(Morador $morador) {
+        $this->morador = $morador;
     }
 }

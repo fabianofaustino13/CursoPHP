@@ -6,8 +6,7 @@ class Morador {
     private $nome;
     private $login;
     private $senha;
-    private $ultimoAcesso;
-    private $foto;
+    private $status;
     
     public function getId() {
         return $this->id;
@@ -41,27 +40,11 @@ class Morador {
         $this->senha = $senha;
     }
 
-    public function getUltimoAcesso() {
-        return $this->ultimoAcesso;
+    public function getStatus() {
+        return $this->status;
     }
     
-    public function setUltimoAcesso($ultimoAcesso) {
-        $this->ultimoAcesso = $ultimoAcesso;
+    public function setStatus($status) {
+        $this->status = $status;
     }
-
-    public function getFoto() {
-        return $this->foto;
-    }
-    
-    public function setFoto($foto) {
-        $this->foto = $foto;
-    }
-
-    // public function getApartamento() {
-    //     return $this->apartamento;
-    // }
-    
-    // public function setApartamento(Apartamento $apartamento) {
-    //     $this->apartamento = $apartamento;
-    // }
 }

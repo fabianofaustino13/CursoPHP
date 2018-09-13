@@ -1,9 +1,10 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Morador.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Sindico.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/SindicoDAO.class.php"); ?>
+<?php 
+require_once(__DIR__ . "/../classes/modelo/Morador.class.php");
+require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Sindico.class.php");
+require_once(__DIR__ . "/../classes/dao/SindicoDAO.class.php");
 
-<?php  
+
 
 include(__DIR__ . "/../administracao/logado.php");
 
@@ -16,22 +17,15 @@ $sindicoNome = '';
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $sindico->setDataInicio($_POST['dataInicio']);
     $sindico->setDataFim($_POST['dataFim']);
+    $sindico->setMorador($moradorDao->findById($_POST['sindico']));
     // $sindico->setId($_POST['sindico']);
       
-    //if ($_POST['id'] != '') {
+    if ($_POST['id'] != '') {
         $sindico->setId($_POST['id']);
-    //}
-    // if ($_POST['id'] != null) {
-    // $sindicos = $sindicoDao->findAll();
-    // foreach ($moradores as $morador) {
-    //         $morador->setSindico($_POST['sindico']);
-    //         header('location: index.php');
-    //         $sindicoDao->save($morador);
+    }
 
-    //     }
-    // }
-    //$sindicoDao->save($sindico);
-    //header('location: index.php');
+    $sindicoDao->save($sindico);
+    header('location: index.php');
 } 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
@@ -45,12 +39,13 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 }
 
 if (!empty($_POST['pesquisarNome']) && $_POST['pesquisarNome'] == 'pesquisarNome') {
-    $moradores = $sindicoDao->findByNome($_POST['nome']);
+    $moradores = $sindicoDao->findById($_POST['moradorId']);
     
 } else {
     $moradores = $sindicoDao->findAll();
 }
 $sindicos = $sindicoDao->findAll();
+$moradores = $moradorDao->findAll();
 ?>
 
 <!DOCTYPE html>
@@ -62,12 +57,16 @@ $sindicos = $sindicoDao->findAll();
    <!-- include Menu -->
    <?php
         include(__DIR__ . "/../administracao/menu.php");
-        var_dump($sindico);
         ?>
 
 	<!-- Início do container -->
 	<div class="container">
         <div class="row" style="margin-top: 5%;">
+        <?php 
+            echo "<pre>";
+            var_dump($sindico);
+            echo "</pre>";
+        ?>
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Síndico</legend>
@@ -76,7 +75,7 @@ $sindicos = $sindicoDao->findAll();
                             <div class="col-md-12 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
                                 <input type="hidden" name="id" value="<?=$sindico->getId();?>">
-                                <input type="text" disabled="disabled" class="form-control" id="nome" name="nome" value="<?=$sindico->getSindico()->getNome();?>" maxlength="100" required />
+                                <input type="text" disabled="disabled" class="form-control" id="nome" name="nome" value="<?=$sindico->getMorador()->getNome();?>" maxlength="100" required />
                             </div><!-- Fim Nome do Morador -->
                             
                             <div class="col-md-6 mb-3">
@@ -87,7 +86,7 @@ $sindicos = $sindicoDao->findAll();
                                             <label class="custom-control-label" for="sindicoNao">Não</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoSim" name="sindico" class="custom-control-input" value="<?=$sindico->getId();?>" />
+                                            <input type="radio" id="sindicoSim" name="sindico" class="custom-control-input" value="<?=$sindico->getMorador()->getId();?>" />
                                             <label class="custom-control-label" for="sindicoSim">Sim</label>
                                         </div>                           
                                 </div>
@@ -113,17 +112,24 @@ $sindicos = $sindicoDao->findAll();
             <div class="col-md-12 mb-3">
                 <form action="index.php" method="post">
                     <div class="form-row">
-                        <div class="col-md-5 mb-3">
-                            <!-- <label for="nome" class="required">Nome do Morador</label> -->
-                            <!-- <input type="hidden" name="id" value="<//?=$morador->getNome();?>"> -->
-                            <!-- <input type="hidden" name="fk" value="<//?=$morador->getSindico();?>"> -->
-                            <input type="text" class="form-control" id="nome" name="nome" maxlength="35" placeholder="Informe o nome do morador..." />
+                        <div class="col-md-12 mb-3">
+                                <div class="row" >
+                                    <div class="col-md-8 mb-3" id="div_moradorId">
+                                        <select class="form-control" name="moradorId">
+                                        <option value="0" disabled selected>Pesquise por Morador</option>
+                                            <?php foreach ($moradores as $morador): ?>
+                                                <option id="<?=$morador->getId();?>" value="<?=$morador->getId();?>"> 
+                                                    <?=$morador->getId() . " - " . $morador->getNome(); ?>
+                                                </option> 
+                                            <?php endforeach; ?>                                    
+                                        </select> 
+                                    </div>                                
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-secodary btn-block" name="pesquisarNome" value="pesquisarNome">Pesquisar</button>
+                                        </div> <!--Fim Botões -->
+                                    </div>               
                             </div>
-                            <div class="col-md-2 mb-3">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-secodary btn-block" name="pesquisarNome" value="pesquisarNome">Pesquisar</button>
-                            </div> <!--Fim Botões -->
-                        </div>
                         
                         <div class="col-12"> <!-- Tabela -->
                             <fieldset>
@@ -140,30 +146,11 @@ $sindicos = $sindicoDao->findAll();
                                     <tbody>                        
                                         <?php 
                                         
-                                            // foreach ($moradores as $morador) {
-                                            //     $sindicoId = $morador->getSindico();
-                                            //     // echo "<script>alert('$sindicoId');</script>";
-                                            // }
-                                            // $moradores2 = $dao->findAll();
-                                            // foreach ($moradores2 as $morador) {
-                                            //     $moradorId = $morador->getId();
-                                            //     // $sindico = $morador->getId();
-                                            //     // $sindicoId = $morador->getSindico(); 
-                                            //     // $sindicoNome = $morador->getNome();
-                                            //     // echo "<script>alert($sindicoId);</script>";
-                                            //     // echo "<script>alert($moradorId);</script>";
-                                            //     // echo "<script>alert('$sindicoId');</script>";
-                                            //     if ($sindicoId == $moradorId) {
-                                            //         $sindicoNome = $morador->getNome();
-                                            //         // echo "<script>alert($sindico);</script>";
-                                            //     } 
-                                            // }
-                                        
                                             foreach ($sindicos as $sindico):?>
                                             <tr>
                                                 <td><?=$sindico->getId();?></td>
-                                                <td><?=$sindico->getSindico()->getId();?></td>
-                                                <td><?=$sindico->getSindico()->getNome();?></td>
+                                                <td><?=$sindico->getMorador()->getId();?></td>
+                                                <td><?=$sindico->getMorador()->getNome();?></td>
                                                 <td><?=$sindico->getDataInicio();?></td>
                                                 <td><?=$sindico->getDataFim();?></td>
                                                 <td>

@@ -13,7 +13,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_SINDICOS LEFT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR ORDER BY PK_SIN DESC";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE MOR_STATUS = 1 ORDER BY PK_SIN DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -23,19 +23,20 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setStatus($row['MOR_STATUS']);
                 $sindico = new sindico();
                 $sindico->setId($row['PK_SIN']);
                 $sindico->setDataInicio($row['SIN_DATA_INICIO']);
                 $sindico->setDataFim($row['SIN_DATA_FIM']);
-                $sindico->setSindico($morador);
+                $sindico->setMorador($morador);
               
                 array_push($sindicos, $sindico);
             }
             return $sindicos;
         }
-
+    
         public function findById($id) {
-            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE FK_SIN_MOR = :ID";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE PK_SIN = :ID AND MOR_STATUS = 1";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
@@ -46,10 +47,11 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setStatus($row['MOR_STATUS']);
                 $sindico->setId($row['PK_SIN']);
                 $sindico->setDataInicio($row['SIN_DATA_INICIO']);
                 $sindico->setDataFim($row['SIN_DATA_FIM']);
-                $sindico->setSindico($morador);
+                $sindico->setMorador($morador);
             }
             return $sindico;
         }
@@ -64,7 +66,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
-                $morador->setSindico($row['FK_MOR_SIN']);
+                $morador->setMorador($row['FK_MOR_SIN']);
                 array_push($moradores, $morador);
             }
             return $moradores;
@@ -72,7 +74,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
 
         public function save(Sindico $sindico) {
             if ($sindico->getId() == null) {
-                //$this->insert($sindico);
+                $this->insert($sindico);
             } else {
                 $this->update($sindico);
             }
@@ -96,7 +98,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $data_inicio = $sindico->getDataInicio();
                 $data_fim = $sindico->getDataFim();
-                $sindico = $sindico->getSindico();
+                $sindico = $sindico->getMorador();
                 $statement->bindParam(':DATA_INICIO', $data_inicio);
                 $statement->bindParam(':DATA_FIM', $data_fim);
                 $statement->bindParam(':SINDICO', $sindico);
@@ -115,11 +117,11 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $data_inicio = $sindico->getDataInicio();
                 $data_fim = $sindico->getDataFim();
-                $sindico = $sindico->getSindico()->getId();
+                // $sindico = $sindico->getMorador()->getId();
                 $id = $sindico->getId();
                 $statement->bindParam(':DATA_INICIO', $data_inicio);
                 $statement->bindParam(':DATA_FIM', $data_fim);
-                //$statement->bindParam(':SINDICO', $sindico);
+                // $statement->bindParam(':SINDICO', $sindico);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($sindico->getId());
@@ -133,7 +135,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             $sql = "UPDATE TB_MORADORES SET FK_MOR_SIN = :SINDICO";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $sindico = $morador->getSindico();
+                $sindico = $morador->getMorador();
                 $statement->bindParam(':SINDICO', $sindico);
                 $statement->execute();
             } catch(PDOException $e) {

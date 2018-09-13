@@ -20,6 +20,7 @@ $morador = new Morador();
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setNome($_POST['nome']);
     $morador->setLogin($_POST['login']);
+    $morador->setStatus($_POST['sindico']);
   
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
@@ -36,9 +37,9 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     
     $apartamento->getBloco()->setId($_POST['blocoId']);
     $apartamento->setId($_POST['apartamentoId']);
-
+    
     $moradorDao->save($morador, $apartamento);
-
+   
     
     header('location: index.php');
     } 
@@ -80,11 +81,13 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                     <legend>Cadastro de Moradores</legend>
                     <form method="post" action="index.php"><!-- Form Geral -->
                         <div class="form-row"><!-- Div1 -->
+                            
                             <div class="col-md-12 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
                                 <input type="hidden" name="id" value="<?=$morador->getId();?>">
                                 <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required />
                             </div><!-- Fim Nome do Morador -->
+                        
                             <div class="col-md-4 mb-3">
                                 <label for="login">Login</label>
                                 <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" />
@@ -96,16 +99,14 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                             <div class="col-md-4 mb-3">
                                 <label for="senha2">Confirme a Senha</label>
                                 <input type="text" class="form-control" id="senha2" name="senha2" maxlength="25" />
-                            </div>            
-                            
-                            <div class="col-md-3 mb-3" id="div_blocos"><!-- select Apartamento -->
+                            </div>      
+                            <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
                                 <label for="blocoId">Bloco</label>
                                 <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
                                     <option value="0" selected disabled>--SELECIONE--</option>
                                     <?php foreach ($blocos as $bloco): ?>                                                    
-                                            <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
-                                        <?php endforeach; 
-                                    ?>                                    
+                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
+                                    <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
                             <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
@@ -114,6 +115,20 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                     <option value="0" selected disabled>--Selecione um bloco--</option>                      
                                 </select> 
                             </div>  
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="required">Síndico?</label>
+                                <div class="form-group">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="sindicoNao" name="sindico" class="custom-control-input" value="0" checked/>
+                                        <label class="custom-control-label" for="sindicoNao">Não</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="sindicoSim" name="sindico" class="custom-control-input" value="1" />
+                                        <label class="custom-control-label" for="sindicoSim">Sim</label>
+                                    </div>      
+                                </div>
+                            </div> 
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
