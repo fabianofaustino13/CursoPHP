@@ -58,13 +58,15 @@ $moradores = $moradorDao->findAll();
    <?php
         include(__DIR__ . "/../administracao/menu.php");
         ?>
+        
 
 	<!-- Início do container -->
 	<div class="container">
         <div class="row" style="margin-top: 5%;">
         <?php 
             echo "<pre>";
-            var_dump($sindico);
+            echo $_SESSION['MoradorPerfil'];
+            //var_dump($sindico);
             echo "</pre>";
         ?>
             <div class="col-md-12 mb-3">

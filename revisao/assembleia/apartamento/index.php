@@ -53,7 +53,9 @@ $adimplentes = $adimplenteDao->findAll();
 // }
 
 ?>
-
+<?php if ($_SESSION['MoradorPerfilID'] > 3) {
+    header('location: /cursoPHP/revisao/assembleia/');
+}?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

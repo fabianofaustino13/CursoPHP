@@ -1,13 +1,20 @@
 <?php
 
+require_once "Perfil.class.php";
 class Morador {
 
     private $id;
     private $nome;
+    private $cpf;
     private $login;
     private $senha;
     private $status;
+    private $perfil;
     
+    public function __construct() {
+        $this->perfil = new Perfil();
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -22,6 +29,14 @@ class Morador {
     
     public function setNome($nome) {
         $this->nome = strtoupper($nome);
+    }
+
+    public function getCpf() {
+        return $this->cpf;
+    }
+    
+    public function setCpf($cpf) {
+        $this->cpf = $cpf;
     }
 
     public function getLogin() {
@@ -40,11 +55,20 @@ class Morador {
         $this->senha = $senha;
     }
 
+    
     public function getStatus() {
         return $this->status;
     }
     
     public function setStatus($status) {
         $this->status = $status;
+    }
+
+    public function getPerfil() {
+        return $this->perfil;
+    }
+    
+    public function setPerfil(Perfil $perfil) {
+        $this->perfil = $perfil;
     }
 }

@@ -5,22 +5,31 @@ require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
 require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Perfil.class.php");
+require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
+
 
 include(__DIR__ . "/../administracao/logado.php");
 
-$blocoDao = new BlocoDAO();
+$perfil = new Perfil();
+$perfilDao = new PerfilDAO();
+
 $bloco = new Bloco();
+$blocoDao = new BlocoDAO();
 
-$apartamentoDao = new ApartamentoDAO();
 $apartamento = new Apartamento();
+$apartamentoDao = new ApartamentoDAO();
 
-$moradorDao = new MoradorDAO();
 $morador = new Morador();
+$moradorDao = new MoradorDAO();
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setNome($_POST['nome']);
+    $morador->setCpf($_POST['cpf']);
     $morador->setLogin($_POST['login']);
     $morador->setStatus($_POST['sindico']);
+    $teste = $perfilDao->findById($_POST['perfil']);
+    $morador->setPerfil($teste);
   
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
@@ -58,6 +67,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $sindicos = $moradorDao->findSindico();
     $apartamentos = $apartamentoDao->findByMorador();
     $blocos = $blocoDao->findAll();
+    $perfis = $perfilDao->findAll();
     date_default_timezone_set('America/Sao_Paulo');
     // $dataLocal = date('d/m/Y H:i:s', time());
     ?>
@@ -77,16 +87,25 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
 	<div class="container">
         <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
+            <!-- <//?php 
+                echo "<pre>";
+                var_dump($morador);
+                echo "</pre>";
+            ?> -->
                 <fieldset>
                     <legend>Cadastro de Moradores</legend>
                     <form method="post" action="index.php"><!-- Form Geral -->
                         <div class="form-row"><!-- Div1 -->
                             
-                            <div class="col-md-12 mb-3"><!-- Nome do Morador -->
+                            <div class="col-md-10 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
                                 <input type="hidden" name="id" value="<?=$morador->getId();?>">
                                 <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required />
-                            </div><!-- Fim Nome do Morador -->
+                            </div>
+                            <div class="col-md-2 mb-3"><!-- Nome do Morador -->
+                                <label for="cpf" class="required">CPF</label>
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" required />
+                            </div>
                         
                             <div class="col-md-4 mb-3">
                                 <label for="login">Login</label>
@@ -115,8 +134,16 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                     <option value="0" selected disabled>--Selecione um bloco--</option>                      
                                 </select> 
                             </div>  
-                            
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-2 mb-3"><!-- select Perfil -->
+                                <label for="perfil">Perfil</label>
+                                <select class="form-control" name="perfil">
+                                    <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
+                                    <?php foreach ($perfis as $perfil): ?>                                                    
+                                        <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>"><?=$perfil->getNome();?></option> 
+                                    <?php endforeach; ?>                                    
+                                </select> 
+                            </div>  
+                            <div class="col-md-4 mb-3">
                                 <label class="required">Síndico?</label>
                                 <div class="form-group">
                                     <div class="custom-control custom-radio custom-control-inline">

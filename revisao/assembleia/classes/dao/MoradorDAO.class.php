@@ -14,18 +14,23 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_MORADORES ORDER BY PK_MOR ASC";
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER ORDER BY PK_MOR ASC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $moradores = array();
             foreach ($result as $row) {
+                $perfil = new Perfil();
+                $perfil->setId($row['PK_PER']);
+                $perfil->setNome($row['PER_NOME']);
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
+                $morador->setPerfil($perfil);
               
                 array_push($moradores, $morador);
             }
@@ -33,18 +38,23 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE PK_MOR = :ID";
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
             $morador = new Morador();
+            $perfil = new Perfil();
             foreach ($result as $row) {
+                $perfil->setId($row['PK_PER']);
+                $perfil->setNome($row['PER_NOME']);
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
+                $morador->setPerfil($perfil);
             }
             return $morador;
         }
@@ -62,6 +72,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
@@ -79,6 +90,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             foreach ($result as $row) {
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
@@ -87,18 +99,24 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findByLogin($login) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_LOGIN = :USERNAME";
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE MOR_LOGIN = :USERNAME";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':USERNAME', $login); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
+            $perfil = new Perfil();
             $morador = new Morador();
             foreach ($result as $row) {
+                $perfil->setId($row['PK_PER']);
+                $perfil->setNome($row['PER_NOME']);
+
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
+                $morador->setPerfil($perfil);
             }
             return $morador;
         }
@@ -112,6 +130,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
@@ -133,17 +152,21 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         private function insert(Morador $morador, Apartamento $apartamento) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_LOGIN, MOR_SENHA, MOR_STATUS) VALUES (:NOME, :USERNAME, :SENHA, :STATUS_SINDICO)";
+            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, MOR_STATUS, FK_MOR_PER) VALUES (:NOME, :CPF, :USERNAME, :SENHA, :STATUS_SINDICO, :PERFIL)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
+                $cpf = $morador->getCpf();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
                 $status_sindico = $morador->getStatus();
+                $perfil = $morador->getPerfil()->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
+                $statement->bindParam(':CPF', $cpf);
                 $statement->bindParam(':SENHA', $senha);
                 $statement->bindParam(':STATUS_SINDICO', $status_sindico);
+                $statement->bindParam(':PERFIL', $perfil);
                 $statement->execute();
                 $morador->setId($this->conexao->lastInsertId());
 
@@ -171,18 +194,22 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         private function update(Morador $morador, Apartamento $apartamento) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_SINDICO WHERE PK_MOR = :ID";
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_SINDICO, FK_MOR_PER=:PERFIL WHERE PK_MOR = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
+                $cpf = $morador->getCpf();
                 $username = $morador->getLogin();
                 $senha = $morador->getSenha();
                 $status_sindico = $morador->getStatus();
+                $perfil = $morador->getPerfil()->getId();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
+                $statement->bindParam(':CPF', $cpf);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
                 $statement->bindParam(':STATUS_SINDICO', $status_sindico);
+                $statement->bindParam(':PERFIL', $perfil);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 $morador->getId($this->conexao->lastInsertId());

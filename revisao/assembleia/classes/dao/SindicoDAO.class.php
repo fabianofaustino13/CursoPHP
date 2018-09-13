@@ -13,7 +13,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE MOR_STATUS = 1 ORDER BY PK_SIN DESC";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE MOR_STATUS = 1 ORDER BY SIN_DATA_FIM DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();

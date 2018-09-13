@@ -3,6 +3,7 @@
 require_once 'Adimplente.class.php';
 require_once 'Bloco.class.php';
 require_once 'Morador.class.php';
+require_once 'Perfil.class.php';
 
 class Apartamento {
 

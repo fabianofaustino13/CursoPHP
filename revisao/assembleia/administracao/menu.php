@@ -1,25 +1,33 @@
 <?php
-//include(__DIR__ . "/../administracao/logado.php");
+// include(__DIR__ . "/../administracao/logado.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <title>Assembleia</title>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/login.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
+    <link rel="stylesheet" href="../assets/css/home.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
     <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/home.css">
+	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
 </head>
 <body>
     <!-- Menu lateral -->
+    
     <div class="sidenav">
+        <li>
+            <label style="color: white">Olá <br><?=$_SESSION['MoradorNome'];?> <br> (<?=$_SESSION['MoradorPerfilNome'];?>)</label>
+        </li>
+          
         <li>
             <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>
         </li>          
+        
+    <?php if ($_SESSION['MoradorPerfilID'] <= 3): ?>
         
         <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
             <i class="fa fa-caret-down"></i>
@@ -43,6 +51,7 @@
             <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
             <a href="../apartamento/index.php"><i class="fa fa-users"></i> <span>Apartamento</span> </a>
         </div>
+    <?php endif;?>
 
         <a href="../administracao/logout.php" style="color: red"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
             
