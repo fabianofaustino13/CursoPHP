@@ -34,11 +34,12 @@ $sexos = $dao->findAll();
     <title>Sexos</title>
 </head>
 <body>
+    <div class="container-fluid">
     <!-- include Menu -->
     <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>
-    <div class="conteiner">
+    <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">
             <div class="col-6"> <!-- Form -->
                 <fieldset>
@@ -123,6 +124,6 @@ $sexos = $dao->findAll();
             </div>
         </div>
     </div>
-
+    </div>
 </body>
 </html>

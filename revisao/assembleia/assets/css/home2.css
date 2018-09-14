@@ -2,15 +2,26 @@ body {
     font-family: "Lato", sans-serif;
 }
 
+.containerMenuDireita {
+    width: 85%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
 /* Fixed sidenav, full height */
 .sidenav {
     height: 100%;
-    width: 200px;
-    position: fixed;
+    width: 15%;
+    float: left;
+    position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
     /* background-color: #111; */
+    /* background-color: red; */
     background-color: rgb(58, 64, 70);
     overflow-x: hidden;
     padding-top: 20px;
@@ -67,8 +78,49 @@ body {
     padding-right: 8px;
 }
 
+/* Campo requerido/obrigatório */
+.required label, label.required {
+    font-weight: bold;
+    color: #333;
+}
 /* Some media queries for responsiveness */
-@media screen and (max-height: 450px) {
+/* @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 }
+
+@media (max-width: 768px) { 
+    .sidenav {
+        padding-top: 15px;
+        display: none;
+    }
+    .sidenav a {font-size: 18px;}
+} */
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+@media screen and (max-width: 900px) {
+    .sidenav {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidenav a {float: left;}
+    .sidenav a {font-size: 16px;}
+    div.content {margin-left: 0;}
+    div.containerMenuDireita {
+        width: 100%;
+        float: left;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+  }
+  
+  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+  /* @media screen and (max-width: 600px) {
+    .sidenav a {
+      text-align: left;
+      float: none;
+    }
+  } */

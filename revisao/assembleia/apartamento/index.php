@@ -62,20 +62,21 @@ $adimplentes = $adimplenteDao->findAll();
     <title>Cadastrar Apartamento</title> 
 </head>
 <body>
+    <div class="container-fluid">
     <!-- include Menu -->
     <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>
 
 	<!-- Início do container -->
-	<div class="container">
+    <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Apartamento</legend>
                     <form method="post" action="index.php"><!-- Form -->
                         <div class="form-row"><!-- Div1 -->
-                            <div class="col-md-12 mb-3"> <!-- Nome da Bloco -->
+                            <div class="col-md-2 mb-3"> <!-- Nome da Bloco -->
                                 <label for="assembleia" class="required">Selecione um Bloco</label>
                                 <div class="form-group">
                                     <?php foreach ($blocos as $bloco): ?>
@@ -86,7 +87,12 @@ $adimplentes = $adimplenteDao->findAll();
                                     <?php endforeach; ?>                                    
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3"> <!-- Nome da Bloco -->
+                            <div class="col-md-2 mb-3"><!-- Nome da Apartamento -->
+                                <label for="nome" class="required">Apartamento</label>
+                                <input type="hidden" name="id" value="<?=$apartamento->getId();?>">                           
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getNome();?>" maxlength="10" placeholder="705" required />
+                            </div><!-- Fim Nome da Apartamento -->
+                            <div class="col-md-4 mb-3"> <!-- Status -->
                                 <label for="">Status</label>
                                 <div class="form-group">
                                     <?php foreach ($adimplentes as $adimplente): ?>
@@ -97,11 +103,6 @@ $adimplentes = $adimplenteDao->findAll();
                                     <?php endforeach; ?>                                    
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3"><!-- Nome da Apartamento -->
-                                <label for="nome" class="required">Apartamento</label>
-                                <input type="hidden" name="id" value="<?=$apartamento->getId();?>">                           
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getNome();?>" maxlength="10" placeholder="705" required />
-                            </div><!-- Fim Nome da Apartamento -->
                             
                         </div><!-- Fim Form -->
                         <div class="form-group">
@@ -112,14 +113,14 @@ $adimplentes = $adimplenteDao->findAll();
                 </fieldset>
             </div>
             
-            <div class="col-6"> <!-- Tabela -->
+            <div class="col-md-12 mb-3"> <!-- Tabela -->
                 
                     <table class="table table-striped table-hover">
                         <thead>
                             <th>#</th>
                             <th>Apartamento</th>
                             <th>Bloco</th>
-                            <th>Adimplente</th>
+                            <th>Status</th>
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
@@ -153,6 +154,7 @@ $adimplentes = $adimplenteDao->findAll();
               
             </div> <!-- Fim Tabela -->
         </div> 
-    </div> <!-- Fim do container -->
+    </div>
+</div> <!-- Fim do container -->
 </body>
 </html> 

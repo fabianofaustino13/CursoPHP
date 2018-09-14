@@ -78,13 +78,14 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     <title>Cadastrar Morador</title>
 </head>
 <body>
+    <!-- Início do container -->
+    <div class="container-fluid">
    <!-- include Menu -->
    <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>
 
-	<!-- Início do container -->
-	<div class="container">
+    <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
             <!-- <//?php 
@@ -204,6 +205,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                 </fieldset>
             </div> <!-- Fim Tabela -->
         </div> 
+    </div>
     </div> <!-- Fim do container -->
     <script src="../assets/js/ajax_funcoes.js"></script>
 </body>

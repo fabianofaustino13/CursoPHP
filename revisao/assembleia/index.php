@@ -19,6 +19,7 @@ if (isset($_SESSION['mensagem'])) {
 
 </head>
 <body>
+    
     <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -46,5 +47,6 @@ if (isset($_SESSION['mensagem'])) {
             </div>
         </div>
     </div>
+   
 </body>
 </html>
