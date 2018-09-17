@@ -42,6 +42,65 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             return $apartamentos;
         }
 
+        public function findAllNice() {
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR WHERE BLO_APELIDO = 'NICE' ORDER BY PK_APA ASC";
+            $statement = $this->conexao->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $apartamentos = array();
+            foreach ($result as $row) {
+                $morador = new Morador();
+                $morador->getId($row['PK_MOR']);
+                $morador->getNome($row['MOR_NOME']);
+                $adimplente = new Adimplente();
+                $adimplente->setId($row['PK_ADI']);
+                $adimplente->setNome($row['ADI_NOME']);
+                $bloco = new Bloco();
+                $bloco->setId($row['PK_BLO']);
+                $bloco->setNome($row['BLO_NOME']);
+                $bloco->setApelido($row['BLO_APELIDO']);
+                $apartamento = new Apartamento();
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $apartamento->setBloco($bloco);
+                $apartamento->setAdimplente($adimplente);
+                $apartamento->setMorador($morador);
+
+                array_push($apartamentos, $apartamento);
+            }
+            return $apartamentos;
+        }
+
+        public function findAllLyon() {
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR WHERE BLO_APELIDO = 'LYON' ORDER BY PK_APA ASC";
+            $statement = $this->conexao->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $apartamentos = array();
+            foreach ($result as $row) {
+                $morador = new Morador();
+                $morador->getId($row['PK_MOR']);
+                $morador->getNome($row['MOR_NOME']);
+                $adimplente = new Adimplente();
+                $adimplente->setId($row['PK_ADI']);
+                $adimplente->setNome($row['ADI_NOME']);
+                $bloco = new Bloco();
+                $bloco->setId($row['PK_BLO']);
+                $bloco->setNome($row['BLO_NOME']);
+                $bloco->setApelido($row['BLO_APELIDO']);
+                $apartamento = new Apartamento();
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $apartamento->setBloco($bloco);
+                $apartamento->setAdimplente($adimplente);
+                $apartamento->setMorador($morador);
+
+                array_push($apartamentos, $apartamento);
+            }
+            return $apartamentos;
+        }
+
+
         public function findById($id) {
             $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO LEFT JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI WHERE PK_APA = :ID";
             $statement = $this->conexao->prepare($sql);
@@ -67,7 +126,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         public function findByMorador() {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_MOR = FK_ADM_MOR AND PK_APA = FK_ADM_APA";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_MOR = FK_ADM_MOR AND PK_APA = FK_ADM_APA ORDER BY PK_MOR DESC";
             $statement = $this->conexao->prepare($sql);
             // $id_morador = $morador->getId();
             // $statement->bindParam(':ID_MOR', $id_morador); //Proteção contra sql injetct

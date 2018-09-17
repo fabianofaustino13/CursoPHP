@@ -52,6 +52,7 @@ class Morador {
     }
     
     public function setSenha($senha) {
+        // $this->senha = md5($senha);
         $this->senha = $senha;
     }
 

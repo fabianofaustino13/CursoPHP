@@ -28,8 +28,8 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
 </head>
 <body>    
         <label for="apartamentoId">Apartamento</label>
-        <select class="form-control" name="apartamentoId">
-            <option value="0" selected disabled>--SELECIONE--</option>
+        <select class="form-control" name="apartamentoId" required>
+            <option value=""></option>
             <?php foreach ($apartamentos as $apartamento): ?>                                                    
                     <option id="<?=$apartamento->getId();?>" value="<?=$apartamento->getId();?>"><?=$apartamento->getNome();?></option> 
                 <?php endforeach; 

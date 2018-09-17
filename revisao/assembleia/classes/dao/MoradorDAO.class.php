@@ -31,7 +31,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
                 $morador->setPerfil($perfil);
-              
+
                 array_push($moradores, $morador);
             }
             return $moradores;
@@ -120,6 +120,31 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             }
             return $morador;
         }
+
+        public function findCpf($cpf) {
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE MOR_CPF = :CPF";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':CPF', $cpf); //Proteção contra sql injetct
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $perfil = new Perfil();
+            $morador = new Morador();
+            foreach ($result as $row) {
+                $perfil->getId($row['PK_PER']);
+                $perfil->getNome($row['PER_NOME']);
+
+                $morador->getId($row['PK_MOR']);
+                $morador->getNome($row['MOR_NOME']);
+                $morador->getCpf($row['MOR_CPF']);
+                $morador->getLogin($row['MOR_LOGIN']);
+                $morador->getSenha($row['MOR_SENHA']);
+                $morador->getStatus($row['MOR_STATUS']);
+                $morador->getPerfil($perfil);
+                
+            }
+            return $morador;
+        }
+        
         public function findSindico() {
             $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_SINDICOS ON FK_SIN_MOR = PK_MOR ORDER BY PK_SIN DESC";
             $statement = $this->conexao->prepare($sql);
@@ -185,7 +210,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                     $statement->bindParam(':SINDICO', $sindico);
                     $statement->execute();
                 }
-
+                
                 return $morador;
             } catch(PDOException $e) {
                 echo $e->getMessage();

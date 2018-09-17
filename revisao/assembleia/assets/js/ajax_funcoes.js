@@ -32,26 +32,56 @@ function show_apartamentos(bloId) {
 }
 
 function checaFormulario(){
-    // var password1 = document.form1.senha.value;
-    // var password2 = document.form1.senha2.value;
-    if (isNaN(document.form1.cpf.value)) {
-        window.alert("A Digite apenas números no CPF");
-        window.alert(document.form1.cpf.value);
-    }else {
-        window.alert("B Digite apenas números no CPF");
-        window.alert(document.form1.cpf.value)
+   
+    if (document.form1.nome.value == '') {
+        window.alert("Informe um nome para o Morador");
+        form1.nome.focus();
+        return false;
     }
-    if ((document.form1.senha.value != '') && (document.form1.senha2.value != '')) {
-        // window.alert("ok");
-        if (document.form1.senha.value != document.form1.senha2.value){
-            // window.alert("Seja bem-vindo "+user+"");
-            window.alert("Senhas não conferem");
+
+    if (document.form1.cpf.value != '') {
+        let cpf = document.form1.cpf.value;
+        regex = /^[0-9]{11}$/; 
+        // Validar cnpj basta add | e a máscara. ex. "([0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2} | [0-9]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{4}\-[0-9]{2})"
+        valida_cpf = cpf.search(regex) == -1 ? false : true;
+        //alert(valida_cpf);
+        if (valida_cpf != true){
+            // window.alert(valida_cpf);
+            window.alert("CPF Inválido");
+            form1.cpf.focus();
+            return false;
         }
-    // if(!isset($_POST['senha']) && !empty($_POST['senha'])){
     }else{
-        window.alert("A senha não pode ser 'Vazio'");
+        window.alert("Digite um CPF");
+        form1.cpf.focus();
+        return false;
     }
+    if (document.form1.login.value == '') {
+        window.alert("Informe um login para o Morador");
+        form1.login.focus();
+        return false;
+    }
+  
+    if (document.form1.senha.value == '') {
+        window.alert("O campo senha não pode ser vazio");
+        form1.senha.focus();
+        return false;
+    }
+
+    if (document.form1.senha2.value == '') {
+        window.alert("O campo de confirme a senha não pode ser vazio");
+        form1.senha2.focus();
+        return false;
+    }
+
+    if (document.form1.senha.value != document.form1.senha2.value){
+        // window.alert("Seja bem-vindo "+user+"");
+        window.alert("Senhas não conferem");
+        form1.senha.focus();
+        return false;
+    }   
     
+    return true;
 }
 
 // function checaCadastro() {

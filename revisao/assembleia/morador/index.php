@@ -1,4 +1,6 @@
 <?php 
+include(__DIR__ . "/../administracao/logado.php");
+
 require_once(__DIR__ . "/../classes/modelo/Morador.class.php");
 require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
@@ -7,9 +9,6 @@ require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Perfil.class.php");
 require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
-
-
-include(__DIR__ . "/../administracao/logado.php");
 
 $perfil = new Perfil();
 $perfilDao = new PerfilDAO();
@@ -22,35 +21,37 @@ $apartamentoDao = new ApartamentoDAO();
 
 $morador = new Morador();
 $moradorDao = new MoradorDAO();
+$teste = new Morador();
+$aviso = '';
+
 
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setNome($_POST['nome']);
-    $morador->setCpf($_POST['cpf']);
     $morador->setLogin($_POST['login']);
+    $morador->setCpf($_POST['cpf']);
+    $morador->setSenha($_POST['senha']);
     $morador->setStatus($_POST['sindico']);
     $perfil = $perfilDao->findById($_POST['perfil']);
     $morador->setPerfil($perfil);
-  
-
-
-    $senha = $_POST['senha'];
-    $senha2 = $_POST['senha2'];
-    if ($senha == $senha2) {
-        $morador->setSenha($_POST['senha']);
-   
-    } else {
-        echo("senha não confere.");
-    }
     
+    // $teste = $moradorDao->findByNome($_POST['nome']);
+    // $i = count($teste);
+    // if ($teste->count() > 0) {
+    //     $aviso = "CPF já cadastrado";
+    //     //return $aviso;
+    // }else {
+
+    // }
+
+
     if ($_POST['id'] != '') {
         $morador->setId($_POST['id']);
     }
     
     $apartamento->getBloco()->setId($_POST['blocoId']);
     $apartamento->setId($_POST['apartamentoId']);
-    
-    $moradorDao->save($morador, $apartamento);
-   
+       
+    $moradorDao->save($morador, $apartamento); 
     
     header('location: index.php');
     } 
@@ -72,8 +73,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $perfis = $perfilDao->findAll();
     date_default_timezone_set('America/Sao_Paulo');
     // $dataLocal = date('d/m/Y H:i:s', time());
-    ?>
-
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -91,43 +91,48 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
-            <!-- <//?php 
+            <?php 
+            // echo $aviso;
                 echo "<pre>";
-                var_dump($morador);
+                
+                    //var_dump($teste);
+                
                 echo "</pre>";
-            ?> -->
+            ?>
+            <!-- onsubmit="return checaFormulario()"  -->
                 <fieldset>
                     <legend>Cadastro de Moradores</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
-                    <form onsubmit="checaFormulario()" id="form1" name="form1" method="post">
+                    <form id="form1" name="form1" action="index.php" method="post" onsubmit="return checaFormulario(this)">
                         <div class="form-row"><!-- Div1 -->
                             
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
                                 <input type="hidden" name="id" value="<?=$morador->getId();?>">
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required />
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required />                    
                             </div>
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" />
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" required />                               
                             </div>
                         
                             <div class="col-md-4 mb-3">
                                 <label for="login" class="required">Login</label>
-                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" />
+                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" required />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="senha" class="required">Senha</label>
-                                <input type="text" class="form-control" id="senha" name="senha" maxlength="25" />
+                                <input type="password" class="form-control" id="senha" name="senha" value="<?=$morador->getLogin();?>" maxlength="25" required />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="senha2">Confirme a Senha</label>
-                                <input type="text" class="form-control" id="senha2" name="senha2" maxlength="25" />
+                                <input type="password" class="form-control" id="senha2" name="senha2" value="<?=$morador->getLogin();?>" maxlength="25" required />
                             </div>      
                             <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
                                 <label for="blocoId" class="required">Bloco</label>
-                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
-                                    <option value="0" selected disabled>--SELECIONE--</option>
+                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);" required />
+                                    <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
+                                    <option value=""></option>
                                     <?php foreach ($blocos as $bloco): ?>                                                    
                                         <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>"><?=$bloco->getApelido();?></option> 
                                     <?php endforeach; ?>                                    
@@ -135,8 +140,9 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                             </div>  
                             <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
                                 <label for="apartamentoId" class="required">Apartamento</label>
-                                <select class="form-control" name="apartamentoId">
-                                    <option value="0" selected disabled>--Selecione um bloco--</option>                      
+                                <select class="form-control" name="apartamentoId" required>
+                                    <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
+                                    <option value="">--Selecione um bloco--</option>                      
                                 </select> 
                             </div>  
                             <div class="col-md-2 mb-3"><!-- select Perfil -->

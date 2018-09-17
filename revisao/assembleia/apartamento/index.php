@@ -40,6 +40,8 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 }
 
 $apartamentos = $apartamentoDao->findAll();
+$apartamentosNice = $apartamentoDao->findAllNice();
+$apartamentosLyon = $apartamentoDao->findAllLyon();
 $blocos = $blocoDao->findAll();
 $adimplentes = $adimplenteDao->findAll();
 
@@ -74,7 +76,7 @@ $adimplentes = $adimplenteDao->findAll();
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Apartamento</legend>
-                    <form method="post" action="index.php"><!-- Form -->
+                    <form id="Form_Cad_Apartamento" name="Form_Cad_Apartamento" method="post" action="index.php" onsubmit="return checa_Cad_Apartamento(this)"><!-- Form -->
                         <div class="form-row"><!-- Div1 -->
                             <div class="col-md-2 mb-3"> <!-- Nome da Bloco -->
                                 <label for="assembleia" class="required">Selecione um Bloco</label>
@@ -90,7 +92,7 @@ $adimplentes = $adimplenteDao->findAll();
                             <div class="col-md-2 mb-3"><!-- Nome da Apartamento -->
                                 <label for="nome" class="required">Apartamento</label>
                                 <input type="hidden" name="id" value="<?=$apartamento->getId();?>">                           
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getNome();?>" maxlength="10" placeholder="705" required />
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getNome();?>" maxlength="4" placeholder="705"  />
                             </div><!-- Fim Nome da Apartamento -->
                             <div class="col-md-4 mb-3"> <!-- Status -->
                                 <label for="">Status</label>
@@ -113,18 +115,17 @@ $adimplentes = $adimplenteDao->findAll();
                 </fieldset>
             </div>
             
-            <div class="col-md-12 mb-3"> <!-- Tabela -->
-                
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <th>#</th>
-                            <th>Apartamento</th>
-                            <th>Bloco</th>
-                            <th>Status</th>
-                            <th colspan="2">Ações</th>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($apartamentos as $apartamento): ?>
+            <div class="col-md-6 mb-3"> <!-- Tabela Nice -->                
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>#</th>
+                        <th>Apartamento</th>
+                        <th>Bloco</th>
+                        <th>Status</th>
+                        <th colspan="2">Ações</th>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($apartamentosNice as $apartamento): ?>
                             <tr>
                                 <td><?=$apartamento->getId();?></td>
                                 <td><?=$apartamento->getNome();?></td>
@@ -150,11 +151,49 @@ $adimplentes = $adimplenteDao->findAll();
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-                    </table>
-              
+                </table>
+            </div> <!-- Fim Tabela Lyon-->
+            <div class="col-md-6 mb-3"> <!-- Tabela -->                
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>#</th>
+                        <th>Apartamento</th>
+                        <th>Bloco</th>
+                        <th>Status</th>
+                        <th colspan="2">Ações</th>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($apartamentosLyon as $apartamento): ?>
+                            <tr>
+                                <td><?=$apartamento->getId();?></td>
+                                <td><?=$apartamento->getNome();?></td>
+                                <td><?=$apartamento->getBloco()->getApelido();?></td>
+                                <td><?=$apartamento->getAdimplente()->getNome();?></td>
+                                
+                                <td>
+                                    <form method="post" action="index.php">
+                                        <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                        <button type="submit" class="btn btn-primary" name="editar" value="editar">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="post" action="index.php"> 
+                                        <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                        <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div> <!-- Fim Tabela -->
         </div> 
     </div>
 </div> <!-- Fim do container -->
+<script src="../assets/js/ajax_valida_apartamentos.js"></script>
 </body>
 </html> 
