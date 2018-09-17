@@ -24,7 +24,7 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
 	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
     <link rel="stylesheet" href="../assets/css/all.css">
-    <link rel="stylesheet" href="../assets/css/home.css">
+    <!-- <link rel="stylesheet" href="../assets/css/home.css"> -->
 </head>
 <body>    
         <label for="apartamentoId">Apartamento</label>

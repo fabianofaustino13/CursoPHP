@@ -28,9 +28,11 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setCpf($_POST['cpf']);
     $morador->setLogin($_POST['login']);
     $morador->setStatus($_POST['sindico']);
-    $teste = $perfilDao->findById($_POST['perfil']);
-    $morador->setPerfil($teste);
+    $perfil = $perfilDao->findById($_POST['perfil']);
+    $morador->setPerfil($perfil);
   
+
+
     $senha = $_POST['senha'];
     $senha2 = $_POST['senha2'];
     if ($senha == $senha2) {
@@ -76,6 +78,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
 <html lang="pt-br">
 <head>
     <title>Cadastrar Morador</title>
+    
 </head>
 <body>
     <!-- Início do container -->
@@ -95,7 +98,8 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
             ?> -->
                 <fieldset>
                     <legend>Cadastro de Moradores</legend>
-                    <form method="post" action="index.php"><!-- Form Geral -->
+                    <!-- <form method="post" action="index.php">Form Geral -->
+                    <form onsubmit="checaFormulario()" id="form1" name="form1" method="post">
                         <div class="form-row"><!-- Div1 -->
                             
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
@@ -105,15 +109,15 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                             </div>
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" required />
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" />
                             </div>
                         
                             <div class="col-md-4 mb-3">
-                                <label for="login">Login</label>
+                                <label for="login" class="required">Login</label>
                                 <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" />
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="senha">Senha</label>
+                                <label for="senha" class="required">Senha</label>
                                 <input type="text" class="form-control" id="senha" name="senha" maxlength="25" />
                             </div>
                             <div class="col-md-4 mb-3">
@@ -121,7 +125,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                 <input type="text" class="form-control" id="senha2" name="senha2" maxlength="25" />
                             </div>      
                             <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
-                                <label for="blocoId">Bloco</label>
+                                <label for="blocoId" class="required">Bloco</label>
                                 <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);">
                                     <option value="0" selected disabled>--SELECIONE--</option>
                                     <?php foreach ($blocos as $bloco): ?>                                                    
@@ -130,7 +134,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                 </select> 
                             </div>  
                             <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
-                                <label for="apartamentoId">Apartamento</label>
+                                <label for="apartamentoId" class="required">Apartamento</label>
                                 <select class="form-control" name="apartamentoId">
                                     <option value="0" selected disabled>--Selecione um bloco--</option>                      
                                 </select> 
