@@ -89,11 +89,17 @@
         }
 
         public function save(Produto $produto) {
-            if ($produto->getId() == null) {
-                $this->insert($produto);
+            if (is_null($produto->getId())) {
+                return $this->insert($produto);
             } else {
-                $this->update($produto);
+                return $this->update($produto);
             }
+
+            // if ($produto->getId() == null) {
+            //     $this->insert($produto);
+            // } else {
+            //     $this->update($produto);
+            // }
         }
 
         private function insert(Produto $produto) {

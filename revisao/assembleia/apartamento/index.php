@@ -14,7 +14,7 @@ $adimplente = new Adimplente();
 $adimplenteDao = new AdimplenteDAO();
 $apartamento = new Apartamento();
 $apartamentoDao = new ApartamentoDao();
-
+$teste = "inicio";
 if (isset($_POST['atualizar']) && $_POST['atualizar'] == 'atualizar') {
     $pautas2 = $dao->findAllAssembleia($_POST['idAss']);
 }
@@ -26,8 +26,8 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     if ($_POST['id'] != '') {
         $apartamento->setId($_POST['id']);
     }
-    $apartamentoDao->save($apartamento);
-    header('location: index.php');
+    $teste = $apartamentoDao->save($apartamento);
+    // header('location: index.php');
 } 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
@@ -69,7 +69,12 @@ $adimplentes = $adimplenteDao->findAll();
     <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>
-
+    <!-- <div class="col-12" style="text-align: center; color:red">
+        <//?=$apartamento->getId();?>
+    </div> -->
+    <!-- <div class="col-12" style="text-align: center; color:red">
+        <//?=var_dump($teste);?>
+    </div> -->
 	<!-- Início do container -->
     <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">

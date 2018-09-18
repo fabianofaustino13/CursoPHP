@@ -200,11 +200,16 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         public function save(Apartamento $apartamento) {
-            if ($apartamento->getId() == null) {
-                $this->insert($apartamento);
+            if (is_null($apartamento->getId())) {
+                return $this->insert($apartamento);
             } else {
-                $this->update($apartamento);
+                return $this->update($apartamento);
             }
+            // if ($apartamento->getId() == null) {
+            //     $this->insert($apartamento);
+            // } else {
+            //     $this->update($apartamento);
+            // }
         }
 
         private function insert(Apartamento $apartamento) {
@@ -238,7 +243,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $statement->bindParam(':ADIMPLENTE', $adimplente);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                return $this->findById($apartamento->getId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;

@@ -21,13 +21,20 @@ $apartamentoDao = new ApartamentoDAO();
 
 $morador = new Morador();
 $moradorDao = new MoradorDAO();
-$teste = new Morador();
-$aviso = '';
+$teste = "inicio";
+//$aviso = "";
 
+//$_SESSION['avisoSucesso'] = "Cadastrado com sucesso!!!";
+//$_SESSION['avisoErro'] = "Erro ao cadastrar!";
+// if (isset($_SESSION['mensagem'])) {
+//     $aviso = $_SESSION['mensagem'];
+// //    session_destroy();
+// }
 
+//$_SESSION['salvo'] = "Login ou Senha inválidos!!!";
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $morador->setNome($_POST['nome']);
-    $morador->setLogin($_POST['login']);
+    //$morador->setLogin($_POST['login']);
     $morador->setCpf($_POST['cpf']);
     $morador->setSenha($_POST['senha']);
     $morador->setStatus($_POST['sindico']);
@@ -43,21 +50,30 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
 
     // }
 
-
+    
     if ($_POST['id'] != '') {
         $morador->setId($_POST['id']);
     }
-    
+  
     $apartamento->getBloco()->setId($_POST['blocoId']);
     $apartamento->setId($_POST['apartamentoId']);
        
-    $moradorDao->save($morador, $apartamento); 
+    $teste = $moradorDao->save($morador);
     
-    header('location: index.php');
-    } 
+    if ($teste != null) {
+        $_SESSION['teste'] = "Passou";
+    } else {
+        $_SESSION['teste'] = "Erro";
+        
+    }
+    //header('location: index.php');
     
+} 
+    
+$aviso = isset($_SESSION['teste']) ? $_SESSION['teste'] : "";
+
     if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-        $morador = $moradorDao->findByApartamento($_POST['id']);
+        $morador = $moradorDao->findById($_POST['id']);
         // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
     }
     
@@ -93,44 +109,60 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
             <div class="col-md-12 mb-3">
             <?php 
             // echo $aviso;
-                echo "<pre>";
+                // echo "<pre>";
                 
-                    //var_dump($teste);
+                //     var_dump($morador);
                 
-                echo "</pre>";
+                // echo "</pre>";
             ?>
+            <div class="col-12" style="text-align: center; color:red">
+                <?php 
+                echo $aviso;
+                // if (!empty($_SESSION['vazio_nome'])) {
+                //     echo "<p style='color:red;'>" .$_SESSION['vazio_nome']."</p>";
+                //     unset($_SESSION['vazio_nome']);
+                // }
+                    if (!empty($_SESSION['teste'])) {
+                        $_SESSION['teste'];
+                        unset($_SESSION['teste']);
+                    }
+                ?>
+            </div>
+            <div class="col-12" style="text-align: center; color:red">
+                <?=var_dump($teste);?>
+            </div>
             <!-- onsubmit="return checaFormulario()"  -->
                 <fieldset>
                     <legend>Cadastro de Moradores</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
-                    <form id="form1" name="form1" action="index.php" method="post" onsubmit="return checaFormulario(this)">
+                    <!-- onsubmit="return checaFormulario(this)" -->
+                    <form id="form1" name="form1" action="index.php" method="post" >
                         <div class="form-row"><!-- Div1 -->
-                            
+                            <input type="hidden" name="id" value="<?=$morador->getId();?>">                                                    
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
-                                <input type="hidden" name="id" value="<?=$morador->getId();?>">
                                 <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" required />                    
                             </div>
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" required />                               
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11"  />                               
                             </div>
                         
                             <div class="col-md-4 mb-3">
                                 <label for="login" class="required">Login</label>
-                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" required />
+                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25"  />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="senha" class="required">Senha</label>
-                                <input type="password" class="form-control" id="senha" name="senha" value="<?=$morador->getLogin();?>" maxlength="25" required />
+                                <input type="password" class="form-control" id="senha" name="senha" value="<?=$morador->getLogin();?>" maxlength="25"  />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="senha2">Confirme a Senha</label>
-                                <input type="password" class="form-control" id="senha2" name="senha2" value="<?=$morador->getLogin();?>" maxlength="25" required />
+                                <input type="password" class="form-control" id="senha2" name="senha2" value="<?=$morador->getLogin();?>" maxlength="25"  />
                             </div>      
                             <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
                                 <label for="blocoId" class="required">Bloco</label>
-                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);" required />
+                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);"  />
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
                                     <option value=""></option>
                                     <?php foreach ($blocos as $bloco): ?>                                                    
@@ -140,7 +172,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                             </div>  
                             <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
                                 <label for="apartamentoId" class="required">Apartamento</label>
-                                <select class="form-control" name="apartamentoId" required>
+                                <select class="form-control" name="apartamentoId" >
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
                                     <option value="">--Selecione um bloco--</option>                      
                                 </select> 
@@ -186,15 +218,15 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                             <th colspan="2">Ações</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($apartamentos as $apartamento):?>
+                            <?php foreach ($moradores as $morador):?>
                                 <tr>
-                                    <td><?=$apartamento->getMorador()->getId()?></td>
-                                    <td><?=$apartamento->getMorador()->getNome()?></td>
-                                    <td><?=$apartamento->getBloco()->getApelido()?></td>
-                                    <td><?=$apartamento->getNome()?></td>
+                                    <td><?=$morador->getId()?></td>
+                                    <td><?=$morador->getNome()?></td>
+                                    <td><?=$morador->getCpf()?></td>
+                                    <td><?=$morador->getLogin()?></td>
                                     <td>
                                         <form method="post" action="index.php">
-                                            <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$morador->getId();?>">
                                             <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                                 <i class="far fa-edit"></i>
                                             </button>
@@ -202,7 +234,7 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
                                     </td>
                                     <td>
                                         <form method="post" action="index.php"> 
-                                            <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                            <input type="hidden" name="id" value="<?=$morador->getId();?>">
                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
