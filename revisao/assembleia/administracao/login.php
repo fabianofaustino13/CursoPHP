@@ -23,9 +23,6 @@ if ($num > 0) {
     
     $login = strtoupper($_POST['login']);
     $senha = $_POST['senha'];
-
-    if ($loginDB == $login && $senhaDB == $senha)  {
-
     //}
     //$user = new User($login, $senha);
 
@@ -34,6 +31,8 @@ if ($num > 0) {
     //$senha = $_POST['senha'];
 
     //if ($user->logar($login, $senha)) {
+
+    if ($loginDB == $login && $senhaDB == $senha)  {
         $_SESSION['isLogado'] = true;
         header('location: /cursoPHP/revisao/assembleia/assembleia/');
     } else {

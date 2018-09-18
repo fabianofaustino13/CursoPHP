@@ -137,6 +137,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 // $morador->setSindico($row['FK_MOR_SIN']);

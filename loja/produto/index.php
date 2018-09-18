@@ -21,7 +21,6 @@ if (isset($_POST['remover']) && $_POST['remover'] == 'remover') {
     $produtoDao->remove($_POST['id']);
     header("location: $home");
 }
-$teste = "inicio";
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $produto->setNome($_POST['nome']);
     $produto->setDescricao($_POST['descricao']);
@@ -40,8 +39,8 @@ if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     if ($_POST['id'] != '') {
         $produto->setId($_POST['id']);
     }
-    $teste = $produtoDao->save($produto);
-    //header("location: $home");
+    $produtoDao->save($produto);
+    header("location: $home");
 }
 
 $marcas = $marcaDao->findAll();
@@ -69,7 +68,7 @@ $departamentos = $departamentoDao->findAll();
         <?=$produto->getId();?>
     </div>
     <div class="col-12" style="text-align: center; color:red">
-        <?=var_dump($teste);?>
+        <!-- <//?=var_dump($teste);?> -->
     </div>
         <div class="row" style="padding: 2% 2% 0 2%;">
             <div class="col-4"><!-- form -->

@@ -3,7 +3,7 @@
 <?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
 <?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
 <?php 
-
+session_start();
 include(__DIR__ . "/../administracao/logado.php");
 
 $dao = new AssembleiaDAO();
