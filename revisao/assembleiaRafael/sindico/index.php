@@ -81,17 +81,17 @@ $moradores = $moradorDao->findAll();
                             </div><!-- Fim Nome do Morador -->
                             
                             <div class="col-md-6 mb-3">
-                                <!-- <label class="required ">Síndico?</label>
+                                <label class="required ">Síndico?</label>
                                 <div class="form-group">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoNao" name="sindico" class="custom-control-input" value="<//?=$sindico->getId();?>" checked/>
+                                            <input type="radio" id="sindicoNao" name="sindico" class="custom-control-input" value="<?=$sindico->getId();?>" checked/>
                                             <label class="custom-control-label" for="sindicoNao">Não</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="sindicoSim" name="sindico" class="custom-control-input" value="<//?=$sindico->getMorador()->getId();?>" />
+                                            <input type="radio" id="sindicoSim" name="sindico" class="custom-control-input" value="<?=$sindico->getMorador()->getId();?>" />
                                             <label class="custom-control-label" for="sindicoSim">Sim</label>
                                         </div>                           
-                                </div> -->
+                                </div>
                                 <label for="dataInicio" class="required">Período da atividade de Síndico</label>
                                 <div class="row">
                                     <div class="col-md-5 mb-3"><!-- Data Início -->
@@ -115,23 +115,23 @@ $moradores = $moradorDao->findAll();
                 <form action="index.php" method="post">
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <!-- <div class="row" >
-                                <div class="col-md-8 mb-3" id="div_moradorId">
-                                    <select class="form-control" name="moradorId">
-                                    <option value="0" disabled selected>Pesquise por Morador</option>
-                                        <//?php foreach ($moradores as $morador): ?>
-                                            <option id="<//?=$morador->getId();?>" value="<//?=$morador->getId();?>"> 
-                                                <//?=$morador->getId() . " - " . $morador->getNome(); ?>
-                                            </option> 
-                                        <//?php endforeach; ?>                                    
-                                    </select> 
-                                </div>                                
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-secodary btn-block" name="pesquisarNome" value="pesquisarNome">Pesquisar</button>
-                                    </div> <!--Fim Botões -->
-                                <!-- </div>                -->
-                            <!-- </div> -->
+                                <div class="row" >
+                                    <div class="col-md-8 mb-3" id="div_moradorId">
+                                        <select class="form-control" name="moradorId">
+                                        <option value="0" disabled selected>Pesquise por Morador</option>
+                                            <?php foreach ($moradores as $morador): ?>
+                                                <option id="<?=$morador->getId();?>" value="<?=$morador->getId();?>"> 
+                                                    <?=$morador->getId() . " - " . $morador->getNome(); ?>
+                                                </option> 
+                                            <?php endforeach; ?>                                    
+                                        </select> 
+                                    </div>                                
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-secodary btn-block" name="pesquisarNome" value="pesquisarNome">Pesquisar</button>
+                                        </div> <!--Fim Botões -->
+                                    </div>               
+                            </div>
                         
                         <div class="col-12"> <!-- Tabela -->
                             <fieldset>

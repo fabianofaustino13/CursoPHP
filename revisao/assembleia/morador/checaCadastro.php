@@ -36,9 +36,9 @@ if (empty($_POST['nome']) && isset($_POST['nome'])) {
 if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
     $_SESSION['vazio_cpf'] = "CPF é obrigatório";
     $cpf = $moradorDao->findCpf($_POST['cpf']);
-    $num = count($cpf->getCpf());
-    if ($num > 0) {
-        $_SESSION['cpf_existe'] = '$num';
+    //$num = count($cpf->getCpf());
+    if ($cpf == 1) {
+        //$_SESSION['cpf_existe'] = 'existe';
         header('location: index.php');
     }
     $continua = false;
@@ -66,13 +66,18 @@ if ($continua) {
         
         $resultado = $moradorDao->save($morador, $apartamento);
         
-        if ($resultado != null) {
-            $_SESSION['cadastro_morador'] = "Cadastrado com Sucesso!!!";
+        //return $resultado;
+        if ($resultado == 23000) {
+            $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+            // if ($resultado == "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '22222222222' for key 'UK_MOR_CPF'"){
+                $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
+            // }
             //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Cadastro realizado com sucesso.\");</script>";
         } else {
-            $_SESSION['morador_erro'] = "Erro ao cadastrar";
-            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";
-        }  
+            $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";
+        }
+            // $_SESSION['morador_erro'] = "Erro ao cadastrar";
+            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
         // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
         header('location: index.php');
     }

@@ -37,10 +37,11 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             return $moradores;
         }
 
-        public function findById($id) {
-            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :ID";
+        public function findById(Morador $id) {
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :id";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
+            $mor_id = $id->getId();
+            $statement->bindParam(":id", $mor_id);
             $statement->execute();
             $row = $statement->fetch();
             $perfil = new Perfil();
@@ -120,28 +121,22 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findCpf($cpf) {
-            try {
-                $sql = "SELECT * FROM TB_MORADORES WHERE MOR_CPF = :CPF";
-                $statement = $this->conexao->prepare($sql);
-               // $cpf = $morador->getCpf();
-                $statement->bindParam(':CPF', $cpf); //Proteção contra sql injetct
-                $statement->execute();
-                $row = $statement->fetch();;
-                
-                $morador = new Morador();
-                $morador->setId($row['PK_MOR']);
-                $morador->setNome($row['MOR_NOME']);
-                $morador->setCpf($row['MOR_CPF']);
-                $morador->setLogin($row['MOR_LOGIN']);
-                $morador->setSenha($row['MOR_SENHA']);
-                $morador->setStatus($row['MOR_STATUS']);
-                      
-                return $morador;
-
-            }catch(PDOException $e) {
-                echo $e->getMessage();
-                return null;
-            }
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_CPF = :CPF";
+            $statement = $this->conexao->prepare($sql);
+           // $cpf = $morador->getCpf();
+            $statement->bindParam(':CPF', $cpf); //Proteção contra sql injetct
+            $statement->execute();
+            $row = $statement->fetch();;
+            
+            $morador = new Morador();
+            $morador->setId($row['PK_MOR']);
+            $morador->setNome($row['MOR_NOME']);
+            $morador->setCpf($row['MOR_CPF']);
+            $morador->setLogin($row['MOR_LOGIN']);
+            $morador->setSenha($row['MOR_SENHA']);
+            $morador->setStatus($row['MOR_STATUS']);
+                  
+            return $morador;
         }
         
         public function findSindico() {
@@ -220,12 +215,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
-                $code = $e->getCode();
-                // if ($code == 23000) {
-                //     return 1; //Cpf duplicado
-                // }
-                return  $code;
-                //return $e;
+                return null;
             }
         }
 

@@ -45,11 +45,41 @@ $perfis = $perfilDao->findAll();
 date_default_timezone_set('America/Sao_Paulo');
 // $dataLocal = date('d/m/Y H:i:s', time());
 ?>
+
+<?php //Email morador.
+require_once(__DIR__ . "/../classes/modelo/EmailMorador.class.php");
+require_once(__DIR__ . "/../classes/dao/EmailMoradorDAO.class.php");
+$emailDao = new EmailMoradorDAO();
+$email = new EmailMorador();
+if (isset($_POST['salvarNovoEmail']) && $_POST['salvarNovoEmail'] == 'salvarNovoEmail') {
+    $email->getMorador()->setId($_POST['idMorador']);
+    $email->setEmail($_POST['newEmail']);
+    $emailDao->insert($email);
+}
+if (isset($_POST['removerEmail']) && $_POST['removerEmail'] == 'removerEmail') {
+    $emailDao->remove($_POST['emailMorador']);
+}
+?>
+
+<?php //Telefone morador.
+require_once(__DIR__ . "/../classes/modelo/FoneMorador.class.php");
+require_once(__DIR__ . "/../classes/dao/FoneMoradorDAO.class.php");
+$foneDao = new FoneMoradorDAO();
+$fone = new FoneMorador();
+if (isset($_POST['salvarNovoTelefone']) && $_POST['salvarNovoTelefone'] == 'salvarNovoTelefone') {
+    $fone->getMorador()->setId($_POST['idMorador']);
+    $fone->setFone($_POST['newFone']);
+    $foneDao->insert($fone);
+}
+if (isset($_POST['removerTelefone']) && $_POST['removerTelefone'] == 'removerTelefone') {
+    $foneDao->remove($_POST['foneMorador']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <title>Cadastrar Morador</title>
-    
 </head>
 <body>
     <!-- Início do container -->
@@ -65,7 +95,7 @@ date_default_timezone_set('America/Sao_Paulo');
             // echo $aviso;
                 // echo "<pre>";
                 
-                //     var_dump($morador);
+                    //var_dump($cpf);
                 
                 // echo "</pre>";
                 if (isset($_SESSION['morador_sucesso'])) :?>
@@ -76,6 +106,7 @@ date_default_timezone_set('America/Sao_Paulo');
                         unset($_SESSION['morador_sucesso']);
                 endif;
                 if (isset($_SESSION['morador_erro'])) :?>
+                
                     <div class="col-12" style="background-color: red; text-align: center; color:white">
                     <?php 
                         echo $_SESSION['morador_erro'];
@@ -103,7 +134,7 @@ date_default_timezone_set('America/Sao_Paulo');
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
                                 <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" placeholder="Somente números" required />                               
-                                <?php if (isset($_SESSION['cpf_existe'])) {
+                                <?php if (!empty($_SESSION['cpf_existe']) && !isset($_SESSION['cpf_existe'])) {
                                         echo "<p style='color:red;'>" .$_SESSION['cpf_existe']."</p>";
                                         unset($_SESSION['cpf_existe']);
                                     }?>
@@ -179,7 +210,7 @@ date_default_timezone_set('America/Sao_Paulo');
                             <th>Login</th>
                             <th>Bloco</th>
                             <th>Apartamento</th>
-                            <th colspan="2">Ações</th>
+                            <th colspan="3">Ações</th>
                         </thead>
                         <tbody>
                             <?php foreach ($apartamentos as $apartamento):?>
@@ -190,6 +221,11 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <td><?=$apartamento->getMorador()->getLogin();?></td>
                                     <td><?=$apartamento->getBloco()->getApelido();?></td>
                                     <td><?=$apartamento->getNome()?></td>
+                                    <td>
+                                        <button type="submit" class="btn btn-info" name="" value="<?=$apartamento->getMorador()->getId()?>" onclick="show_contatoMorador(this.value);" title="exibir contatos do morador">
+                                            <i class="fas fa-file-contract"></i>
+                                        </button>
+                                    </td>
                                     <td>
                                         <form method="post" action="index.php">
                                             <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
@@ -210,6 +246,7 @@ date_default_timezone_set('America/Sao_Paulo');
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <div class="row" id="div-contatos-mor"></div>
                 </fieldset>
             </div> <!-- Fim Tabela -->
         </div> 
