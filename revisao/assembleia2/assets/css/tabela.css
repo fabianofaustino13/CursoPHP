@@ -1,0 +1,88 @@
+body {
+    font: 75%/1.6 "Myriad Pro", Frutiger, "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", Verdana, sans-serif;
+}
+table {
+    border-collapse: collapse;
+    /* width: 50em; */
+    width: 925px;
+    border: 1px solid #666;
+
+}
+
+thead {
+    /* background: #ccc url(https://www.devfuria.com.br/html-css/tabelas/bar.gif) repeat-x left center; */
+    border-top: 1px solid #a5a5a5;
+    border-bottom: 1px solid #a5a5a5;
+    color: pink;
+}
+
+tr:hover {
+    /* background-color:#3d80df; */
+    /* color: #fff; */
+    background-color:#fcfcfc; 
+    color: goldenrod; 
+}
+
+thead tr:hover {
+    background-color: transparent;
+    color: inherit;
+}
+
+tr:nth-child(even) {
+    background-color: #edf5ff;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+}
+
+th, td {
+    padding: 0.1em 1em;
+    vertical-align: middle;
+}
+
+.icon-ativado {
+    font-size:20px;
+    color: green;
+}
+
+.icon-desativado {
+    font-size:50px;
+
+    color: gray;
+}
+
+.celula1, .celula2, .celula3 {
+    color: black;
+    text-align: center;
+}
+
+.celula1 {
+    width: 10px;
+    padding:10px;
+    _width: 255px;
+    
+}
+
+.celula2 {
+    width: 600px;
+    padding:10px;
+    _width: 495px;
+}
+
+.celula3 {
+    width: 80px;
+    padding:10px;
+    _width: 495px;
+}
+
+.celula4 {
+    width: 120px;
+    padding:10px;
+    _width: 495px;
+}
+
+.coluna-editar {
+    text-align:center;
+}

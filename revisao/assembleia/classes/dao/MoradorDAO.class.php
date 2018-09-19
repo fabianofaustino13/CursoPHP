@@ -37,10 +37,11 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             return $moradores;
         }
 
-        public function findById($id) {
-            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :ID";
+        public function findById(Morador $id) {
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :id";
             $statement = $this->conexao->prepare($sql);
-            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
+            $mor_id = $id->getId();
+            $statement->bindParam(":id", $mor_id);
             $statement->execute();
             $row = $statement->fetch();
             $perfil = new Perfil();
