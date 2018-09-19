@@ -18,13 +18,6 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
     <title>Apartamento</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/base.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/login.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/botoes.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
-    <link rel="stylesheet" href="../assets/css/all.css">
-    <!-- <link rel="stylesheet" href="../assets/css/home.css"> -->
 </head>
 <body>    
         <label for="apartamentoId">Apartamento</label>

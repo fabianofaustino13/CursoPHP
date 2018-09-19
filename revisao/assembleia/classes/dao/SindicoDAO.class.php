@@ -13,7 +13,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE MOR_STATUS = 1 ORDER BY SIN_DATA_FIM DESC";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR  ORDER BY SIN_DATA_FIM DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -22,6 +22,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setStatus($row['MOR_STATUS']);
                 $sindico = new sindico();
@@ -34,25 +35,73 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             }
             return $sindicos;
         }
+
+        public function findMoradorAll() {
+            $sql = "SELECT DISTINCT PK_MOR, MOR_NOME, MOR_CPF FROM TB_SINDICOS RIGHT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR ORDER BY MOR_NOME ASC";
+            $statement = $this->conexao->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $sindicos = array();
+            foreach ($result as $row) {
+                $morador = new Morador();
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
+                //$morador->setLogin($row['MOR_LOGIN']);
+                //$morador->setStatus($row['MOR_STATUS']);
+                $sindico = new sindico();
+                //$sindico->setId($row['PK_SIN']);
+                //$sindico->setDataInicio($row['SIN_DATA_INICIO']);
+                //$sindico->setDataFim($row['SIN_DATA_FIM']);
+                $sindico->setMorador($morador);
+              
+                array_push($sindicos, $sindico);
+            }
+            return $sindicos;
+        }
     
         public function findById($id) {
-            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE PK_SIN = :ID AND MOR_STATUS = 1";
+            $sql = "SELECT * FROM TB_SINDICOS RIGHT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE PK_SIN = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
-            $result = $statement->fetchAll();
+            $row = $statement->fetch();
             $morador = new Morador();
+            $morador->setId($row['PK_MOR']);
+            $morador->setNome($row['MOR_NOME']);
+            $morador->setCpf($row['MOR_CPF']);
+            $morador->setLogin($row['MOR_LOGIN']);
+            $morador->setStatus($row['MOR_STATUS']);
+            
             $sindico = new Sindico();
-            foreach ($result as $row) {
-                $morador->setId($row['PK_MOR']);
-                $morador->setNome($row['MOR_NOME']);
-                $morador->setLogin($row['MOR_LOGIN']);
-                $morador->setStatus($row['MOR_STATUS']);
-                $sindico->setId($row['PK_SIN']);
-                $sindico->setDataInicio($row['SIN_DATA_INICIO']);
-                $sindico->setDataFim($row['SIN_DATA_FIM']);
-                $sindico->setMorador($morador);
-            }
+            $sindico->setId($row['PK_SIN']);
+            $sindico->setDataInicio($row['SIN_DATA_INICIO']);
+            $sindico->setDataFim($row['SIN_DATA_FIM']);
+            $sindico->setMorador($morador);
+            
+            return $sindico;
+        }
+
+        public function findMoradorId(Morador $morador) {
+            $sql = "SELECT * FROM TB_SINDICOS RIGHT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE PK_MOR = :ID";
+            $statement = $this->conexao->prepare($sql);
+            $id_sindico = $morador->getId();
+            $statement->bindParam(':ID', $id_sindico);
+            $statement->execute();
+            $row = $statement->fetch();
+            $morador = new Morador();
+            $morador->setId($row['PK_MOR']);
+            $morador->setNome($row['MOR_NOME']);
+            $morador->setCpf($row['MOR_CPF']);
+            $morador->setLogin($row['MOR_LOGIN']);
+            $morador->setStatus($row['MOR_STATUS']);
+            
+            $sindico = new Sindico();
+            $sindico->setId($row['PK_SIN']);
+            $sindico->setDataInicio($row['SIN_DATA_INICIO']);
+            $sindico->setDataFim($row['SIN_DATA_FIM']);
+            $sindico->setMorador($morador);
+            
             return $sindico;
         }
 
@@ -73,7 +122,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function save(Sindico $sindico) {
-            if ($sindico->getId() == null) {
+            if (is_null($sindico->getId())) {
                 $this->insert($sindico);
             } else {
                 $this->update($sindico);
@@ -98,10 +147,10 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $statement = $this->conexao->prepare($sql);
                 $data_inicio = $sindico->getDataInicio();
                 $data_fim = $sindico->getDataFim();
-                $sindico = $sindico->getMorador();
+                $id_morador = $sindico->getMorador()->getId();
                 $statement->bindParam(':DATA_INICIO', $data_inicio);
                 $statement->bindParam(':DATA_FIM', $data_fim);
-                $statement->bindParam(':SINDICO', $sindico);
+                $statement->bindParam(':SINDICO', $id_morador);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
 

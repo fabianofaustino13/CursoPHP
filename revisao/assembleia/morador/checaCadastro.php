@@ -10,6 +10,7 @@ require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Perfil.class.php");
 require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Sindico.class.php");
 
 $perfil = new Perfil();
 $perfilDao = new PerfilDAO();
@@ -53,28 +54,32 @@ if ($continua) {
         $morador->setLogin($_POST['login']);
         $morador->setCpf($_POST['cpf']);
         $morador->setSenha($_POST['senha']);
-        $morador->setStatus($_POST['sindico']);
+        $morador->setStatus($_POST['status']);
         $perfil = $perfilDao->findById($_POST['perfil']);
         $morador->setPerfil($perfil);
-        
+                
         if ($_POST['id'] != '') {
             $morador->setId($_POST['id']);
         }
     
         $apartamento->getBloco()->setId($_POST['blocoId']);
-        $apartamento->setId($_POST['apartamentoId']);
-        
+        $apartamento->setId($_POST['apartamentoId']);         
+
         $resultado = $moradorDao->save($morador, $apartamento);
         
         //return $resultado;
-        if ($resultado == 23000) {
+        if ($resultado != 0) {
             $_SESSION['morador_erro'] = 'Erro ao cadastrar';
-            // if ($resultado == "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '22222222222' for key 'UK_MOR_CPF'"){
+            if($resultado == 1) {
                 $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
-            // }
-            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Cadastro realizado com sucesso.\");</script>";
+            }else if ($resultado == 2) {
+                $_SESSION['login_existe'] = 'Login digitado, já existe!';
+            }
         } else {
             $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";
+            // if ($resultado == "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '22222222222' for key 'UK_MOR_CPF'"){
+            // }
+            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Cadastro realizado com sucesso.\");</script>";
         }
             // $_SESSION['morador_erro'] = "Erro ao cadastrar";
             //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  

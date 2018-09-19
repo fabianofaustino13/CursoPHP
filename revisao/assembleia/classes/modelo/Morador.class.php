@@ -1,15 +1,16 @@
 <?php
 
 require_once "Perfil.class.php";
+require_once "Sindico.class.php";
 class Morador {
 
-    private $id;
-    private $nome;
-    private $cpf;
-    private $login;
-    private $senha;
-    private $status;
-    private $perfil;
+    private $id; //id do morador - gerado automaticamente
+    private $nome; //nome do morador
+    private $cpf; //cpf do morador
+    private $login; //login do morador
+    private $senha; //senha do morador
+    private $status; //se o morador está ativo
+    private $perfil; //perfil do morador - USUÁRIO, SÍNDICO, ADMINISTRADOR OU ROOT
     
     public function __construct() {
         $this->perfil = new Perfil();
@@ -55,8 +56,7 @@ class Morador {
         // $this->senha = md5($senha);
         $this->senha = $senha;
     }
-
-    
+     
     public function getStatus() {
         return $this->status;
     }

@@ -65,7 +65,7 @@ date_default_timezone_set('America/Sao_Paulo');
             // echo $aviso;
                 // echo "<pre>";
                 
-                //     var_dump($morador);
+                     var_dump($morador);
                 
                 // echo "</pre>";
                 if (isset($_SESSION['morador_sucesso'])) :?>
@@ -108,11 +108,14 @@ date_default_timezone_set('America/Sao_Paulo');
                                         unset($_SESSION['cpf_existe']);
                                     }?>
                                     
-                            </div>
-                        
+                            </div>                        
                             <div class="col-md-4 mb-3">
                                 <label for="login" class="required">Login</label>
                                 <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
+                                <?php if (isset($_SESSION['login_existe'])) {
+                                    echo "<p style='color:red;'>" .$_SESSION['login_existe']."</p>";
+                                    unset($_SESSION['login_existe']);
+                                }?>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="senha" class="required">Senha</label>
@@ -132,7 +135,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
-                            <div class="col-md-3 mb-3" id="div_apartamentos"><!-- select Apartamento -->
+                            <div class="col-md-2 mb-3" id="div_apartamentos"><!-- select Apartamento -->
                                 <label for="apartamentoId" class="required">Apartamento</label>
                                 <select class="form-control" name="apartamentoId" required/ >
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
@@ -140,7 +143,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 </select> 
                             </div>  
                             <div class="col-md-2 mb-3"><!-- select Perfil -->
-                                <label for="perfil">Perfil</label>
+                                <label for="perfil" class="required">Perfil</label>
                                 <select class="form-control" name="perfil" required/>
                                     <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
                                     <?php foreach ($perfis as $perfil): ?>                                                    
@@ -148,7 +151,14 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-1 mb-3"><!-- select Perfil -->
+                                <label for="status" class="required">Situação</label>
+                                <select class="form-control" name="status" required/>
+                                    <option value="1" selected>ATIVO</option>                                                
+                                    <option value="0">INATIVO</option>                                                
+                                </select> 
+                            </div>  
+                            <!-- <div class="col-md-4 mb-3">
                                 <label class="required">Síndico?</label>
                                 <div class="form-group">
                                     <div class="custom-control custom-radio custom-control-inline">
@@ -160,7 +170,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <label class="custom-control-label" for="sindicoSim">Sim</label>
                                     </div>      
                                 </div>
-                            </div> 
+                            </div>  -->
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
