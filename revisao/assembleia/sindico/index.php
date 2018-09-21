@@ -77,7 +77,7 @@ $sindicosMoradores = $sindicoDao->findMoradorAll();
                                     <label for="nome" class="required">Nome</label>
                                     <input type="hidden" name="id" value="<?=$sindico->getId();?>">
                                     <input type="hidden" name="sindico" value="<?=$sindico->getMorador()->getId();?>">
-                                    <input type="text" disabled="disabled" class="form-control" id="sindico" name="sindico" value="<?=$sindico->getMorador()->getNome();?>" maxlength="100" required />
+                                    <input type="text" disabled="disabled" class="form-control" id="sindico" name="sindico" value="<?=$sindico->getMorador()->getNome();?>" placeholder="Selecione um morador" maxlength="100" required />
                                 </div><!-- Fim Nome do Morador -->
                                 <div class="col-md-6 mb-3">
                                     <!-- <label class="required ">Síndico?</label>
@@ -111,15 +111,16 @@ $sindicosMoradores = $sindicoDao->findMoradorAll();
                     </fieldset>
                 </div>
                 <div class="col-md-8 mb-3" id="div_moradorId">
-                                <select class="form-control" id="moradorId" name="moradorId" onchange="show_sindicosMoradores(this.value);">
-                                    <option value="" disabled selected>Pesquise por Morador</option>
-                                    <?php foreach ($sindicosMoradores as $sindicoMorador): ?>
-                                        <option id="<?=$sindicoMorador->getMorador()->getId();?>" value="<?=$sindicoMorador->getMorador()->getId();?>"> 
-                                            <?=$sindicoMorador->getMorador()->getNome() . " - " . $sindicoMorador->getMorador()->getCpf(); ?>
-                                        </option> 
-                                    <?php endforeach; ?>                                    
-                                </select> 
-                            </div>   
+                    <!-- <label for="">Pesquise por um morador</label> -->
+                    <select class="form-control" id="moradorId" name="moradorId" onchange="show_sindicosMoradores(this.value);">
+                        <option value="" disabled selected>Pesquise por Morador</option>
+                        <?php foreach ($sindicosMoradores as $sindicoMorador): ?>
+                            <option id="<?=$sindicoMorador->getMorador()->getId();?>" value="<?=$sindicoMorador->getMorador()->getId();?>"> 
+                                <?=$sindicoMorador->getMorador()->getNome() . " - " . $sindicoMorador->getMorador()->getCpf(); ?>
+                            </option> 
+                        <?php endforeach; ?>                                    
+                    </select> 
+                </div>   
                 <div class="col-md-12 mb-3">
                     <form action="index.php" method="post">
                         <div class="form-row">   

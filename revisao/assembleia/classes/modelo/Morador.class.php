@@ -2,7 +2,7 @@
 
 require_once("Perfil.class.php");
 require_once("Sindico.class.php");
-require_once("Apartamento.class.php");
+// require_once("Apartamento.class.php");
 class Morador {
 
     private $id; //id do morador - gerado automaticamente
@@ -12,11 +12,11 @@ class Morador {
     private $senha; //senha do morador
     private $status; //se o morador está ativo
     private $perfil; //perfil do morador - USUÁRIO, SÍNDICO, ADMINISTRADOR OU ROOT
-    private $apartamento; //associar um moradar em um apartamento
+    // private $apartamento; //associar um moradar em um apartamento
     
     public function __construct() {
         $this->perfil = new Perfil();
-        $this->apartamento = new Apartamento();
+        // $this->apartamento = new Apartamento();
     }
 
     public function getId() {
@@ -76,11 +76,11 @@ class Morador {
         $this->perfil = $perfil;
     }
 
-    public function getApartamento() {
-        return $this->apartamento;
-    }
+    // public function getApartamento() {
+    //     return $this->apartamento;
+    // }
     
-    public function setApartamento(Apartamento $apartamento) {
-        $this->apartamento = $apartamento;
-    }
+    // public function setApartamento(Apartamento $apartamento) {
+    //     $this->apartamento = $apartamento;
+    // }
 }

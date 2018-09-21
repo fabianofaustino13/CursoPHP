@@ -102,22 +102,32 @@ if ($continua) {
             $morador->setId($_POST['id']);
         }
         
+        $resultado = $moradorDao->save($morador);
+        // $apartamento = $apartamentoDao->findById($_POST['apartamentoId']);
         $apartamento = $apartamentoDao->findById($_POST['apartamentoId']);
+        $apartamento->setMorador($resultado);
+        $resultado2 = $apartamentoDao->save($apartamento);
+        
+        // echo "<pre>";
+        // var_dump($resultado2);
+        // echo "</pre>";
+        // $apartamento->setId($apartamento);
+        // $apartamento->setMorador()
         // $apartamento->getBloco()->setId($_POST['blocoId']);
         // $apartamento->setId($_POST['apartamentoId']);         
 
-        $resultado = $moradorDao->save($morador, $apartamento);
+        //$resultadoApto = $apartamentoDao->save($apartamento);
         
         //return $resultado;
-        echo "<script>alert($resultado)</script>";
-        if ($resultado != 0) {
+        //echo "<script>alert($resultado)</script>";
+        
+        if ($resultado == 2) {
             $_SESSION['morador_erro'] = 'Erro ao cadastrar';
-            if($resultado == 1) {
-                $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
-            }else if ($resultado == 2) {
-                $_SESSION['login_existe'] = 'Login digitado, já existe!';
-            }
-        } else {
+            $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
+        } else if ($resultado == 3) {
+            $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+            $_SESSION['login_existe'] = 'Login digitado, já existe!';
+        }else {
             $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";
             // if ($resultado == "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '22222222222' for key 'UK_MOR_CPF'"){
             // }

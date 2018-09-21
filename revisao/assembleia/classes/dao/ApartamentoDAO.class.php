@@ -14,15 +14,23 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR ORDER BY APA_NOME ASC";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI RIGHT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER ORDER BY PK_MOR DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
-            $result = $statement->fetchAll();
+            $rows = $statement->fetchAll();
             $apartamentos = array();
-            foreach ($result as $row) {
+            foreach ($rows as $row) {
+                $perfil = new Perfil();
+                $perfil->setId($row['PK_PER']);
+                $perfil->setNome($row['PER_NOME']);
                 $morador = new Morador();
-                $morador->getId($row['PK_MOR']);
-                $morador->getNome($row['MOR_NOME']);
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setSenha($row['MOR_SENHA']);
+                $morador->setStatus($row['MOR_STATUS']);
+                $morador->setPerfil($perfil);
                 $adimplente = new Adimplente();
                 $adimplente->setId($row['PK_ADI']);
                 $adimplente->setNome($row['ADI_NOME']);
@@ -35,7 +43,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
                 $apartamento->setAdimplente($adimplente);
-                //$apartamento->setMorador($morador);
+                $apartamento->setMorador($morador);
 
                 array_push($apartamentos, $apartamento);
             }
@@ -153,8 +161,8 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             return $apartamentos;
         }
 
-        public function findByApartamentoMorador($id) {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA LEFT JOIN TB_MORADORES ON PK_MOR = FK_ADM_MOR JOIN TB_PERFIS ON PK_PER = FK_MOR_PER JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_APA = :ID";
+        public function findByApartamento($id) {
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR JOIN TB_PERFIS ON PK_PER = FK_MOR_PER JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_APA = :ID";
             $statement = $this->conexao->prepare($sql);
             // $id_morador = $morador->getId();
             // $statement->bindParam(':ID_MOR', $id_morador); //Proteção contra sql injetct
@@ -170,6 +178,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             $morador->setCpf($row['MOR_CPF']);
             $morador->setLogin($row['MOR_LOGIN']);
             $morador->setSenha($row['MOR_SENHA']);
+            $morador->setStatus($row['MOR_STATUS']);
             $morador->setPerfil($perfil);
             $bloco = new Bloco();
             $bloco->setId($row['PK_BLO']);
@@ -261,16 +270,18 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         private function update(Apartamento $apartamento) {
-            $sql = "UPDATE TB_APARTAMENTOS SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE WHERE PK_APA = :ID";
+            $sql = "UPDATE TB_APARTAMENTOS SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE, FK_APA_MOR=:MORADOR WHERE PK_APA = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $apartamento->getNome();
                 $bloco = $apartamento->getBloco()->getId();
                 $adimplente = $apartamento->getAdimplente()->getId();
+                $morador = $apartamento->getMorador()->getId();
                 $id = $apartamento->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':BLOCO', $bloco);
                 $statement->bindParam(':ADIMPLENTE', $adimplente);
+                $statement->bindParam(':MORADOR', $morador);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($apartamento->getId());
