@@ -11,12 +11,13 @@ class Apartamento {
     private $nome;
     private $adimplente;
     private $bloco;
+    // private $morador;
   
    
     public function __construct() {
         $this->adimplente = new Adimplente();
         $this->bloco = new Bloco();
-        $this->morador = new Morador();
+        // $this->morador = new Morador();
     }
 
     public function getId() {
@@ -51,11 +52,11 @@ class Apartamento {
         $this->bloco = $bloco;
     }
 
-    public function getMorador() {
-        return $this->morador;
-    }
+    // public function getMorador() {
+    //     return $this->morador;
+    // }
     
-    public function setMorador(Morador $morador) {
-        $this->morador = $morador;
-    }
+    // public function setMorador(Morador $morador) {
+    //     $this->morador = $morador;
+    // }
 }

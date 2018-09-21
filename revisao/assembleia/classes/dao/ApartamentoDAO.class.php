@@ -35,7 +35,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
                 $apartamento->setAdimplente($adimplente);
-                $apartamento->setMorador($morador);
+                //$apartamento->setMorador($morador);
 
                 array_push($apartamentos, $apartamento);
             }
@@ -106,22 +106,20 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
-            $result = $statement->fetchAll();
+            $row = $statement->fetch();
             $adimplente = new Adimplente();
+            $adimplente->setId($row['PK_ADI']);
+            $adimplente->setNome($row['ADI_NOME']);
             $bloco = new Bloco();
+            $bloco->setId($row['PK_BLO']);
+            $bloco->setNome($row['BLO_NOME']);
+            $bloco->setApelido($row['BLO_APELIDO']);
             $apartamento = new Apartamento();
-            foreach ($result as $row) {
-                $adimplente->setId($row['PK_ADI']);
-                $adimplente->setNome($row['ADI_NOME']);
-                $bloco->setId($row['PK_BLO']);
-                $bloco->setNome($row['BLO_NOME']);
-                $bloco->setApelido($row['BLO_APELIDO']);
-                $apartamento->setId($row['PK_APA']);
-                $apartamento->setNome($row['APA_NOME']);
-                $apartamento->setBloco($bloco);
-                $apartamento->setAdimplente($adimplente);
-
-            }
+            $apartamento->setId($row['PK_APA']);
+            $apartamento->setNome($row['APA_NOME']);
+            $apartamento->setBloco($bloco);
+            $apartamento->setAdimplente($adimplente);
+    
             return $apartamento;
         }
 
@@ -149,7 +147,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setId($row['PK_APA']);
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
-                $apartamento->setMorador($morador);
+                //$apartamento->setMorador($morador);
                 array_push($apartamentos, $apartamento);
             }
             return $apartamentos;

@@ -24,9 +24,14 @@ $apartamentoDao = new ApartamentoDAO();
 $morador = new Morador();
 $moradorDao = new MoradorDAO();
 //$cpf = new Morador();
+$morApto = new Morador();
+$aptoMor = new Apartamento();
+
+$morAptos = $moradorDao->findMoradoresApartamentosAll();
+$aptoMors = $apartamentoDao->findByMorador();
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $morador = $moradorDao->findByApartamento($_POST['id']);
+    $apartamentoMorador = $moradorDao->findByApartamento($_POST['id']);
     // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
     
 }
@@ -38,7 +43,6 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 
 //$cpf = $moradorDao->findCpf('11111111111');
 $moradores = $moradorDao->findAll();
-$sindicos = $moradorDao->findSindico();
 $apartamentos = $apartamentoDao->findByMorador();
 $blocos = $blocoDao->findAll();
 $perfis = $perfilDao->findAll();
@@ -65,7 +69,7 @@ date_default_timezone_set('America/Sao_Paulo');
             // echo $aviso;
                 // echo "<pre>";
                 
-                     var_dump($morador);
+                     //var_dump($morador);
                 
                 // echo "</pre>";
                 if (isset($_SESSION['morador_sucesso'])) :?>
@@ -178,31 +182,74 @@ date_default_timezone_set('America/Sao_Paulo');
                     </form> <!-- Fim Form Geral -->
                 </fieldset>
             </div>
-            <div class="col-12"> <!-- Tabela -->
-                <fieldset>
+            <div class="col-12"> <!-- Tabela Moradores-->
+                <div class="row" >
                     <legend>Lista dos Moradores</legend>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <th>#</th>
-                            <th>Nome</th>
-                            <th>CPF</th>
-                            <th>Login</th>
-                            <th>Bloco</th>
-                            <th>Apartamento</th>
-                            <th colspan="2">Ações</th>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($apartamentos as $apartamento):?>
+                    <div class="col-6"> <!-- Tabela Moradores-->
+                        <!-- <fieldset> -->
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>ID MORADOR</th>
+                                <th>NOME</th>
+                                <th>CPF</th>
+                                <th>LOGIN</th>
+                            </thead>
+                            <tbody>
+                                    <?php foreach ($morAptos as $morApto):?>
                                 <tr>
-                                    <td><?=$apartamento->getMorador()->getId();?></td>
-                                    <td><?=$apartamento->getMorador()->getNome();?></td>
-                                    <td><?=$apartamento->getMorador()->getCpf();?></td>
-                                    <td><?=$apartamento->getMorador()->getLogin();?></td>
-                                    <td><?=$apartamento->getBloco()->getApelido();?></td>
-                                    <td><?=$apartamento->getNome()?></td>
+                                        <td><?=$morApto->getId();?></td>
+                                        <td><?=$morApto->getNome();?></td>
+                                        <td><?=$morApto->getCpf();?></td>
+                                        <td><?=$morApto->getLogin();?></td>
+                                </tr>
+                                    <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- </div> -->
+                    <div class="col-6"> <!-- Tabela Apartamentos-->
+                        <table class="table table-striped table-hover">                            <thead>
+                                <th>BLOCO</th>
+                                <th>APARTAMENTO</th>
+                                <th colspan="2">AÇÕES</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($aptoMors as $aptoMor):?>
+                                <tr>
+                                    <td><?=$aptoMor->getBloco()->getApelido();?></td>
+                                    <td><?=$aptoMor->getNome();?></td>
                                     <td>
                                         <form method="post" action="index.php">
-                                            <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                            <input type="hidden" name="id" value="</?=$morApto->getId();?>">
+                                            <button type="submit" class="btn btn-primary" name="editar" value="editar">
+                                                <i class="far fa-edit fa-1x"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="index.php"> 
+                                            <input type="hidden" name="id" value="</?=$morApto->getId();?>">
+                                            <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    
+                    </div>
+                </div>
+            </div>
+                                
+                            <!-- </?php foreach ($aptoMors as $aptoMor):?> -->
+                                    <!-- <td></?=$aptoMor->getId();?></td> -->
+                                    <!-- <td></?=$aptoMor->getNome();?></td>
+                                    <td></?=$aptoMor->getBloco()->getApelido();?></td>
+                                    <td> -->
+                                        <!-- <form method="post" action="index.php">
+                                            <input type="hidden" name="id" value="</?=$morApto->getId();?>">
                                             <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                                 <i class="far fa-edit"></i>
                                             </button>
@@ -210,18 +257,18 @@ date_default_timezone_set('America/Sao_Paulo');
                                     </td>
                                     <td>
                                         <form method="post" action="index.php"> 
-                                            <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                            <input type="hidden" name="id" value="</?=$morApto->getId();?>">
                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </form>
                                     </td>
+                            </?php endforeach; ?>
                                 </tr>
-                            <?php endforeach; ?>
                         </tbody>
-                    </table>
-                </fieldset>
-            </div> <!-- Fim Tabela -->
+                    </table> -->
+                <!-- </fieldset> -->
+            <!-- </div> Fim Tabela -->
         </div> 
     </div>
     </div> <!-- Fim do container -->

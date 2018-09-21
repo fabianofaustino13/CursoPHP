@@ -1,9 +1,9 @@
 <?php
 
-require_once (__DIR__ . "/./Conexao.class.php");
-require_once (__DIR__ . "/../modelo/Morador.class.php");
-require_once (__DIR__ . "/../modelo/Apartamento.class.php");
-require_once (__DIR__ . "/../modelo/Sindico.class.php");
+require_once(__DIR__ . "/./Conexao.class.php");
+require_once(__DIR__ . "/../modelo/Morador.class.php");
+require_once(__DIR__ . "/../modelo/Apartamento.class.php");
+require_once(__DIR__ . "/../modelo/Bloco.class.php");
 
     class MoradorDAO {
 
@@ -14,15 +14,23 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER ORDER BY PK_MOR DESC";
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER = FK_MOR_PER JOIN TB_APARTAMENTOS ON PK_APA = FK_MOR_APA JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO ORDER BY PK_MOR DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
-            $result = $statement->fetchAll();
+            $rows = $statement->fetchAll();
             $moradores = array();
-            foreach ($result as $row) {
+            foreach ($rows as $row) {
                 $perfil = new Perfil();
                 $perfil->setId($row['PK_PER']);
                 $perfil->setNome($row['PER_NOME']);
+                $bloco = new bloco();
+                $bloco->setId($row['PK_BLO']);
+                $bloco->setNome($row['BLO_NOME']);
+                $bloco->setApelido($row['BLO_APELIDO']);
+                $apartamento = new Apartamento();
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $apartamento->setBloco($bloco);
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
@@ -30,6 +38,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
+                $morador->setApartamento($apartamento);
                 $morador->setPerfil($perfil);
 
                 array_push($moradores, $morador);
@@ -59,7 +68,7 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findByApartamento($id) {
-            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_APA = :ID";
+            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_MOR = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
@@ -81,6 +90,33 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
             $morador->setStatus($row['MOR_STATUS']);
             
             return $morador;
+        }
+
+        public function findMoradoresApartamentosAll() {
+            $sql = "SELECT DISTINCT PK_MOR, MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, MOR_STATUS, PK_APA, APA_NOME, PK_BLO, BLO_NOME, BLO_APELIDO FROM TB_MORADORES LEFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_MOR = PK_MOR LEFT JOIN TB_APARTAMENTOS ON PK_APA = FK_ADM_APA LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO";
+            $statement = $this->conexao->prepare($sql);
+            $statement->execute();
+            $rows = $statement->fetchAll();
+            $moradores = array();
+            foreach ($rows as $row) {
+                $bloco = new Bloco();
+                $bloco->setId($row['PK_BLO']);
+                $bloco->setNome($row['BLO_NOME']);
+                $bloco->setApelido($row['BLO_APELIDO']);
+                $apartamento = new Apartamento();
+                $apartamento->setId($row['PK_APA']);
+                $apartamento->setNome($row['APA_NOME']);
+                $apartamento->setBloco($bloco);
+                $morador = new Morador();
+                $morador->setId($row['PK_MOR']);
+                $morador->setNome($row['MOR_NOME']);
+                $morador->setCpf($row['MOR_CPF']);
+                $morador->setLogin($row['MOR_LOGIN']);
+                $morador->setSenha($row['MOR_SENHA']);
+                $morador->setStatus($row['MOR_STATUS']);
+                array_push($moradores, $morador);
+            }
+            return $moradores;
         }
 
         public function findByNome($nome) {
@@ -147,45 +183,18 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 echo $e->getMessage();
                 return null;
             }
-        }
-        
-        public function findSindico() {
-            $sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_SINDICOS ON FK_SIN_MOR = PK_MOR ORDER BY PK_SIN DESC";
-            $statement = $this->conexao->prepare($sql);
-            $statement->execute();
-            $result = $statement->fetchAll();
-            $sindicos = array();
-            foreach ($result as $row) {
-                $morador = new Morador();
-                $morador->setId($row['PK_MOR']);
-                $morador->setNome($row['MOR_NOME']);
-                $morador->setCpf($row['MOR_CPF']);
-                $morador->setLogin($row['MOR_LOGIN']);
-                $morador->setSenha($row['MOR_SENHA']);
-                $sindico = new Sindico();
-                $sindico->setId($row['PK_SIN']);
-                $sindico->setMorador($morador);
-              
-                array_push($sindicos, $morador);
-            }
-            return $sindicos;
-        }
+        }          
 
-        public function save(Morador $morador, Apartamento $apartamento) {
+        public function save(Morador $morador) {
             if (is_null($morador->getId())) {
-                return $this->insert($morador, $apartamento);
+                return $this->insert($morador);
             } else {
-                return $this->update($morador, $apartamento);
-            }
-            // if ($morador->getId() == null) {
-            //     $this->insert($morador);
-            // } else {
-            //     $this->update($morador);
-            // }
+                return $this->update($morador);
+            }          
         }
 
-        public function insert(Morador $morador, Apartamento $apartamento) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, MOR_STATUS, FK_MOR_PER) VALUES (:NOME, :CPF, :USERNAME, :SENHA, :STATUS_MORADOR, :PERFIL)";
+        private function insert(Morador $morador) {
+            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, MOR_STATUS, FK_MOR_PER, FK_MOR_APA) VALUES (:NOME, :CPF, :USERNAME, :SENHA, :STATUS_MORADOR, :PERFIL, :APARTAMENTO)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
@@ -194,56 +203,64 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $senha = $morador->getSenha();
                 $status = $morador->getStatus();
                 $perfil = $morador->getPerfil()->getId();
+                $apartamento = $morador->getApartamento()->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':CPF', $cpf);
                 $statement->bindParam(':SENHA', $senha);
                 $statement->bindParam(':STATUS_MORADOR', $status);
                 $statement->bindParam(':PERFIL', $perfil);
+                $statement->bindParam(':APARTAMENTO', $apartamento);
                 $statement->execute();
-                $morador->setId($this->conexao->lastInsertId());
+                //$morador->setId($this->conexao->lastInsertId());
                 
-                $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
-                $statement = $this->conexao->prepare($sql);
-                $apartamento_id = $apartamento->getId();
-                $morador_id = $morador->getId();
-                $statement->bindParam(':APARTAMENTO', $apartamento_id);
-                $statement->bindParam(':MORADOR', $morador_id);
-                $statement->execute();
+                // $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
+                // $statement = $this->conexao->prepare($sql);
+                // $apartamento_id = $apartamento->getId();
+                // $morador_id = $morador->getId();
+                // $statement->bindParam(':APARTAMENTO', $apartamento_id);
+                // $statement->bindParam(':MORADOR', $morador_id);
+                // $statement->execute();
 
-                if($sindico == 1) {
-                    $sql = "INSERT INTO TB_SINDICOS (FK_SIN_MOR) VALUES (:SINDICO)";
-                    $statement = $this->conexao->prepare($sql);
-                    $sindico = $morador->getId();
-                    $statement->bindParam(':SINDICO', $sindico);
-                    $statement->execute();
-                }
+                // if($sindico == 1) {
+                //     $sql = "INSERT INTO TB_SINDICOS (FK_SIN_MOR) VALUES (:SINDICO)";
+                //     $statement = $this->conexao->prepare($sql);
+                //     $sindico = $morador->getId();
+                //     $statement->bindParam(':SINDICO', $sindico);
+                //     $statement->execute();
+                // }
                 
                 // return $this->findById($this->conexao->lastInsertId());
                 // return $this->findById($morador->getId());
                 //return $this->findById($this->conexao->lastInsertId());
                 return 0;
             } catch(PDOException $e) {
-                echo $e->getMessage();
+                //echo $e->getMessage();
+                $codigoErro = $e->errorInfo[1]; //Pega o código de entrada duplicada
+                $mensagemErro = $e->errorInfo[2]; //Pega a mensagem do erro
                 $code = $e->getCode();
-                //$mensagem = substr($e->getMessage(),-14);
-                $mensagem = strstr($e->getMessage(),'UK');
-                echo $mensagem;
-                if ($code == 23000) {
-                    if ($mensagem == "UK_MOR_CPF'") {
+                
+                //$mensagem = strstr($e->getMessage(),'UK');
+                //print_r(explode(" ",$mensagemErro));
+                //return $mensagem;
+                if ($codigoErro == 1062) {
+                    $erro1062 = explode(" ",$mensagemErro);
+                    //echo $erro1062[5];
+                    if ($erro1062[5] == "'UK_MOR_CPF'") {
                         return 1; //Cpf duplicado
-                    }else if ($mensagem == "UK_MOR_LOGIN'") {
+                    }else if ($erro1062[5] == "'UK_MOR_LOGIN'") {
                         return 2; //Login duplicado
                     }
                 }
-                //return  $code;
-                //return $e;
             }
         }
-
-        private function update(Morador $morador, Apartamento $apartamento) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_MORADOR, FK_MOR_PER=:PERFIL WHERE PK_MOR = :ID";
+        private function update(Morador $morador) {
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_MORADOR, FK_MOR_PER=:PERFIL, FK_MOR_APA=:APARTAMENTO WHERE PK_MOR = :ID";
             try {
+                // echo "<pre>";                
+                //     var_dump($morador);
+                //     var_dump($apartamento);                
+                // echo "</pre>";
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $cpf = $morador->getCpf();
@@ -251,25 +268,27 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 $senha = $morador->getSenha();
                 $status = $morador->getStatus();
                 $perfil = $morador->getPerfil()->getId();
+                $apartamento = $morador->getApartamento()->getId();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':CPF', $cpf);
                 $statement->bindParam(':USERNAME', $username);
                 $statement->bindParam(':SENHA', $senha);
-                $statement->bindParam(':SITUACAO', $situacao);
                 $statement->bindParam(':STATUS_MORADOR', $status);
                 $statement->bindParam(':PERFIL', $perfil);
+                $statement->bindParam(':APARTAMENTO', $apartamento);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                $morador->getId($this->conexao->lastInsertId());
-                
-                $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
-                $statement = $this->conexao->prepare($sql);
-                $apartamento_id = $apartamento->getId();
-                $morador_id = $morador->getId();
-                $statement->bindParam(':APARTAMENTO', $apartamento_id);
-                $statement->bindParam(':MORADOR', $morador_id);
-                $statement->execute();
+                //$morador->getId($this->conexao->lastInsertId());
+                                
+                // $sql = "INSERT INTO TB_APARTAMENTOS_MORADORES (FK_ADM_APA, FK_ADM_MOR) VALUES (:APARTAMENTO, :MORADOR)";
+                // $statement = $this->conexao->prepare($sql);
+                // $apartamento_id = $apartamento->getId();
+                // //$morador_id = $morador->getId();
+                // $morador_id = $id;
+                // $statement->bindParam(':APARTAMENTO', $apartamento_id);
+                // $statement->bindParam(':MORADOR', $morador_id);
+                // $statement->execute();
 
                 // if($status_sindico == 1) {
                 //     $sql = "INSERT INTO TB_SINDICOS (FK_SIN_MOR) VALUES (:SINDICO)";
@@ -279,11 +298,26 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
                 //     $statement->execute();
                 // }
 
-                return $this->findById($morador->getId());
-
+                //return $this->findById($morador->getId());
+                return 0;
             } catch(PDOException $e) {
                 echo $e->getMessage();
-                return null;
+                $codigoErro = $e->errorInfo[1]; //Pega o código de entrada duplicada
+                $mensagemErro = $e->errorInfo[2]; //Pega a mensagem do erro
+                $code = $e->getCode();
+                echo $codigoErro;
+                //$mensagem = strstr($e->getMessage(),'UK');
+                //print_r(explode(" ",$mensagemErro));
+                //return $mensagem;
+                if ($codigoErro == 1062) {
+                    $erro1062 = explode(" ",$mensagemErro);
+                    //echo $erro1062[5];
+                    if ($erro1062[5] == "'UK_MOR_CPF'") {
+                        return 1; //Cpf duplicado
+                    }else if ($erro1062[5] == "'UK_MOR_LOGIN'") {
+                        return 2; //Login duplicado
+                    }
+                }
             }
         }
 

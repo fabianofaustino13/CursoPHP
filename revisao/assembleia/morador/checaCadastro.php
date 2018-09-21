@@ -48,6 +48,46 @@ if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
     $_SESSION['value_cpf'] = $_POST['cpf'];
 }
 
+if (empty($_POST['login']) && isset($_POST['login'])) {
+    $_SESSION['vazio_login'] = "Login é obrigatório";
+    $continua = false;
+    header('location: index.php');
+} else {
+    $_SESSION['value_login'] = $_POST['login'];
+}
+
+if (empty($_POST['blocoId']) && isset($_POST['blocoId'])) {
+    $_SESSION['vazio_blocoId'] = "Selecione um bloco";
+    $continua = false;
+    header('location: index.php');
+} else {
+    $_SESSION['value_blocoId'] = $_POST['blocoId'];
+}
+
+if (empty($_POST['apartamentoId']) && isset($_POST['apartamentoId'])) {
+    $_SESSION['vazio_apartamentoId'] = "Selecione um apartamento";
+    $continua = false;
+    header('location: index.php');
+} else {
+    $_SESSION['value_apartamentoId'] = $_POST['apartamentoId'];
+}
+
+if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
+    $_SESSION['vazio_perfil'] = "Selecione um perfil";
+    $continua = false;
+    header('location: index.php');
+} else {
+    $_SESSION['value_perfil'] = $_POST['perfil'];
+}
+
+if (empty($_POST['status']) && isset($_POST['status'])) {
+    $_SESSION['vazio_status'] = "Selecione um status";
+    $continua = false;
+    header('location: index.php');
+} else {
+    $_SESSION['value_status'] = $_POST['status'];
+}
+
 if ($continua) {
     if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
         $morador->setNome($_POST['nome']);
@@ -61,13 +101,15 @@ if ($continua) {
         if ($_POST['id'] != '') {
             $morador->setId($_POST['id']);
         }
-    
-        $apartamento->getBloco()->setId($_POST['blocoId']);
-        $apartamento->setId($_POST['apartamentoId']);         
+        
+        $apartamento = $apartamentoDao->findById($_POST['apartamentoId']);
+        // $apartamento->getBloco()->setId($_POST['blocoId']);
+        // $apartamento->setId($_POST['apartamentoId']);         
 
         $resultado = $moradorDao->save($morador, $apartamento);
         
         //return $resultado;
+        echo "<script>alert($resultado)</script>";
         if ($resultado != 0) {
             $_SESSION['morador_erro'] = 'Erro ao cadastrar';
             if($resultado == 1) {
@@ -81,10 +123,10 @@ if ($continua) {
             // }
             //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Cadastro realizado com sucesso.\");</script>";
         }
-            // $_SESSION['morador_erro'] = "Erro ao cadastrar";
-            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
-        // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
-        header('location: index.php');
+        //     // $_SESSION['morador_erro'] = "Erro ao cadastrar";
+        //     //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
+        // // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
+        //header('location: index.php');
     }
 }
 

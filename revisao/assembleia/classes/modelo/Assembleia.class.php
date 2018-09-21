@@ -1,6 +1,6 @@
 <?php
 
-require_once 'TipoAssembleia.class.php';
+require_once('TipoAssembleia.class.php');
 
 class Assembleia {
 

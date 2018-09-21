@@ -20,7 +20,7 @@ $apartamentos = $apartamentoDao->findApartamentoBloco($bloco);
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>    
-        <label for="apartamentoId">Apartamento</label>
+        <label for="apartamentoId" class="required">Apartamento</label>
         <select class="form-control" name="apartamentoId" required>
             <option value=""></option>
             <?php foreach ($apartamentos as $apartamento): ?>                                                    
