@@ -256,7 +256,7 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
             }
         }
         private function update(Morador $morador) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_MORADOR, FK_MOR_PER=:PERFIL, FK_MOR_APA=:APARTAMENTO WHERE PK_MOR = :ID";
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_MORADOR, FK_MOR_PER=:PERFIL WHERE PK_MOR = :ID";
             try {
                 // echo "<pre>";                
                 //     var_dump($morador);
@@ -269,7 +269,7 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
                 $senha = $morador->getSenha();
                 $status = $morador->getStatus();
                 $perfil = $morador->getPerfil()->getId();
-                $apartamento = $morador->getApartamento()->getId();
+                //$apartamento = $morador->getApartamento()->getId();
                 $id = $morador->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':CPF', $cpf);
@@ -277,7 +277,7 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
                 $statement->bindParam(':SENHA', $senha);
                 $statement->bindParam(':STATUS_MORADOR', $status);
                 $statement->bindParam(':PERFIL', $perfil);
-                $statement->bindParam(':APARTAMENTO', $apartamento);
+                //$statement->bindParam(':APARTAMENTO', $apartamento);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 //$morador->getId($this->conexao->lastInsertId());

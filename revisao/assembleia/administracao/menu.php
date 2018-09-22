@@ -55,8 +55,13 @@
                 <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
                 <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
                 <a href="../apartamento/index.php"><i class="fas fa-building"></i> <span>Apartamento</span> </a>
+            </div>
+            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Gerenciar</span>  
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="../morador/gerenciarMorador.php"><i class="fab fa-gg"></i> <span>Morador</span> </a>
                 <a href="../vincularMoradorApartamento/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
-                
             </div>
             <!-- <//?php endif;?> -->
     

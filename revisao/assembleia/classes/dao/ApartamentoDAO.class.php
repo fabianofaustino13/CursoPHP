@@ -161,8 +161,8 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
             return $apartamentos;
         }
 
-        public function findByApartamento($id) {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR JOIN TB_PERFIS ON PK_PER = FK_MOR_PER JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_APA = :ID";
+        public function findByMoradorApartamento($id) {
+            $sql = "SELECT * FROM TB_APARTAMENTOS RIGHT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR JOIN TB_PERFIS ON PK_PER = FK_MOR_PER LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_MOR = :ID";
             $statement = $this->conexao->prepare($sql);
             // $id_morador = $morador->getId();
             // $statement->bindParam(':ID_MOR', $id_morador); //Proteção contra sql injetct
@@ -240,27 +240,24 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
 
         public function save(Apartamento $apartamento) {
             if (is_null($apartamento->getId())) {
-                return $this->insert($apartamento);
+                //return $this->insert($apartamento);
             } else {
                 return $this->update($apartamento);
-            }
-            // if ($apartamento->getId() == null) {
-            //     $this->insert($apartamento);
-            // } else {
-            //     $this->update($apartamento);
-            // }
+            }            
         }
 
         private function insert(Apartamento $apartamento) {
-            $sql = "INSERT INTO TB_APARTAMENTOS (APA_NOME, FK_APA_BLO, FK_APA_ADI) VALUES (:NOME, :BLOCO, :ADIMPLENTE)";             
+            $sql = "INSERT INTO TB_APARTAMENTOS (APA_NOME, FK_APA_BLO, FK_APA_ADI, FK_APA_MOR) VALUES (:NOME, :BLOCO, :ADIMPLENTE, :MORADOR)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $apartamento->getNome();
                 $bloco = $apartamento->getBloco()->getId();
                 $adimplente = $apartamento->getAdimplente()->getId();
+                $morador = $apartamento->getMorador()->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':BLOCO', $bloco);
                 $statement->bindParam(':ADIMPLENTE', $adimplente);
+                $statement->bindParam(':MORADOR', $morador);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
@@ -285,33 +282,6 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($apartamento->getId());
-            } catch(PDOException $e) {
-                echo $e->getMessage();
-                return null;
-            }
-        }
-
-        private function updateApaMor(Apartamento $apartamento) {
-            $sql = "UPDATE TB_APARTAMENTOS LETFT JOIN TB_APARTAMENTOS_MORADORES ON FK_ADM_APA = PK_APA JOIN TB_MORADORES ON PK_MOR = FK_ADI_MOR SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE, FK_ADI_MOR=:ID_MORADOR, FK_ADI_APA=:ID_APA WHERE PK_APA = :ID";
-            $login_morador = $apartamento->getMorador()->getLogin();
-            $sqlMorador = "SELECT PK_MOR FROM TB_MORADORES WHERE MOR_LOGIN='$login_morador'";
-            $nome_apa = $apartamento->getNome();
-            $apelido_bloco = $apartamento->getBloco()->getApelido();
-            $sqlApartamento = "SELECT PK_APA FROM TB_APARTAMENTOS JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO WHERE APA_NOME='$nome_apa' AND BLO_APELIDO='$apelido_bloco'";
-            $resultado = "SELECT COUNT(*) FROM TB_APARTAMENTOS_MORADORES WHERE FK_ADM_APA='$sqlApartamento' and FK_ADM_MOR='$sqlMorador'";
-
-            try {
-                $statement = $this->conexao->prepare($sql);
-                $nome = $apartamento->getNome();
-                $bloco = $apartamento->getBloco()->getId();
-                $adimplente = $apartamento->getAdimplente()->getId();
-                $id = $apartamento->getId();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':BLOCO', $bloco);
-                $statement->bindParam(':ADIMPLENTE', $adimplente);
-                $statement->bindParam(':ID', $id);
-                $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;

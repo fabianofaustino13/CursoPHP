@@ -25,7 +25,7 @@ $morador = new Morador();
 $moradorDao = new MoradorDAO();
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $apartamento = $apartamentoDao->findByApartamento($_POST['id']);
+    $apartamento = $apartamentoDao->findByMoradorApartamento($_POST['id']);
     // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
 }
 
@@ -90,7 +90,7 @@ date_default_timezone_set('America/Sao_Paulo');
                     <legend>Cadastro de Moradores</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
                     <!-- onsubmit="return checaFormulario(this)" -->
-                    <form id="form1" name="form1" action="checaCadastro.php" method="post" onsubmit="return checaFormulario(this)" />
+                    <form id="form1" name="form1" action="checaCadastroMorador.php" method="post" onsubmit="return checaFormulario(this)" />
                         <div class="form-row"><!-- Div1 -->
                             <input type="hidden" name="id" value="<?=$apartamento->getMorador()->getId();?>">                                                    
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
@@ -106,7 +106,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     }?>
                                     
                             </div>                        
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label for="login" class="required">Login</label>
                                 <input type="text" class="form-control" id="login" name="login" value="<?=$apartamento->getMorador()->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
                                 <?php if (isset($_SESSION['login_existe'])) {
@@ -114,32 +114,17 @@ date_default_timezone_set('America/Sao_Paulo');
                                     unset($_SESSION['login_existe']);
                                 }?>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="senha" class="required">Senha</label>
-                                <input type="password" class="form-control" id="senha" name="senha" value="<?=$apartamento->getMorador()->getSenha();?>" maxlength="25" placeholder="Digite uma senha" required />
+                                <input type="password" class="form-control" id="senha" name="senha"  maxlength="25" placeholder="Digite uma senha"  />
+                                <!-- value="</?=$apartamento->getMorador()->getSenha();?>" -->
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="senha2">Confirme a Senha</label>
-                                <input type="password" class="form-control" id="senha2" name="senha2" value="<?=$apartamento->getMorador()->getSenha();?>" maxlength="25" placeholder="Confirme a senha" required />
-                            </div>      
-                            <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
-                                <label for="blocoId" class="required">Bloco</label>
-                                <select class="form-control" name="blocoId" onchange="show_apartamentos(this.value);" required />
-                                    <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
-                                    <option value=""></option>
-                                    <?php foreach ($blocos as $bloco): ?>                                                    
-                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>" <?=$bloco->getId() == $apartamento->getBloco()->getId() ? "selected": "";?>><?=$bloco->getApelido();?></option> 
-                                    <?php endforeach; ?>                                    
-                                </select> 
-                            </div>  
-                            <div class="col-md-2 mb-3" id="div_apartamentos"><!-- select Apartamento -->
-                                <label for="apartamentoId" class="required">Apartamento</label>
-                                <select class="form-control" name="apartamentoId" required/ >
-                                    <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
-                                    <option value="" ><?=$apartamento->getNome();?></option>                      
-                                </select> 
-                            </div>  
-                            <div class="col-md-2 mb-3"><!-- select Perfil -->
+                                <input type="password" class="form-control" id="senha2" name="senha2"  maxlength="25" placeholder="Confirme a senha"  />
+                                <!-- value="<//?=$apartamento->getMorador()->getSenha();?>" -->
+                            </div>                                  
+                            <div class="col-md-3 mb-3"><!-- select Perfil -->
                                 <label for="perfil" class="required">Perfil</label>
                                 <select class="form-control" name="perfil" required/>
                                     <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
@@ -148,7 +133,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
-                            <div class="col-md-1 mb-3"><!-- select Perfil -->
+                            <div class="col-md-2 mb-3"><!-- select Perfil -->
                                 <label for="status" class="required">Situação</label>
                                 <select class="form-control" name="status" required/>
                                     <option value="1" selected>ATIVO</option>                                                
@@ -167,13 +152,13 @@ date_default_timezone_set('America/Sao_Paulo');
                      <legend>Lista dos Moradores</legend>
                      <table class="table table-striped table-hover">
                          <thead>
-                             <th>ID MORADOR</th>
+                             <th>ID</th>
                              <th>Nome</th>
                              <th>CPF</th>
                              <th>LOGIN</th>
                              <th>Bloco</th>
                              <th>Apartamento</th>
-                             <th colspan="2">Ações</th>
+                             <th colspan="3" style="text-align:center;">Ações</th>
                          </thead>
                          <tbody>
                              <?php foreach ($apartamentos as $apartamento):?>
@@ -186,11 +171,14 @@ date_default_timezone_set('America/Sao_Paulo');
                                      <td><?=$apartamento->getNome()?></td>
                                      <td>
                                          <form method="post" action="index.php">
-                                             <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
+                                             <input type="hidden" name="id" value="<?=$apartamento->getMorador()->getId();?>">
                                              <button type="submit" class="btn btn-primary" name="editar" value="editar">
                                                  <i class="far fa-edit"></i>
                                              </button>
                                          </form>
+                                     </td>
+                                     <td>
+                                        <a href="gerenciarMorador.php" class="btn btn btn-success btn-md" tabindex="-1" role="button" aria-disabled="true"><i class="fab fa-gg"></i></a>
                                      </td>
                                      <td>
                                          <form method="post" action="index.php"> 
