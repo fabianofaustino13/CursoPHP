@@ -11,7 +11,7 @@ $moradorDao = new MoradorDAO();
 $morador = $moradorDao->findByLogin($_POST['login']);
 $num = count($morador->getLogin());
 
-echo "<script>alert('Usuario ' + $num +'{$morador->getNome()}.{$morador->getSenha()}')</script>";
+//echo "<script>alert('Usuario ' + $num +'{$morador->getNome()}.{$morador->getSenha()}')</script>";
 if ($num > 0) {
     $_SESSION['MoradorID'] = $morador->getId();
     $_SESSION['MoradorNome'] = $morador->getNome();

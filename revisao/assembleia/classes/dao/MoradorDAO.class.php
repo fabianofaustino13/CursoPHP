@@ -258,10 +258,10 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
         private function update(Morador $morador) {
             $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, MOR_STATUS=:STATUS_MORADOR, FK_MOR_PER=:PERFIL WHERE PK_MOR = :ID";
             try {
-                // echo "<pre>";                
-                //     var_dump($morador);
-                //     var_dump($apartamento);                
-                // echo "</pre>";
+                echo "<pre>";                
+                    var_dump($morador);
+                //    var_dump($apartamento);                
+                echo "</pre>";
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();
                 $cpf = $morador->getCpf();

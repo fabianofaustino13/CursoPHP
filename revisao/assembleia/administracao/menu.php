@@ -19,21 +19,40 @@
 
     <!-- Menu lateral -->
         <div class="sidenav">
-            
-                <a href="#" disabled style="color:white;">
+                <a href="../editaMorador/editarMorador.php" disabled style="color:white;">
                     <span>
-                        <?php if ($_SESSION['MoradorPerfilID'] == 1): ?>    
-                        <i class="fab fa-angellist fa-2x"></i> 
-                        <?php elseif ($_SESSION['MoradorPerfilNome'] == 4): ?>
-                        <i class="fas fa-award fa-2x"></i>
-                        <?php else: ?>
-                        <i class="fas fa-air-freshener fa-2x"></i> <?php endif; ?>
-                        <?=$_SESSION['MoradorNome'];?> <br>(<?=$_SESSION['MoradorPerfilNome'];?>)
-                    </span>
+                        <?php if ($_SESSION['MoradorPerfilID'] == 1):?>
+                            <p style='text-align: center; color:yellow; font-size:14px;'>
+                                <i class="fab fa-angellist fa-1x"></i> 
+                                <br><?=$_SESSION['MoradorNome']?><br>
+                                (<?=$_SESSION['MoradorPerfilNome']?>)
+                            </p>
+                    
+                        <?php elseif ($_SESSION['MoradorPerfilID'] == 2):?>
+                            <p style='text-align: center; color:yellow; font-size:14px;'>
+                                <i class="fas fa-balance-scale fa-1x"></i>
+                                <br><?=$_SESSION['MoradorNome']?><br>
+                                (<?=$_SESSION['MoradorPerfilNome']?>)
+                            </p>
+                    
+                        <?php elseif ($_SESSION['MoradorPerfilID'] == 3):?>
+                            <p style='text-align: center; color:yellow; font-size:14px;'>
+                                <i class="fas fa-award fa-1x"></i>
+                                <br><?=$_SESSION['MoradorNome']?><br>
+                                (<?=$_SESSION['MoradorPerfilNome']?>)
+                            </p>
+                    
+                        <?php elseif ($_SESSION['MoradorPerfilID'] == 4):?>
+                            <p style='text-align: center; color:yellow; font-size:14px;'>
+                                <i class="fas fa-air-freshener fa-1x">
+                                <br><?=$_SESSION['MoradorNome']?><br>
+                                (<?=$_SESSION['MoradorPerfilNome']?>)
+                            </p>
+                        <?php endif; ?>                                
+                    </span>    
                 </a>
                                
-            <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>
-                                    
+            <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>           
             <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
                 <i class="fa fa-caret-down"></i>
             </button>
