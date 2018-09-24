@@ -15,6 +15,7 @@ $num = count($morador->getLogin());
 if ($num > 0) {
     $_SESSION['MoradorID'] = $morador->getId();
     $_SESSION['MoradorNome'] = $morador->getNome();
+    $_SESSION['MoradorStatus'] = $morador->getStatus();
     $_SESSION['MoradorPerfilID'] = $morador->getPerfil()->getId();
     $_SESSION['MoradorPerfilNome'] = $morador->getPerfil()->getNome();
         
@@ -33,8 +34,13 @@ if ($num > 0) {
     //if ($user->logar($login, $senha)) {
 
     if ($loginDB == $login && $senhaDB == $senha)  {
-        $_SESSION['isLogado'] = true;
-        header('location: /cursoPHP/revisao/assembleia/assembleia/');
+        if (($_SESSION['isLogado'] = true)  AND ($_SESSION['MoradorStatus'] !=  NULL) ) {
+            header('location: /cursoPHP/revisao/assembleia/assembleia/');
+        } else {
+            header('location: /cursoPHP/revisao/assembleia/assembleia/aguardando.php');
+        }
+
+
     } else {
         $_SESSION['isLogado'] = false;
         $_SESSION['mensagem'] = "Login ou Senha inválidos!!!";

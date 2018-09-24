@@ -1,12 +1,17 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Pauta.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/PautaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: ../assembleia/aguardando.php');
+}
 
 include(__DIR__ . "/../administracao/logado.php");
+
+require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php");
+require_once(__DIR__ . "/../classes/modelo/Pauta.class.php");
+require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php");
+require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/PautaDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php");
 
 $dao = new PautaDAO();
 $pauta = new Pauta();

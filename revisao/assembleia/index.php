@@ -18,9 +18,21 @@ if (isset($_SESSION['mensagem'])) {
     <link rel="stylesheet" href="./assets/css/all.css">
 
 </head>
+<style type="text/css">
+    * { margin: 0; padding: 0; font-family:Tahoma; font-size:9pt;}
+    #divCenter { 
+            background-color: #e1e1e1; 
+            width: 400px; 
+            height: 250px; 
+            left: 50%; 
+            margin: -130px 0 0 -210px; 
+            padding:10px;
+            position: absolute; 
+            top: 40%; }
+</style>
 <body>
     
-    <div class="container">
+    <div id="divCenter">
             <div class="row">
                 <div class="col-12">
                 <fieldset>
@@ -42,6 +54,7 @@ if (isset($_SESSION['mensagem'])) {
                                 <i class="fas fa-save"></i> Salvar
                             </button>
                         </div>
+                        <a href="./cadastroMorador/index.php">Cadastro</a>
                     </form>
                 </fieldset>
             </div>

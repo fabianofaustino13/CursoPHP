@@ -68,18 +68,18 @@ function checaFormulario(){
         return false;
     }
 
-    if (document.form1.senha2.value == '') {
-        window.alert("O campo de confirme a senha não pode ser vazio");
-        form1.senha2.focus();
-        return false;
-    }
-
     if (document.form1.senha.value != document.form1.senha2.value){
         // window.alert("Seja bem-vindo "+user+"");
         window.alert("Senhas não conferem");
         form1.senha.focus();
         return false;
     }   
+
+    if (document.form1.senha2.value == '') {
+        window.alert("O campo de confirme a senha não pode ser vazio");
+        form1.senha2.focus();
+        return false;
+    }
     
     return true;
 }

@@ -1,8 +1,13 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Sexo.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/SexoDAO.class.php"); ?>
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: ../assembleia/aguardando.php');
+}
 
 include(__DIR__ . "/../administracao/logado.php");
+
+require_once(__DIR__ . "/../classes/modelo/Sexo.class.php");
+require_once(__DIR__ . "/../classes/dao/SexoDAO.class.php");
 
 $dao = new SexoDAO();
 $sexo = new Sexo();

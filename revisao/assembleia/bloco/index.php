@@ -1,8 +1,13 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Bloco.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php"); ?>
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: ../assembleia/aguardando.php');
+}
 
 include(__DIR__ . "/../administracao/logado.php");
+
+require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
+require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 
 $dao = new BlocoDAO();
 $bloco = new Bloco();

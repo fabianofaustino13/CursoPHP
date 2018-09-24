@@ -1,8 +1,13 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php"); ?>
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: aguardando.php');
+}
+
+require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php");
+require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php");
+require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/TipoAssembleiaDAO.class.php");
 
 include(__DIR__ . "/../administracao/logado.php");
 

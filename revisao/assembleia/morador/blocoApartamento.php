@@ -1,4 +1,9 @@
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: ../assembleia/aguardando.php');
+}
+
 require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
 require_once(__DIR__ . "/../classes/modelo/bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php");

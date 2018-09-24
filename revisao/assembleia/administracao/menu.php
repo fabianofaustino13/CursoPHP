@@ -19,70 +19,62 @@
 
     <!-- Menu lateral -->
         <div class="sidenav">
-                <a href="../editaMorador/editarMorador.php" disabled style="color:white;">
-                    <span>
+            <div>
+                <a href="../editaMorador/editarMorador.php">
+                    <p style='text-align: center; color:yellow; font-size:14px;'>
                         <?php if ($_SESSION['MoradorPerfilID'] == 1):?>
-                            <p style='text-align: center; color:yellow; font-size:14px;'>
-                                <i class="fab fa-angellist fa-1x"></i> 
-                                <br><?=$_SESSION['MoradorNome']?><br>
-                                (<?=$_SESSION['MoradorPerfilNome']?>)
-                            </p>
-                    
+                            <i class="fab fa-angellist fa-1x"></i> 
+                            <br><?=$_SESSION['MoradorNome']?><br>
+                            (<?=$_SESSION['MoradorPerfilNome']?>)
                         <?php elseif ($_SESSION['MoradorPerfilID'] == 2):?>
-                            <p style='text-align: center; color:yellow; font-size:14px;'>
-                                <i class="fas fa-balance-scale fa-1x"></i>
-                                <br><?=$_SESSION['MoradorNome']?><br>
-                                (<?=$_SESSION['MoradorPerfilNome']?>)
-                            </p>
-                    
+                            <i class="fas fa-balance-scale fa-1x"></i>
+                            <br><?=$_SESSION['MoradorNome']?><br>
+                            (<?=$_SESSION['MoradorPerfilNome']?>)                   
                         <?php elseif ($_SESSION['MoradorPerfilID'] == 3):?>
-                            <p style='text-align: center; color:yellow; font-size:14px;'>
-                                <i class="fas fa-award fa-1x"></i>
-                                <br><?=$_SESSION['MoradorNome']?><br>
-                                (<?=$_SESSION['MoradorPerfilNome']?>)
-                            </p>
-                    
-                        <?php elseif ($_SESSION['MoradorPerfilID'] == 4):?>
-                            <p style='text-align: center; color:yellow; font-size:14px;'>
-                                <i class="fas fa-air-freshener fa-1x">
-                                <br><?=$_SESSION['MoradorNome']?><br>
-                                (<?=$_SESSION['MoradorPerfilNome']?>)
-                            </p>
+                            <i class="fas fa-award fa-1x"></i>
+                            <br><?=$_SESSION['MoradorNome']?><br>
+                            (<?=$_SESSION['MoradorPerfilNome']?>)
+                        <?php elseif (($_SESSION['MoradorPerfilID'] == 4) AND ($_SESSION['MoradorStatus'] != NULL)):?>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <br><?=$_SESSION['MoradorNome']?><br>
+                            (<?=$_SESSION['MoradorPerfilNome']?>)
                         <?php endif; ?>                                
-                    </span>    
+                    </p>            
                 </a>
-                               
+            </div>
+
             <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>           
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <button class="dropdown-btn"> <i class="fas fa-clipboard-list"></i> <span>Assembléias</span>  
+            <?php if ($_SESSION['MoradorStatus'] != NULL): ?>
+                <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="../assembleia/index.php">Assembléia</a>  
-                    <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+                    <button class="dropdown-btn"> <i class="fas fa-clipboard-list"></i> <span>Assembléias</span>  
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <a href="../assembleia/index.php">Assembléia</a>  
+                        <a href="../tipoAssembleia/index.php">Tipo de Assembléia</a>
+                    </div>
+                    <button class="dropdown-btn"><i class="fas fa-list"></i></i> <span>Pautas</span>  
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <a href="../pauta/index.php">Pauta</a>
+                        <a href="../opcaoResposta/index.php">Resposta</a>                 
+                    </div>
+                    <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
+                    <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
+                    <a href="../apartamento/index.php"><i class="fas fa-building"></i> <span>Apartamento</span> </a>
                 </div>
-                <button class="dropdown-btn"><i class="fas fa-list"></i></i> <span>Pautas</span>  
+                <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Gerenciar</span>  
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                    <a href="../pauta/index.php">Pauta</a>
-                    <a href="../opcaoResposta/index.php">Resposta</a>                 
+                    <a href="../morador/gerenciarMorador.php"><i class="fab fa-gg"></i> <span>Morador</span> </a>
+                    <a href="../vincularMoradorApartamento/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
                 </div>
-                <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
-                <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
-                <a href="../apartamento/index.php"><i class="fas fa-building"></i> <span>Apartamento</span> </a>
-            </div>
-            <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Gerenciar</span>  
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="../morador/gerenciarMorador.php"><i class="fab fa-gg"></i> <span>Morador</span> </a>
-                <a href="../vincularMoradorApartamento/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
-            </div>
-            <!-- <//?php endif;?> -->
+            <?php endif;?>
     
             <a href="../administracao/logout.php" style="color: red"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
                 

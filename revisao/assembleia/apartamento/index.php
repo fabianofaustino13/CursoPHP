@@ -1,12 +1,17 @@
-<?php require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Bloco.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/modelo/Adimplente.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php"); ?>
-<?php require_once(__DIR__ . "/../classes/dao/AdimplenteDAO.class.php"); ?>
 <?php 
+session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: ../assembleia/aguardando.php');
+}
 
 include(__DIR__ . "/../administracao/logado.php");
+
+require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
+require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
+require_once(__DIR__ . "/../classes/modelo/Adimplente.class.php");
+require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/AdimplenteDAO.class.php");
 
 $bloco = new Bloco();
 $blocoDao = new BlocoDAO();

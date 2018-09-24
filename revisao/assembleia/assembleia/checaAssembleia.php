@@ -1,6 +1,11 @@
 <?php 
 session_start();
+if ($_SESSION['MoradorStatus'] == NULL) {
+    header('location: aguardando.php');
+}
+
 include(__DIR__ . "/../administracao/logado.php");
+
 require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php");
 require_once(__DIR__ . "/../classes/modelo/TipoAssembleia.class.php");
 require_once(__DIR__ . "/../classes/dao/AssembleiaDAO.class.php");
