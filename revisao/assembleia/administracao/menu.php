@@ -20,7 +20,7 @@
     <!-- Menu lateral -->
         <div class="sidenav">
             <div>
-                <a href="../editaMorador/editarMorador.php">
+                <a href="../editaMorador/index.php">
                     <p style='text-align: center; color:yellow; font-size:14px;'>
                         <?php if ($_SESSION['MoradorPerfilID'] == 1):?>
                             <i class="fab fa-angellist fa-1x"></i> 
@@ -72,7 +72,7 @@
                 </button>
                 <div class="dropdown-container">
                     <a href="../morador/gerenciarMorador.php"><i class="fab fa-gg"></i> <span>Morador</span> </a>
-                    <a href="../vincularMoradorApartamento/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
+                    <a href="../vincularApartamentoMorador/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
                 </div>
             <?php endif;?>
     

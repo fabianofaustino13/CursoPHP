@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -46,42 +46,37 @@ date_default_timezone_set('America/Sao_Paulo');
 <body>
     <!-- Início do container -->
     <div class="container-fluid">
-   <!-- include Menu -->
-   <?php
-        include(__DIR__ . "/../administracao/menu.php");
-    ?>
-    <div class="containerMenuDireita">
-        <div class="col-md-12 mb-3">
-            <?php 
-            //echo $aviso;
-                // echo "<pre>";
-                
-                //      var_dump($morador);
-                
-                // echo "</pre>";
-                if (isset($_SESSION['morador_sucesso'])) :?>
-                
-                    <div class="col-12" style="background-color: #0e972c; text-align: center; color:white">
-                    <?php 
-                        echo $_SESSION['morador_sucesso'];
-                        unset($_SESSION['morador_sucesso']);
-                endif;
-                if (isset($_SESSION['morador_erro'])) :?>
-                    <div class="col-12" style="background-color: red; text-align: center; color:white">
-                    <?php 
-                        echo $_SESSION['morador_erro'];
-                        //echo $_SESSION['cpf_existe'];
-                        unset($_SESSION['morador_erro']);
-                endif;
-            ?>
-            <div class="col-12" style="text-align: center; color:red">
-                <!-- <//?=var_dump($teste);?> -->
-            </div>
-        </div>
-        <div class="row" style="margin-top: 5%;">
-            <!-- onsubmit="return checaFormulario()"  -->
+        <!-- include Menu -->
+        <?php
+            include(__DIR__ . "/../administracao/menu.php");
+        ?>
+    </div>
+    <div class="containerMenuDireita">        
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-12 mb-3">
+                <?php 
+                    // echo "<pre>";
+                    // var_dump($morador);                
+                    // echo "</pre>";
+                    if (isset($_SESSION['morador_sucesso'])) :?>
+                    
+                        <div class="col-12" style="background-color: #0e972c; text-align: center; color:white">
+                        <?php 
+                            echo $_SESSION['morador_sucesso'];
+                            unset($_SESSION['morador_sucesso']);
+                    endif;
+                    if (isset($_SESSION['morador_erro'])) :?>
+                        <div class="col-12" style="background-color: red; text-align: center; color:white">
+                        <?php 
+                            echo $_SESSION['morador_erro'];
+                            //echo $_SESSION['cpf_existe'];
+                            unset($_SESSION['morador_erro']);
+                    endif;
+                ?>   
+            </div>      
+            <div class="col-md-12 mb-3">   
                 <fieldset>
-                    <legend>Edição do Moradores</legend>
+                    <legend>Edição do Morador</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
                     <!-- onsubmit="return checaFormulario(this)" -->
                     <form id="form1" name="form1" action="checaEditaMorador.php" method="post" onsubmit="return checaFormulario(this)" />
@@ -128,9 +123,8 @@ date_default_timezone_set('America/Sao_Paulo');
                     </form> <!-- Fim Form Geral -->
                 </fieldset>
             </div>
-         </div> 
-     </div>
-     </div> <!-- Fim do container -->
-     <script src="../assets/js/ajax_funcoes.js"></script>
+        </div> 
+    </div> <!-- Fim do container -->
+    <script src="../assets/js/ajax_funcoes.js"></script>
  </body>
  </html> 

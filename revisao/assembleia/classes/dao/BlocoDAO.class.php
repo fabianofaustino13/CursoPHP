@@ -83,7 +83,7 @@ require_once (__DIR__ . "/../modelo/Bloco.class.php");
         }
 
         private function update(Bloco $bloco) {
-            $sql = "UPDATE TB_BLOCOS SET BLO_NOME = :NOME, BLO_APELIDO = :APELIDO WHERE PK_BLO = :ID";
+            $sql = "UPDATE TB_BLOCOS SET BLO_NOME=:NOME, BLO_APELIDO=:APELIDO WHERE PK_BLO = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $bloco->getNome();

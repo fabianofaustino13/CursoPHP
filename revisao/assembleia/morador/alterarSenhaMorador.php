@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -37,7 +37,9 @@ date_default_timezone_set('America/Sao_Paulo');
 <html lang="pt-br">
 <head>
     <title>Gerencia Morador</title>
-    
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/bootstrap.js"></script>
 </head>
 <body>
     <!-- Início do container -->
@@ -76,7 +78,7 @@ date_default_timezone_set('America/Sao_Paulo');
             <div class="col-md-12 mb-3">
                 <!-- onsubmit="return checaFormulario()"  -->
                 <fieldset>
-                    <legend>Gerenciar Moradores</legend>
+                    <legend>Alterar senha do moradores</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
                     <!-- onsubmit="return checaFormulario(this)" -->
                     <form id="form1" name="form1" action="checaGerenciaMorador.php" method="post" onsubmit="return checaFormulario(this)" />
@@ -103,9 +105,17 @@ date_default_timezone_set('America/Sao_Paulo');
                                     unset($_SESSION['login_existe']);
                                 }?>
                             </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="senha" class="required">Senha</label>
+                                <input type="password" class="form-control" id="senha" name="senha"  maxlength="25" placeholder="Digite uma senha"  />    
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="senha2">Confirme a Senha</label>
+                                <input type="password" class="form-control" id="senha2" name="senha2"  maxlength="25" placeholder="Confirme a senha"  />
+                            </div>   
                             <div class="col-md-3 mb-3"><!-- select Perfil -->
                                 <label for="perfil" class="required">Perfil</label>
-                                <select class="form-control" name="perfil" required/>
+                                <select disabled="disabled" class="form-control" name="perfil" required/>
                                     <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
                                     <?php foreach ($perfis as $perfil): ?>                                                    
                                         <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>" <?=($perfil->getId() == $morador->getPerfil()->getId() ? "selected":" ") ?>><?=$perfil->getNome();?></option> 
@@ -114,12 +124,12 @@ date_default_timezone_set('America/Sao_Paulo');
                             </div>  
                             <div class="col-md-2 mb-3"><!-- select Perfil -->
                                 <label for="status" class="required">Situação</label>
-                                <select class="form-control" name="status" required/>
+                                <select disabled="disabled" class="form-control" name="status" required/>
                                     <option value="1">ATIVO</option>  
                                     <option value="2">INATIVO</option>                                                
                                 </select> 
-                            </div>                             
-                        </div><!-- Fim Div1 -->
+                            </div>   
+                        </div>                                            
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
                         </div><!-- Fim Botões -->
@@ -127,50 +137,44 @@ date_default_timezone_set('America/Sao_Paulo');
                 </fieldset>
             </div>
         </div>
-        <div class="col-12"> <!-- Tabela -->
-            <fieldset>
-                <legend>Lista dos Moradores</legend>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>ID</th>
-                        <th>NOME</th>
-                        <th>CPF</th>
-                        <th>LOGIN</th>
-                        <th>PERFIL</th>
-                        <th>STATUS</th>
-                        <th colspan="2">Ações</th>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($moradores as $morador):?>
-                            <tr>
-                                <td><?=$morador->getId();?></td>
-                                <td><?=$morador->getNome();?></td>
-                                <td><?=$morador->getCpf();?></td>
-                                <td><?=$morador->getLogin();?></td>
-                                <td><?=$morador->getPerfil()->getNome();?></td>
-                                <td><?=($morador->getStatus() == 1) ? "ATIVO":"INATIVO";?></td>
-                                <td>
-                                    <form method="post" action="gerenciarMorador.php">
-                                        <input type="hidden" name="id" value="<?=$morador->getId();?>">
-                                        <button type="submit" class="btn btn-primary" name="editar" value="editar">
-                                            <i class="far fa-edit"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method="post" action="gerenciarMorador.php"> 
-                                        <input type="hidden" name="id" value="<?=$morador->getId();?>">
-                                        <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </fieldset>
-        </div> <!-- Fim Tabela -->
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#alterarSenhaModal">
+            <i class="fas fa-key"></i>
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="alterarSenhaModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Alterar a senha</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="col-md-12 mb-3">
+                            <label for="senha" class="required">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha"  maxlength="25" placeholder="Digite uma senha"  />    
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="senha2" class="required">Confirme a Senha</label>
+                            <input type="password" class="form-control" id="senha2" name="senha2"  maxlength="25" placeholder="Confirme a senha"  />
+                        </div> 
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+
      </div> <!-- Fim do container -->
      <script src="../assets/js/ajax_funcoes.js"></script>
  </body>

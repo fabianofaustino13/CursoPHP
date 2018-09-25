@@ -1,7 +1,7 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
-    header('location: aguardando.php');
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
+    header('location: ../assembleia/aguardando.php');
 }
 
 include(__DIR__ . "/../administracao/logado.php");

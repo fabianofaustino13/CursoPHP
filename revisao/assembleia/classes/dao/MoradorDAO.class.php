@@ -236,12 +236,13 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
                 //return $this->findById($this->conexao->lastInsertId());
                 //return 0;
             } catch(PDOException $e) {
-                echo $e->getMessage();
+               // echo $e->getMessage();
                 $codigoErro = $e->errorInfo[1]; //Pega o código de entrada duplicada
                 $mensagemErro = $e->errorInfo[2]; //Pega a mensagem do erro
                 $code = $e->getCode();
-                
-                //$mensagem = strstr($e->getMessage(),'UK');
+                // print_r(explode(" ",$mensagemErro));
+                // $erro1048 = explode(" ",$mensagemErro);
+                // echo $erro1048[1];
                 //print_r(explode(" ",$mensagemErro));
                 //return $mensagem;
                 if ($codigoErro == 1062) {
@@ -251,6 +252,11 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
                         return 2; //Cpf duplicado
                     }else if ($erro1062[5] == "'UK_MOR_LOGIN'") {
                         return 3; //Login duplicado
+                    }
+                } else if ($codigoErro == 1048) {
+                    $erro1048 = explode(" ",$mensagemErro);
+                    if ($erro1048[1] == "'MOR_SENHA'") {
+                        return 4; //Senha NULL
                     }
                 }
             }

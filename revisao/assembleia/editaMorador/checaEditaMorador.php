@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -28,7 +28,7 @@ $continua = true;
 if (empty($_POST['nome']) && isset($_POST['nome'])) {
     $_SESSION['vazio_nome'] = "O nome é obrigatório";
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 }
 
 if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
@@ -37,34 +37,34 @@ if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
     //$num = count($cpf->getCpf());
     if ($cpf == 1) {
         //$_SESSION['cpf_existe'] = 'existe';
-        header('location: editarMorador.php');
+        header('location: index.php');
     }
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 }
 
 if (empty($_POST['login']) && isset($_POST['login'])) {
     $_SESSION['vazio_login'] = "Login é obrigatório";
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 } 
 
 if (empty($_POST['senha']) && isset($_POST['senha'])) {
     $_SESSION['vazio_senha'] = "Senha é obrigatório";
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 } 
 
 if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
     $_SESSION['vazio_perfil'] = "Selecione um perfil";
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 }
 
 if (empty($_POST['status']) && isset($_POST['status'])) {
     $_SESSION['vazio_status'] = "Selecione um status";
     $continua = false;
-    header('location: editarMorador.php');
+    header('location: index.php');
 }
 
 if ($continua) {
@@ -115,7 +115,7 @@ if ($continua) {
         //     // $_SESSION['morador_erro'] = "Erro ao cadastrar";
         //     //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
         // // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
-        header('location: editarMorador.php');
+        header('location: index.php');
     }
 }
 

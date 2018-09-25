@@ -14,23 +14,24 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI RIGHT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER ORDER BY PK_MOR DESC";
+            //$sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI RIGHT JOIN TB_MORADORES ON PK_MOR = FK_APA_MOR LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER ORDER BY PK_MOR DESC";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI = FK_APA_ADI ORDER BY PK_APA DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $rows = $statement->fetchAll();
             $apartamentos = array();
             foreach ($rows as $row) {
-                $perfil = new Perfil();
-                $perfil->setId($row['PK_PER']);
-                $perfil->setNome($row['PER_NOME']);
-                $morador = new Morador();
-                $morador->setId($row['PK_MOR']);
-                $morador->setNome($row['MOR_NOME']);
-                $morador->setCpf($row['MOR_CPF']);
-                $morador->setLogin($row['MOR_LOGIN']);
-                $morador->setSenha($row['MOR_SENHA']);
-                $morador->setStatus($row['MOR_STATUS']);
-                $morador->setPerfil($perfil);
+                // $perfil = new Perfil();
+                // $perfil->setId($row['PK_PER']);
+                // $perfil->setNome($row['PER_NOME']);
+                // $morador = new Morador();
+                // $morador->setId($row['PK_MOR']);
+                // $morador->setNome($row['MOR_NOME']);
+                // $morador->setCpf($row['MOR_CPF']);
+                // $morador->setLogin($row['MOR_LOGIN']);
+                // $morador->setSenha($row['MOR_SENHA']);
+                // $morador->setStatus($row['MOR_STATUS']);
+                // $morador->setPerfil($perfil);
                 $adimplente = new Adimplente();
                 $adimplente->setId($row['PK_ADI']);
                 $adimplente->setNome($row['ADI_NOME']);
@@ -43,7 +44,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
                 $apartamento->setAdimplente($adimplente);
-                $apartamento->setMorador($morador);
+                // $apartamento->setMorador($morador);
 
                 array_push($apartamentos, $apartamento);
             }
@@ -247,7 +248,8 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         private function insert(Apartamento $apartamento) {
-            $sql = "INSERT INTO TB_APARTAMENTOS (APA_NOME, FK_APA_BLO, FK_APA_ADI, FK_APA_MOR) VALUES (:NOME, :BLOCO, :ADIMPLENTE, :MORADOR)";
+            //$sql = "INSERT INTO TB_APARTAMENTOS (APA_NOME, FK_APA_BLO, FK_APA_ADI, FK_APA_MOR) VALUES (:NOME, :BLOCO, :ADIMPLENTE, :MORADOR)";
+            $sql = "INSERT INTO TB_APARTAMENTOS (APA_NOME, FK_APA_BLO, FK_APA_ADI) VALUES (:NOME, :BLOCO, :ADIMPLENTE)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $apartamento->getNome();
@@ -257,7 +259,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':BLOCO', $bloco);
                 $statement->bindParam(':ADIMPLENTE', $adimplente);
-                $statement->bindParam(':MORADOR', $morador);
+                //$statement->bindParam(':MORADOR', $morador);
                 $statement->execute();
                 return $this->findById($this->conexao->lastInsertId());
             } catch(PDOException $e) {
@@ -267,7 +269,8 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
         }
 
         private function update(Apartamento $apartamento) {
-            $sql = "UPDATE TB_APARTAMENTOS SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE, FK_APA_MOR=:MORADOR WHERE PK_APA = :ID";
+            //$sql = "UPDATE TB_APARTAMENTOS SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE, FK_APA_MOR=:MORADOR WHERE PK_APA = :ID";
+            $sql = "UPDATE TB_APARTAMENTOS SET APA_NOME=:NOME, FK_APA_BLO=:BLOCO, FK_APA_ADI=:ADIMPLENTE WHERE PK_APA = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $apartamento->getNome();
@@ -278,7 +281,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':BLOCO', $bloco);
                 $statement->bindParam(':ADIMPLENTE', $adimplente);
-                $statement->bindParam(':MORADOR', $morador);
+                //$statement->bindParam(':MORADOR', $morador);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
                 return $this->findById($apartamento->getId());

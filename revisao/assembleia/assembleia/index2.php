@@ -1,7 +1,7 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
-    header('location: aguardando.php');
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
+    header('location: ../assembleia/aguardando.php');
 }
 
 require_once(__DIR__ . "/../classes/modelo/Assembleia.class.php");

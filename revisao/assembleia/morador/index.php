@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -28,7 +28,7 @@ $morador = new Morador();
 $moradorDao = new MoradorDAO();
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $apartamento = $apartamentoDao->findByMoradorApartamento($_POST['id']);
+    $morador = $moradorDao->findById($_POST['id']);
     // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
 }
 
@@ -48,158 +48,190 @@ date_default_timezone_set('America/Sao_Paulo');
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Cadastrar Morador</title>
-    
+    <title>Editar dados dos Moradores</title>
 </head>
 <body>
     <!-- Início do container -->
     <div class="container-fluid">
-   <!-- include Menu -->
-   <?php
-        include(__DIR__ . "/../administracao/menu.php");
-    ?>
-
-    <div class="containerMenuDireita">
-        <div class="col-md-12 mb-3">
-            <?php 
-            // echo $aviso;
-                // echo "<pre>";
-                
-                     //var_dump($morador);
-                
-                // echo "</pre>";
-                if (isset($_SESSION['morador_sucesso'])) :?>
-                
-                    <div class="col-12" style="background-color: #0e972c; text-align: center; color:white">
-                    <?php 
-                        echo $_SESSION['morador_sucesso'];
-                        unset($_SESSION['morador_sucesso']);
-                endif;
-                if (isset($_SESSION['morador_erro'])) :?>
-                    <div class="col-12" style="background-color: red; text-align: center; color:white">
-                    <?php 
-                        echo $_SESSION['morador_erro'];
-                        //echo $_SESSION['cpf_existe'];
-                        unset($_SESSION['morador_erro']);
-                endif;
-            ?>
-            <div class="col-12" style="text-align: center; color:red">
-                <!-- <//?=var_dump($teste);?> -->
-            </div>
-        </div>
-        <div class="row" style="margin-top: 5%;">
+        <!-- include Menu -->
+        <?php
+            include(__DIR__ . "/../administracao/menu.php");
+        ?>
+    </div>
+    <div class="containerMenuDireita">        
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-12 mb-3">
             <!-- onsubmit="return checaFormulario()"  -->
                 <fieldset>
-                    <legend>Cadastro de Moradores</legend>
+                    <legend>Editar dados dos Moradores</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
                     <!-- onsubmit="return checaFormulario(this)" -->
                     <form id="form1" name="form1" action="checaCadastroMorador.php" method="post" onsubmit="return checaFormulario(this)" />
                         <div class="form-row"><!-- Div1 -->
-                            <input type="hidden" name="id" value="<?=$apartamento->getMorador()->getId();?>">                                                    
+                            <input type="hidden" name="id" value="<?=$morador->getId();?>">                                                    
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getMorador()->getNome();?>" maxlength="100" placeholder="Informe o nome do morador"required />                    
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" placeholder="Informe o nome do morador"required />                    
                             </div>
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$apartamento->getMorador()->getCpf();?>" maxlength="11" placeholder="Somente números" required />                               
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" placeholder="Somente números" required />                               
                                 <?php if (isset($_SESSION['cpf_existe'])) {
-                                        echo "<p style='color:red;'>" .$_SESSION['cpf_existe']."</p>";
-                                        unset($_SESSION['cpf_existe']);
-                                    }?>
-                                    
-                            </div>                        
-                            <div class="col-md-3 mb-3">
-                                <label for="login" class="required">Login</label>
-                                <input type="text" class="form-control" id="login" name="login" value="<?=$apartamento->getMorador()->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
-                                <?php if (isset($_SESSION['login_existe'])) {
-                                    echo "<p style='color:red;'>" .$_SESSION['login_existe']."</p>";
-                                    unset($_SESSION['login_existe']);
-                                }?>
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="senha" class="required">Senha</label>
-                                <input type="password" class="form-control" id="senha" name="senha"  maxlength="25" placeholder="Digite uma senha"  />
-                                <!-- value="</?=$apartamento->getMorador()->getSenha();?>" -->
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="senha2">Confirme a Senha</label>
-                                <input type="password" class="form-control" id="senha2" name="senha2"  maxlength="25" placeholder="Confirme a senha"  />
-                                <!-- value="<//?=$apartamento->getMorador()->getSenha();?>" -->
-                            </div>                                  
+                                    echo "<p style='color:red;'>" .$_SESSION['cpf_existe']."</p>";
+                                    unset($_SESSION['cpf_existe']);
+                                }?> 
+                            </div>        
                             <div class="col-md-3 mb-3"><!-- select Perfil -->
                                 <label for="perfil" class="required">Perfil</label>
                                 <select class="form-control" name="perfil" required/>
                                     <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
                                     <?php foreach ($perfis as $perfil): ?>                                                    
-                                        <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>"><?=$perfil->getNome();?></option> 
+                                        <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>" <?=($perfil->getId()==$morador->getPerfil()->getId()) ? "selected":"";?> > <?=$perfil->getNome();?></option> 
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
-                            <div class="col-md-2 mb-3"><!-- select Perfil -->
+                            <div class="col-md-3 mb-3"><!-- select Perfil -->
                                 <label for="status" class="required">Situação</label>
                                 <select class="form-control" name="status" required/>
-                                    <option value="1" selected>ATIVO</option>                                                
-                                    <option value="0">INATIVO</option>                                                
+                                    <option value="1">ATIVO</option>                                                
+                                    <option value="2">INATIVO</option>                                                
                                 </select> 
-                            </div>                             
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="login" class="required">Login</label>
+                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
+                                <?php if (isset($_SESSION['login_existe'])) {
+                                    echo "<p style='color:red;'>" .$_SESSION['login_existe']."</p>";
+                                    unset($_SESSION['login_existe']);
+                                }?>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="senha" class="required">Senha</label>
+                                <input type="button" class="btn btn-default btn-block" value="ALTERAR SENHA" <?=($morador->getId() == '') ? "disabled":"" ;?> data-toggle="modal" data-target="#alterarSenhaModal" />
+                            </div>
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
-                        </div><!-- Fim Botões -->
+                            <div class="row">
+                                <div class="col-md-10 mb-3">
+                                    <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <button type="submit" class="btn btn-warning btn-block" name="limpar" value="limpar">Limpar</button>
+                                </div>
+                            </div><!-- Fim Botões -->
+                        </div>
                     </form> <!-- Fim Form Geral -->
                 </fieldset>
             </div>
+            <!-- Mordal Alterar Senha -->
+            <div class="modal fade" id="alterarSenhaModal">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Alterar a senha</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <form name="formModal" method="post" action="checaCadastroMorador.php"> 
+                            <div class="modal-body">
+                                <input type="hidden" name="id" value="<?=$morador->getId();?>">
+                                <div class="col-md-12 mb-3">
+                                    <label for="senha" class="required">Senha</label>
+                                    <input type="password" class="form-control" id="senha" name="senha" onkeyup="checarSenha()" maxlength="25" placeholder="Digite uma senha"  />    
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="senha2" class="required">Confirme a Senha</label>
+                                    <input type="password" class="form-control" id="senha2" name="senha2" onkeyup="checarSenha()" maxlength="25" placeholder="Confirme a senha"  />
+                                </div> 
+                                <div class="col-md-12 mb-3">
+                                    <div id="divcheck">
+
+                                    </div>
+                                </div> 
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-success" id="alterarSenha" name="alterarSenha" value="alterarSenha" disabled>Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="col-12"> <!-- Tabela -->
-                 <fieldset>
-                     <legend>Lista dos Moradores</legend>
-                     <table class="table table-striped table-hover">
-                         <thead>
-                             <th>ID</th>
-                             <th>Nome</th>
-                             <th>CPF</th>
-                             <th>LOGIN</th>
-                             <th>Bloco</th>
-                             <th>Apartamento</th>
-                             <th colspan="3" style="text-align:center;">Ações</th>
-                         </thead>
-                         <tbody>
-                             <?php foreach ($apartamentos as $apartamento):?>
-                                 <tr>
-                                     <td><?=$apartamento->getMorador()->getId()?></td>
-                                     <td><?=$apartamento->getMorador()->getNome()?></td>
-                                     <td><?=$apartamento->getMorador()->getCpf()?></td>
-                                     <td><?=$apartamento->getMorador()->getLogin()?></td>
-                                     <td><?=$apartamento->getBloco()->getApelido()?></td>
-                                     <td><?=$apartamento->getNome()?></td>
-                                     <td>
-                                         <form method="post" action="index.php">
-                                             <input type="hidden" name="id" value="<?=$apartamento->getMorador()->getId();?>">
-                                             <button type="submit" class="btn btn-primary" name="editar" value="editar">
-                                                 <i class="far fa-edit"></i>
-                                             </button>
-                                         </form>
-                                     </td>
-                                     <td>
-                                        <a href="gerenciarMorador.php" class="btn btn btn-success btn-md" tabindex="-1" role="button" aria-disabled="true"><i class="fab fa-gg"></i></a>
-                                     </td>
-                                     <td>
-                                         <form method="post" action="index.php"> 
-                                             <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
-                                             <button type="submit" class="btn btn-danger" name="excluir" value="excluir">
-                                                 <i class="far fa-trash-alt"></i>
-                                             </button>
-                                         </form>
-                                     </td>
-                                 </tr>
-                             <?php endforeach; ?>
-                         </tbody>
-                     </table>
-                 </fieldset>
-             </div> <!-- Fim Tabela -->
-         </div> 
-     </div>
-     </div> <!-- Fim do container -->
-     <script src="../assets/js/ajax_funcoes.js"></script>
+                <fieldset>
+                    <legend>Lista dos Moradores</legend>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th>ID</th>
+                            <th>NOME</th>
+                            <th>CPF</th>
+                            <th>LOGIN</th>
+                            <th>PERFIL</th>
+                            <th>SITUAÇÃO</th>                     
+                            <th colspan="2" style="text-align:center;">Ações</th>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($moradores as $morador):?>
+                                <tr>
+                                    <td><?=$morador->getId();?></td>
+                                    <td><?=$morador->getNome();?></td>
+                                    <td><?=$morador->getCpf();?></td>
+                                    <td><?=$morador->getLogin();?></td>
+                                    <td><?=$morador->getPerfil()->getNome();?></td>
+                                    <td><?=($morador->getStatus() == 1) ? "ATIVO":"INATIVO";?></td>                           
+                                    <td>
+                                        <form method="post" action="index.php">
+                                            <input type="hidden" name="id" value="<?=$morador->getId();?>">
+                                            <button type="submit" class="btn btn-primary" name="editar" value="editar">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                        </form>
+                                    </td>   
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div> <!-- Fim Tabela -->
+        </div> 
+    </div> <!-- Fim do container -->
+    <script>
+        $(document).ready(function() {
+            $("#senha").keyup(checkPasswordMatch);
+            $("#senha2").keyup(checkPasswordMatch);
+        });
+        function checarSenha() {
+            var id = $("#id").val();
+            var password = $("#senha").val();
+            var password2 = $("#senha2").val();
+           
+            if (id == '') {
+                $("#divcheck").html("<span style='color:red'>Selecione um morador!</span>");
+                document.getElementById("alterarSenha").disabled=true;
+            }
+            if (password == '') {
+                $("#divcheck").html("<span style='color:red'>Campo vazio!</span>");
+                document.getElementById("alterarSenha").disabled=true;
+                //formModal.senha.focus();
+            } else if ('' == password2) {
+                $("#divcheck").html("<span style='color:red'>Campo vazio!</span>");
+                document.getElementById("alterarSenha").disabled=true;
+                //formModal.senha2.focus();
+            } else if (password != password2) {
+                $("#divcheck").html("<span style='color:blue'>Senhas não conferem!</span>");
+                document.getElementById("alterarSenha").disabled=true;
+            } else {
+                $("#divcheck").html("<span style='color:white'></span>");
+                document.getElementById("alterarSenha").disabled=false;
+            }
+        }
+    </script>
+    <script src="../assets/js/ajax_funcoes.js"></script>
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/bootstrap.js"></script>
  </body>
  </html> 

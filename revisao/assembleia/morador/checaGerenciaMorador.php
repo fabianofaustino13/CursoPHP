@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 

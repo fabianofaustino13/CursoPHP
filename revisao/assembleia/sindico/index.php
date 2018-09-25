@@ -1,9 +1,8 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
-
 require_once(__DIR__ . "/../classes/modelo/Morador.class.php");
 require_once(__DIR__ . "/../classes/dao/MoradorDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Sindico.class.php");

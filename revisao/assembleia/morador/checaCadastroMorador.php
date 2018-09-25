@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL) {
+if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -26,17 +26,21 @@ $apartamento = new Apartamento();
 $apartamentoDao = new ApartamentoDAO();
 
 $morador = new Morador();
+$mor = new Morador();
 $moradorDao = new MoradorDAO();
 $cpf = new Morador();
 
 $continua = true;
 
+if ((isset($_POST['limpar']) && $_POST['limpar'] == 'limpar')) {
+    header('location: index.php');
+}
 if (empty($_POST['nome']) && isset($_POST['nome'])) {
     $_SESSION['vazio_nome'] = "O nome é obrigatório";
     $continua = false;
     header('location: index.php');
 } else {
-    $_SESSION['value_nome'] = $_POST['nome'];
+    //$_SESSION['value_nome'] = $_POST['nome'];
 }
 if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
     $_SESSION['vazio_cpf'] = "CPF é obrigatório";
@@ -49,7 +53,7 @@ if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
     $continua = false;
     header('location: index.php');
 } else {
-    $_SESSION['value_cpf'] = $_POST['cpf'];
+    //$_SESSION['value_cpf'] = $_POST['cpf'];
 }
 
 if (empty($_POST['login']) && isset($_POST['login'])) {
@@ -57,7 +61,7 @@ if (empty($_POST['login']) && isset($_POST['login'])) {
     $continua = false;
     header('location: index.php');
 } else {
-    $_SESSION['value_login'] = $_POST['login'];
+    //$_SESSION['value_login'] = $_POST['login'];
 }
 
 if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
@@ -65,7 +69,7 @@ if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
     $continua = false;
     header('location: index.php');
 } else {
-    $_SESSION['value_perfil'] = $_POST['perfil'];
+    //$_SESSION['value_perfil'] = $_POST['perfil'];
 }
 
 if (empty($_POST['status']) && isset($_POST['status'])) {
@@ -73,58 +77,63 @@ if (empty($_POST['status']) && isset($_POST['status'])) {
     $continua = false;
     header('location: index.php');
 } else {
-    $_SESSION['value_status'] = $_POST['status'];
+    //$_SESSION['value_status'] = $_POST['status'];
+}
+
+if (isset($_POST['alterarSenha']) && $_POST['alterarSenha'] == 'alterarSenha') {
+    $morador = $moradorDao->findById($_POST['id']);    
+    $morador->setSenha($_POST['senha']);
+    // echo "<pre>";
+    // var_dump($morador);
+    // echo "</pre>";
+    $resultado = $moradorDao->save($morador);
+    if ($resultado == 2) {
+        $_SESSION['morador_erro'] = 'Erro ao alterar a senha';    
+    }else {
+        $_SESSION['morador_sucesso'] = "Senha alterada com sucesso!!!";
+    }
+    header('location: index.php');
 }
 
 if ($continua) {
     if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
+        $mor = $moradorDao->findById($_POST['id']);
+        $senha = $mor->getSenha();        
         $morador->setNome($_POST['nome']);
         $morador->setLogin($_POST['login']);
         $morador->setCpf($_POST['cpf']);
-        $morador->setSenha($_POST['senha']);
+        $morador->setSenha($senha);
         $morador->setStatus($_POST['status']);
         $perfil = $perfilDao->findById($_POST['perfil']);
         $morador->setPerfil($perfil);
-                
+        
         if ($_POST['id'] != '') {
             $morador->setId($_POST['id']);
+            $resultado = $moradorDao->save($morador);
+            if ($resultado == 2) {
+                $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+                $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
+            } else if ($resultado == 3) {
+                $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+                $_SESSION['login_existe'] = 'Login digitado, já existe!';
+            } else if ($resultado == 4) {
+                $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+                $_SESSION['senha_vazio'] = 'É necessário digitar uma senha!';
+            }else {
+                $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";        
+            }
+            header('location: index.php');
+        } else {
+            $_SESSION['morador_erro'] = "Morador não cadastrado! Utilize a tela de login para cadastrar um novo morador";
+            header('location: index.php');
         }
-        
-        $resultado = $moradorDao->save($morador);
-        // $apartamento = $apartamentoDao->findById($_POST['apartamentoId']);
-        //$apartamento = $apartamentoDao->findById($_POST['apartamentoId']);
-        //$apartamento->setMorador($resultado);
-        //$resultado2 = $apartamentoDao->save($apartamento);
         
         // echo "<pre>";
-        // var_dump($resultado2);
+        // var_dump($mor);
         // echo "</pre>";
-        // $apartamento->setId($apartamento);
-        // $apartamento->setMorador()
-        // $apartamento->getBloco()->setId($_POST['blocoId']);
-        // $apartamento->setId($_POST['apartamentoId']);         
-
-        //$resultadoApto = $apartamentoDao->save($apartamento);
         
         //return $resultado;
-        //echo "<script>alert($resultado)</script>";
-        
-        if ($resultado == 2) {
-            $_SESSION['morador_erro'] = 'Erro ao cadastrar';
-            $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
-        } else if ($resultado == 3) {
-            $_SESSION['morador_erro'] = 'Erro ao cadastrar';
-            $_SESSION['login_existe'] = 'Login digitado, já existe!';
-        }else {
-            $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";
-            // if ($resultado == "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '22222222222' for key 'UK_MOR_CPF'"){
-            // }
-            //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Cadastro realizado com sucesso.\");</script>";
-        }
-        //     // $_SESSION['morador_erro'] = "Erro ao cadastrar";
-        //     //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
-        // // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
-        header('location: index.php');
+        //echo "<script>alert($resultado)</script>";        
     }
 }
 
