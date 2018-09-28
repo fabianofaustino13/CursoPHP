@@ -29,6 +29,15 @@ $apartamentoRequisitado = new Apartamento();
 $morador = new Morador();
 //$moradorDao = new MoradorDAO();
 $requisitadoDao = new MoradorRequisitadoDAO();
+$moradores = '';
+if (isset($_POST['pesquisar']) && $_POST['pesquisar'] == 'pesquisar') {
+    if ($_POST['pesquisar_cpf'] != '') {
+        $moradores = $requisitadoDao->findAllMoradores();
+        $morador = $requisitadoDao->findByCpf($_POST['pesquisar_cpf']);
+        //$apartamentoRequisitado = $requisitadoDao->findByApartamentoMorador($morador->getId());
+        //$apartamento = $apartamentoDao->findByMorador($_POST['id']);
+    }  
+}
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
     $morador = $requisitadoDao->findById($_POST['id']);
@@ -46,7 +55,6 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 }
 
 //$cpf = $moradorDao->findCpf('11111111111');
-$moradores = $requisitadoDao->findAllMoradores();
 $apartamentos = $requisitadoDao->findAllApartamentos();
 $blocos = $blocoDao->findAll();
 $perfis = $perfilDao->findAll();
@@ -127,8 +135,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
                                     <option value="<?=$apartamentoRequisitado->getNome();?>" ><?=$apartamentoRequisitado->getNome();?></option>                      
                                 </select> 
-                            </div>  
-                                        
+                            </div>                                        
                         </div><!-- Fim Div1 -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
@@ -136,9 +143,22 @@ date_default_timezone_set('America/Sao_Paulo');
                     </form> <!-- Fim Form Geral -->
                 </fieldset>
             </div>
+            <div class="col-12">
+                <label for="nome" class="required">Pesquisar</label>
+                <form action="index.php" method="post">
+                    <div class="form-row"><!-- Div1 -->                   
+                        <div class="col-md-2 mb-3"><!-- Nome do CPF -->
+                            <input type="text" class="form-control" id="pesquisar_cpf" name="pesquisar_cpf" maxlength="11" placeholder="Pesquisar por CPF" />                    
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secundary btn-block" name="pesquisar" value="pesquisar">Pesquisar</button>
+                    </div><!-- Fim Botões -->
+                </form>
+            </div>
             <div class="col-12"> <!-- Tabela -->
                  <fieldset>
-                     <legend>Lista dos Moradores</legend>
+                     <legend>Resultado das pesquisa</legend>
                      <table class="table table-striped table-hover">
                          <thead>
                              <th>ID</th>
@@ -150,7 +170,7 @@ date_default_timezone_set('America/Sao_Paulo');
                              <th colspan="1">Ações</th>
                          </thead>
                          <tbody>
-                             <?php foreach ($moradores as $morador):?>
+                             <!-- </?php foreach ($moradores as $morador):?> -->
                                 <?php
                                     $apartamentoRequisitado = new Apartamento();
                                     $apartamentoRequisitado = $requisitadoDao->findByApartamentoMorador($morador->getId());
@@ -172,7 +192,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                         </form>
                                     </td>
                                 </tr>
-                             <?php endforeach; ?>
+                             <!-- </?php endforeach; ?> -->
                          </tbody>
                      </table>
                  </fieldset>

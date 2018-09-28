@@ -73,7 +73,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
                 $apartamento->setAdimplente($adimplente);
-                $apartamento->setMorador($morador);
+                // $apartamento->setMorador($morador);
 
                 array_push($apartamentos, $apartamento);
             }
@@ -102,7 +102,7 @@ require_once (__DIR__ . "/../modelo/Morador.class.php");
                 $apartamento->setNome($row['APA_NOME']);
                 $apartamento->setBloco($bloco);
                 $apartamento->setAdimplente($adimplente);
-                $apartamento->setMorador($morador);
+                // $apartamento->setMorador($morador);
 
                 array_push($apartamentos, $apartamento);
             }

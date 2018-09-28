@@ -188,21 +188,24 @@ require_once(__DIR__ . "/../modelo/Bloco.class.php");
         }
 
         public function findByNome($nome) {
-            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE :NOME";
+            $sql = "SELECT * FROM TB_MORADORES WHERE MOR_NOME LIKE '$nome'";
             $statement = $this->conexao->prepare($sql);
+            $nome = $morador->getNome();
             $statement->bindParam(':NOME', $nome); //Proteção contra sql injetct
             $statement->execute();
             $result = $statement->fetchAll();
-            $morador = new Morador();
+            $moradores = array();
             foreach ($result as $row) {
+                $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
                 $morador->setSenha($row['MOR_SENHA']);
                 $morador->setStatus($row['MOR_STATUS']);
+                array_push($moradores, $morador);
             }
-            return $morador;
+            return $moradores;
         }
 
         public function findByLogin($login) {
