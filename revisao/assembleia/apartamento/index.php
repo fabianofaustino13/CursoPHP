@@ -7,18 +7,26 @@ if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
 include(__DIR__ . "/../administracao/logado.php");
 
 require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
-require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
-require_once(__DIR__ . "/../classes/modelo/Adimplente.class.php");
 require_once(__DIR__ . "/../classes/dao/ApartamentoDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Adimplente.class.php");
 require_once(__DIR__ . "/../classes/dao/AdimplenteDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Ocupacao.class.php");
+require_once(__DIR__ . "/../classes/dao/OcupacaoDAO.class.php");
+
+$adimplente = new Adimplente();
+$adimplenteDao = new AdimplenteDAO();
+
+$ocupacao = new Ocupacao();
+$ocupacaoDao = new OcupacaoDAO();
 
 $bloco = new Bloco();
 $blocoDao = new BlocoDAO();
-$adimplente = new Adimplente();
-$adimplenteDao = new AdimplenteDAO();
+
 $apartamento = new Apartamento();
 $apartamentoDao = new ApartamentoDao();
+
 $teste = "inicio";
 if (isset($_POST['atualizar']) && $_POST['atualizar'] == 'atualizar') {
     $pautas2 = $dao->findAllAssembleia($_POST['idAss']);
@@ -27,6 +35,7 @@ if (isset($_POST['atualizar']) && $_POST['atualizar'] == 'atualizar') {
 if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
     $apartamento->setNome($_POST['nome']);
     $apartamento->getBloco()->setId($_POST['blocoId']);
+    $apartamento->getOcupacao()->setId($_POST['ocupacao']);
     $apartamento->getAdimplente()->setId($_POST['adimplenteId']);
     if ($_POST['id'] != '') {
         $apartamento->setId($_POST['id']);
@@ -48,6 +57,7 @@ $apartamentos = $apartamentoDao->findAll();
 $apartamentosNice = $apartamentoDao->findAllNice();
 $apartamentosLyon = $apartamentoDao->findAllLyon();
 $blocos = $blocoDao->findAll();
+$ocupacoes = $ocupacaoDao->findAll();
 $adimplentes = $adimplenteDao->findAll();
 
 
@@ -82,7 +92,7 @@ $adimplentes = $adimplenteDao->findAll();
     </div> -->
 	<!-- Início do container -->
     <div class="containerMenuDireita">
-        <div class="row" style="margin-top: 5%;">
+        <div class="row" style="margin-top: 2%;">
             <div class="col-md-12 mb-3">
                 <fieldset>
                     <legend>Cadastro de Apartamento</legend>
@@ -99,13 +109,15 @@ $adimplentes = $adimplenteDao->findAll();
                                     <?php endforeach; ?>                                    
                                 </div>
                             </div>
-                            <div class="col-md-2 mb-3"><!-- Nome da Apartamento -->
+                            <div class="col-md-1 mb-3"><!-- Nome da Apartamento -->
                                 <label for="nome" class="required">Apartamento</label>
                                 <input type="hidden" name="id" value="<?=$apartamento->getId();?>">                           
                                 <input type="text" class="form-control" id="nome" name="nome" value="<?=$apartamento->getNome();?>" maxlength="4" placeholder="705"  />
                             </div><!-- Fim Nome da Apartamento -->
-                            <div class="col-md-4 mb-3"> <!-- Status -->
-                                <label for="">Status</label>
+                            <div class="col-md-1 mb-3">
+                            </div>
+                            <div class="col-md-3 mb-3"> <!-- Situação Financeira -->
+                                <label for="" class="required">Situação Financeira</label>
                                 <div class="form-group">
                                     <?php foreach ($adimplentes as $adimplente): ?>
                                         <div class="custom-control custom-radio custom-control-inline">
@@ -115,7 +127,17 @@ $adimplentes = $adimplenteDao->findAll();
                                     <?php endforeach; ?>                                    
                                 </div>
                             </div>
-                            
+                            <div class="col-md-3 mb-3"> <!-- Ocupação -->
+                                <label for="" class="required">Ocupação</label>
+                                <div class="form-group">
+                                    <?php foreach ($ocupacoes as $ocupacao): ?>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="<?=$ocupacao->getNome();?>" name="ocupacao" value=<?=$ocupacao->getId();?> <?=$ocupacao->getId() == $apartamento->getOcupacao()->getId() ? 'checked': "";?> class="custom-control-input" <?php if($ocupacao->getId() == 2):?> checked <?php endif; ?> required/>
+                                            <label class="custom-control-label" for="<?=$ocupacao->getNome();?>"><?=$ocupacao->getNome();?></label>
+                                        </div>
+                                    <?php endforeach; ?>                                    
+                                </div>
+                            </div>
                         </div><!-- Fim Form -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
@@ -128,20 +150,22 @@ $adimplentes = $adimplenteDao->findAll();
             <div class="col-md-6 mb-3"> <!-- Tabela Nice -->                
                 <table class="table table-striped table-hover">
                     <thead>
-                        <th>#</th>
-                        <th>Apartamento</th>
-                        <th>Bloco</th>
-                        <th>Status</th>
-                        <th colspan="2">Ações</th>
+                        <!-- <th>#</th> -->
+                        <th>BLOCO</th>
+                        <th>APARTAMENTO</th>
+                        <th>SITUAÇÃO FINANCEIRA</th>
+                        <th>OCUPAÇÃO</th>
+                        <th colspan="2">AÇÕES</th>
                     </thead>
                     <tbody>
                         <?php foreach ($apartamentosNice as $apartamento): ?>
                             <tr>
-                                <td><?=$apartamento->getId();?></td>
-                                <td><?=$apartamento->getNome();?></td>
+                                <!-- <td></?=$apartamento->getId();?></td> -->
                                 <td><?=$apartamento->getBloco()->getApelido();?></td>
+                                <td><?=$apartamento->getNome();?></td>
                                 <td><?=$apartamento->getAdimplente()->getNome();?></td>
-                                
+                                <td><?=$apartamento->getOcupacao()->getNome();?></td>
+                               
                                 <td>
                                     <form method="post" action="index.php">
                                         <input type="hidden" name="id" value="<?=$apartamento->getId();?>">
@@ -166,19 +190,21 @@ $adimplentes = $adimplenteDao->findAll();
             <div class="col-md-6 mb-3"> <!-- Tabela -->                
                 <table class="table table-striped table-hover">
                     <thead>
-                        <th>#</th>
-                        <th>Apartamento</th>
-                        <th>Bloco</th>
-                        <th>Status</th>
-                        <th colspan="2">Ações</th>
+                        <!-- <th>#</th> -->
+                        <th>BLOCO</th>
+                        <th>APARTAMENTO</th>
+                        <th>SITUAÇÃO FINANCEIRA</th>
+                        <th>OCUPAÇÃO</th>
+                        <th colspan="2">AÇÕES</th>
                     </thead>
                     <tbody>
                         <?php foreach ($apartamentosLyon as $apartamento): ?>
                             <tr>
-                                <td><?=$apartamento->getId();?></td>
-                                <td><?=$apartamento->getNome();?></td>
+                                <!-- <td></?=$apartamento->getId();?></td> -->
                                 <td><?=$apartamento->getBloco()->getApelido();?></td>
+                                <td><?=$apartamento->getNome();?></td>
                                 <td><?=$apartamento->getAdimplente()->getNome();?></td>
+                                <td><?=$apartamento->getOcupacao()->getNome();?></td>
                                 
                                 <td>
                                     <form method="post" action="index.php">

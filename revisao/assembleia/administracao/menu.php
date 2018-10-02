@@ -65,6 +65,7 @@
                     </div>
                     <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
                     <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
+                    <a href="../adimplente/index.php"><i class="fas fa-dollar-sign"></i> <span>Situação Financeira</span> </a>
                     <a href="../apartamento/index.php"><i class="fas fa-building"></i> <span>Apartamento</span> </a>
                 </div>
                 <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Gerenciar</span>  

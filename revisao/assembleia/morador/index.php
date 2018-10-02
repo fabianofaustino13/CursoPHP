@@ -14,9 +14,14 @@ require_once(__DIR__ . "/../classes/modelo/Bloco.class.php");
 require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Perfil.class.php");
 require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Situacao.class.php");
+require_once(__DIR__ . "/../classes/dao/SituacaoDAO.class.php");
 
 $perfil = new Perfil();
 $perfilDao = new PerfilDAO();
+
+$situacao = new Situacao();
+$situacaoDao = new SituacaoDAO();
 
 $bloco = new Bloco();
 $blocoDao = new BlocoDAO();
@@ -41,6 +46,7 @@ if (isset($_POST['excluir']) && $_POST['excluir'] == 'excluir') {
 $moradores = $moradorDao->findAll();
 $apartamentos = $apartamentoDao->findAll();
 $blocos = $blocoDao->findAll();
+$situacoes = $situacaoDao->findAll();
 $perfis = $perfilDao->findAll();
 date_default_timezone_set('America/Sao_Paulo');
 // $dataLocal = date('d/m/Y H:i:s', time());
@@ -93,8 +99,9 @@ date_default_timezone_set('America/Sao_Paulo');
                             <div class="col-md-3 mb-3"><!-- select Perfil -->
                                 <label for="status" class="required">Situação</label>
                                 <select class="form-control" name="status" required/>
-                                    <option value="1">ATIVO</option>                                                
-                                    <option value="2">INATIVO</option>                                                
+                                    <?php foreach ($situacoes as $situacao): ?> 
+                                        <option id="<?=$situacao->getId()?>" value="<?=$situacao->getId()?>" <?=($situacao->getId()==$morador->getSituacao()->getId()) ? "selected":""?>><?=$situacao->getNome();?></option>
+                                    <?php endforeach; ?>   
                                 </select> 
                             </div>
                             <div class="col-md-3 mb-3">
@@ -181,7 +188,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <td><?=$morador->getCpf();?></td>
                                     <td><?=$morador->getLogin();?></td>
                                     <td><?=$morador->getPerfil()->getNome();?></td>
-                                    <td><?=($morador->getStatus() == 1) ? "ATIVO":"INATIVO";?></td>                           
+                                    <td><?=$morador->getSituacao()->getNome();?></td>                           
                                     <td>
                                         <form method="post" action="index.php">
                                             <input type="hidden" name="id" value="<?=$morador->getId();?>">

@@ -1,9 +1,9 @@
 <?php
 
 require_once (__DIR__ . "/./Conexao.class.php");
-require_once (__DIR__ . "/../modelo/Perfil.class.php");
+require_once (__DIR__ . "/../modelo/Situacao.class.php");
 
-    class PerfilDAO {
+    class SituacaoDAO {
 
         private $conexao;
 
@@ -12,49 +12,49 @@ require_once (__DIR__ . "/../modelo/Perfil.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_PERFIS ORDER BY PK_PER DESC";
+            $sql = "SELECT * FROM TB_SITUACAO ORDER BY PK_SIT DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
-            $perfis = array();
+            $situacoes = array();
             foreach ($result as $row) {
-                $perfil = new Perfil();
-                $perfil->setId($row['PK_PER']);
-                $perfil->setNome($row['PER_NOME']);
+                $situacao = new Situacao();
+                $situacao->setId($row['PK_SIT']);
+                $situacao->setNome($row['SIT_NOME']);
               
-                array_push($perfis, $perfil);
+                array_push($situacoes, $situacao);
             }
-            return $perfis;
+            return $situacoes;
         }
     
         public function findById($id) {
-            $sql = "SELECT * FROM TB_PERFIS WHERE PK_PER = :ID";
+            $sql = "SELECT * FROM TB_SITUACAO WHERE PK_SIT = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
             $result = $statement->fetchAll();
-            $perfil = new Perfil();        
+            $situacao = new Situacao();
             foreach ($result as $row) {   
-                $perfil->setId($row['PK_PER']);
-                $perfil->setNome($row['PER_NOME']);
+                $situacao->setId($row['PK_SIT']);
+                $situacao->setNome($row['SIT_NOME']);
             }
-            return $perfil;
+            return $situacao;
         }
       
-        public function save(Perfil $perfil) {
-            if (is_null($sindico->getId())) {
-                return $this->insert($perfil);
+        public function save(Situacao $situacao) {
+            if (is_null($situacao->getId())) {
+                return $this->insert($situacao);
             } else {
-                return $this->update($perfil);
-            } 
+                return $this->update($situacao);
+            }  
         }
 
-        private function insert(Perfil $perfil) {
-            $sql = "INSERT INTO TB_PERFIS (PER_NOME) VALUES (:NOME)";
+        private function insert(Situacao $situacao) {
+            $sql = "INSERT INTO TB_SITUACAO (SIT_NOME) VALUES (:NOME)";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $nome = $perfil->getNome();
-                $id = $perfil->getId();
+                $nome = $situacao->getNome();
+                $id = $situacao->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
@@ -66,16 +66,16 @@ require_once (__DIR__ . "/../modelo/Perfil.class.php");
             }
         }
 
-        private function update(Perfil $perfil) {
-            $sql = "UPDATE TB_PERFIS SET PER_NOME=:NOME WHERE PK_PER=:ID";
+        private function update(Situacao $situacao) {
+            $sql = "UPDATE TB_SITUACAO SET SIT_NOME=:NOME WHERE PK_SIT=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $nome = $perfil->getNome();
-                $id = $perfil->getId();
+                $nome = $situacao->getNome();
+                $id = $situacao->getId();
                 $statement->bindParam(':NOME', $nome);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($sindico->getId());
+                return $this->findById($situacao->getId());
             } catch(PDOException $e) {
                 echo $e->getMessage();
                 return null;
@@ -83,7 +83,7 @@ require_once (__DIR__ . "/../modelo/Perfil.class.php");
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_PERFIS WHERE PK_PER = :ID";
+            $sql = "DELETE FROM TB_SITUACAO WHERE PK_SIT = :ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id);

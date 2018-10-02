@@ -15,9 +15,14 @@ require_once(__DIR__ . "/../classes/dao/BlocoDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Perfil.class.php");
 require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Sindico.class.php");
+require_once(__DIR__ . "/../classes/modelo/Situacao.class.php");
+require_once(__DIR__ . "/../classes/dao/SituacaoDAO.class.php");
 
 $perfil = new Perfil();
 $perfilDao = new PerfilDAO();
+
+$situacao = new Situacao();
+$situacaoDao = new SituacaoDAO();
 
 $bloco = new Bloco();
 $blocoDao = new BlocoDAO();
@@ -103,7 +108,8 @@ if ($continua) {
         $morador->setLogin($_POST['login']);
         $morador->setCpf($_POST['cpf']);
         $morador->setSenha($senha);
-        $morador->setStatus($_POST['status']);
+        $situacao = $situacaoDao->findById($_POST['status']);
+        $morador->setSituacao($situacao);
         $perfil = $perfilDao->findById($_POST['perfil']);
         $morador->setPerfil($perfil);
         

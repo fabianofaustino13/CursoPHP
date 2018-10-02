@@ -2,6 +2,7 @@
 
 require_once("Perfil.class.php");
 require_once("Sindico.class.php");
+require_once("Situacao.class.php");
 // require_once("Apartamento.class.php");
 class Morador {
 
@@ -10,12 +11,13 @@ class Morador {
     private $cpf; //cpf do morador
     private $login; //login do morador
     private $senha; //senha do morador
-    private $status; //se o morador está ativo
+    private $situacao; //se o morador está ativo - Ativo (Apartamento com morador) - Inativo (Apartamento sem morador)
     private $perfil; //perfil do morador - USUÁRIO, SÍNDICO, ADMINISTRADOR OU ROOT
     // private $apartamento; //associar um moradar em um apartamento
     
     public function __construct() {
         $this->perfil = new Perfil();
+        $this->situacao = new Situacao(); //Saber se o morador está ativo ou não.
         // $this->apartamento = new Apartamento();
     }
 
@@ -60,12 +62,12 @@ class Morador {
         $this->senha = $senha;
     }
      
-    public function getStatus() {
-        return $this->status;
+    public function getSituacao() {
+        return $this->situacao;
     }
     
-    public function setStatus($status) {
-        $this->status = $status;
+    public function setSituacao(Situacao $situacao) {
+        $this->situacao = $situacao;
     }
 
     public function getPerfil() {
