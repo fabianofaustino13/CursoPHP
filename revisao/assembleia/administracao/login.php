@@ -15,7 +15,7 @@ $num = count($morador->getLogin());
 if ($num > 0) {
     $_SESSION['MoradorID'] = $morador->getId();
     $_SESSION['MoradorNome'] = $morador->getNome();
-    $_SESSION['MoradorStatus'] = $morador->getStatus();
+    $_SESSION['MoradorSituacao'] = $morador->getSituacao()->getId();
     $_SESSION['MoradorPerfilID'] = $morador->getPerfil()->getId();
     $_SESSION['MoradorPerfilNome'] = $morador->getPerfil()->getNome();
         
@@ -34,7 +34,7 @@ if ($num > 0) {
     //if ($user->logar($login, $senha)) {
 
     if ($loginDB == $login && $senhaDB == $senha)  {
-        if (($_SESSION['isLogado'] = true)  AND ($_SESSION['MoradorStatus'] !=  NULL) ) {
+        if (($_SESSION['isLogado'] = true)  AND ($_SESSION['MoradorSituacao'] !=  '2') ) {
             header('location: /cursoPHP/revisao/assembleia/assembleia/');
         } else {
             header('location: /cursoPHP/revisao/assembleia/assembleia/aguardando.php');

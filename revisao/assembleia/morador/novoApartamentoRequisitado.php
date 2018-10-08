@@ -1,8 +1,9 @@
 <?php 
+//Tela de cadastro do Morador - Auto-Cadastro
 session_start();
-if ($_SESSION['MoradorSituacao'] == NULL || $_SESSION['MoradorSituacao'] == '2') {
-    header('location: ../assembleia/aguardando.php');
-}
+// if ($_SESSION['MoradorStatus'] == NULL) {
+//     header('location: ../assembleia/aguardando.php');
+// }
 
 require_once(__DIR__ . "/../classes/modelo/Apartamento.class.php");
 require_once(__DIR__ . "/../classes/modelo/bloco.class.php");

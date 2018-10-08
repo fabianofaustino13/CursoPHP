@@ -28,7 +28,7 @@ require_once (__DIR__ . "/../modelo/Situacao.class.php");
         }
     
         public function findById($id) {
-            $sql = "SELECT * FROM TB_SITUACAO WHERE PK_SIT = :ID";
+            $sql = "SELECT * FROM TB_SITUACAO WHERE PK_SIT=:ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();

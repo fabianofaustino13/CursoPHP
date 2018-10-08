@@ -5,6 +5,8 @@ require_once(__DIR__ . "/../modelo/Morador.class.php");
 require_once(__DIR__ . "/../modelo/Apartamento.class.php");
 require_once(__DIR__ . "/../modelo/Bloco.class.php");
 require_once(__DIR__ . "/../modelo/Situacao.class.php");
+require_once(__DIR__ . "/../modelo/Perfil.class.php");
+
 
     class MoradorDAO {
 
@@ -202,7 +204,7 @@ require_once(__DIR__ . "/../modelo/Situacao.class.php");
         }
 
         private function insert(Morador $morador) {
-            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, FK_MOR_SITUACAO, FK_MOR_PER) VALUES (:NOME, :CPF, :USERNAME, :SENHA, :SITUACAO, :PERFIL)";
+            $sql = "INSERT INTO TB_MORADORES (MOR_NOME, MOR_CPF, MOR_LOGIN, MOR_SENHA, FK_MOR_SIT, FK_MOR_PER) VALUES (:NOME, :CPF, :USERNAME, :SENHA, :SITUACAO, :PERFIL)";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $nome = $morador->getNome();

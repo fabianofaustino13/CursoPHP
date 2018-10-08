@@ -214,7 +214,7 @@ require_once(__DIR__ . "/../modelo/Ocupacao.class.php");
         }
 
         public function findApartamentoBloco(Bloco $bloco) {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO = FK_APA_BLO WHERE PK_BLO = :ID_BLOCO";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_OCUPACAO ON PK_OCU=FK_APA_OCU WHERE PK_BLO=:ID_BLOCO";
             $statement = $this->conexao->prepare($sql);
             $id_bloco = $bloco->getId();
             $statement->bindParam(':ID_BLOCO', $id_bloco); //Proteção contra sql injetct
@@ -222,13 +222,16 @@ require_once(__DIR__ . "/../modelo/Ocupacao.class.php");
             $result = $statement->fetchAll();
             $apartamentos = array();
             foreach ($result as $row) {
+                $ocupacao = new Ocupacao();
+                $ocupacao->setId($row['PK_OCU']);
+                $ocupacao->setNome($row['OCU_NOME']);
                 $bloco = new Bloco();
                 $bloco->setId($row['PK_BLO']);
                 $bloco->setNome($row['BLO_NOME']);
                 $apartamento = new Apartamento();
                 $apartamento->setId($row['PK_APA']);
                 $apartamento->setNome($row['APA_NOME']);
-                $apartamento->setOcupacao($row['APA_OCUPACAO']);
+                $apartamento->setOcupacao($ocupacao);
                 $apartamento->setBloco($bloco);
                 array_push($apartamentos, $apartamento);
             }

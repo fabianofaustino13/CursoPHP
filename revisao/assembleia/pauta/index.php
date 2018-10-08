@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if ($_SESSION['MoradorStatus'] == NULL || $_SESSION['MoradorStatus'] == 2) {
+if ($_SESSION['MoradorSituacao'] == NULL || $_SESSION['MoradorSituacao'] == 2) {
     header('location: ../assembleia/aguardando.php');
 }
 
@@ -79,7 +79,7 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
     <?php
         include(__DIR__ . "/../administracao/menu.php");
     ?>
-
+    </div>
     <div class="containerMenuDireita">
         <div class="row" style="margin-top: 5%;">
             <div class="col-md-12 mb-3">
@@ -87,28 +87,28 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                     <legend>Cadastro de Pautas</legend>
                     <form method="post" action="index.php"><!-- Form Geral -->
                         <div class="form-row"><!-- Div1 -->
-                            <label for="assembleia" class="required">Selecione uma Assembléia vigente</label>
-                                <div class="col-md-12 mb-3" id="div_assembleias"><!-- Tipo de Assembleia -->
-                                    <div >
-                                        <select class="form-control" name="assembleia" onchange="show_pautas(this.value);">
-                                            <?php
-                                                $data = date ("Y-m-d"); //Data de hoje no formato do banco
-                                                foreach ($assembleias as $assembleia): ?>
-                                                    <?php if ($assembleia->getData() >= $data):  ?> 
-                                                            <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
-                                                            <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $assembleia->getData(); ?> <?php endif;?>
-                                                        </option> 
-                                                <?php endforeach; 
-                                            ?>                                    
-                                        </select> 
-                                    </div>                            
-                                </div>  
-                                <div class="col-md-12 mb-3"><!-- Nome da pauta -->
-                                    <label for="nome" class="required">Pauta</label>
-                                    <input type="hidden" name="id" value="<?=$pauta->getId();?>">
-                                    <!-- <//?php echo "<script>alert('Id da pauta: ' + {$pauta->getId()})</script>"; ?> -->
-                                    <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
-                                </div><!-- Fim Nome da pauta -->
+                            <div class="col-md-12 mb-3" id="div_assembleias"><!-- Tipo de Assembleia -->
+                                <label for="assembleia" class="required">Selecione uma Assembléia vigente</label>
+                                <div >
+                                    <select class="form-control" name="assembleia" onchange="show_pautas(this.value);">
+                                        <?php
+                                            $data = date ("Y-m-d"); //Data de hoje no formato do banco
+                                            foreach ($assembleias as $assembleia): ?>
+                                                <?php if ($assembleia->getData() >= $data):  ?> 
+                                                        <option id="<?=$assembleia->getId();?>" value="<?=$assembleia->getId();?>"> 
+                                                        <?=$assembleia->getId() . " - " . $assembleia->getNome() . " - " . $assembleia->getData(); ?> <?php endif;?>
+                                                    </option> 
+                                            <?php endforeach; 
+                                        ?>                                    
+                                    </select> 
+                                </div>                            
+                            </div>  
+                            <div class="col-md-12 mb-3"><!-- Nome da pauta -->
+                                <label for="nome" class="required">Pauta</label>
+                                <input type="hidden" name="id" value="<?=$pauta->getId();?>">
+                                <!-- <//?php echo "<script>alert('Id da pauta: ' + {$pauta->getId()})</script>"; ?> -->
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$pauta->getNome();?>" maxlength="100" placeholder="Nome breve para pauta" required />
+                            </div><!-- Fim Nome da pauta -->
 
                             <div class="col-md-12 mb-3"> 
                                 <label for="descricao">Descrição</label>
@@ -185,7 +185,6 @@ if (!empty($_POST['pesquisarAssembleia']) && $_POST['pesquisarAssembleia'] == 'p
                 </table>
             </div> <!-- Fim Tabela -->
         </div> 
-    </div>
     </div> <!-- Fim do container -->
     <script src="../assets/js/ajax_funcoes.js"></script>
 </body>

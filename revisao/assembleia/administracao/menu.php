@@ -34,7 +34,7 @@
                             <i class="fas fa-award fa-1x"></i>
                             <br><?=$_SESSION['MoradorNome']?><br>
                             (<?=$_SESSION['MoradorPerfilNome']?>)
-                        <?php elseif (($_SESSION['MoradorPerfilID'] == 4) AND ($_SESSION['MoradorStatus'] != NULL)):?>
+                        <?php elseif (($_SESSION['MoradorPerfilID'] == 4) AND ($_SESSION['MoradorSituacao'] == 2)):?>
                             <i class="fas fa-chalkboard-teacher"></i>
                             <br><?=$_SESSION['MoradorNome']?><br>
                             (<?=$_SESSION['MoradorPerfilNome']?>)
@@ -44,7 +44,7 @@
             </div>
 
             <a href="../index.php"><i class="fa fa-home"></i> <span>Home</span></a>           
-            <?php if ($_SESSION['MoradorStatus'] != NULL): ?>
+            <?php if ($_SESSION['MoradorSituacao'] == 1): ?>
                 <button class="dropdown-btn"><i class="fa fa-list-alt"></i> <span>Cadastrar</span>  
                     <i class="fa fa-caret-down"></i>
                 </button>
@@ -63,6 +63,7 @@
                         <a href="../pauta/index.php">Pauta</a>
                         <a href="../opcaoResposta/index.php">Resposta</a>                 
                     </div>
+                    <a href="../morador/novoMorador.php"><i class="fa fa-users"></i> <span>Cadastrar Morador</span> </a>
                     <a href="../morador/index.php"><i class="fa fa-users"></i> <span>Morador</span> </a>
                     <a href="../sindico/index.php"><i class="fa fa-user"></i> <span>Síndico</span> </a>
                     <a href="../adimplente/index.php"><i class="fas fa-dollar-sign"></i> <span>Situação Financeira</span> </a>
