@@ -10,13 +10,13 @@ class Requisitado {
     private $id;
     // private $nome;
     // private $adimplente;
-    // private $bloco;
+    private $bloco;
     private $apartamento;
     private $morador;
    
     public function __construct() {
         // $this->adimplente = new Adimplente();
-        // $this->bloco = new Bloco();
+        $this->bloco = new Bloco();
         $this->apartamento = new Apartamento();
         $this->morador = new Morador();
     }
@@ -37,13 +37,13 @@ class Requisitado {
     //     $this->adimplente = $adimplente;
     // }
 
-    // public function getBloco() {
-    //     return $this->bloco;
-    // }
+    public function getBloco() {
+        return $this->bloco;
+    }
     
-    // public function setBloco(Bloco $bloco) {
-    //     $this->bloco = $bloco;
-    // }
+    public function setBloco(Bloco $bloco) {
+        $this->bloco = $bloco;
+    }
     public function getApartamento() {
         return $this->apartamento;
     }

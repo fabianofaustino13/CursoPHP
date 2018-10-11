@@ -41,7 +41,8 @@ $moradorRequisitadoDao = new MoradorRequisitadoDAO();
 
 
 if (isset($_POST['editar']) && $_POST['editar'] == 'editar') {
-    $morador = $moradorDao->findById($_POST['id']);
+    //$morador = $moradorDao->findById($_POST['id']);
+    $requisitado = $moradorRequisitadoDao->findRequisitadoById($_POST['id']);
     // $apartamento = $apartamentoDao->findByMorador($_POST['id']);
 }
 
@@ -77,20 +78,25 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="row" style="margin-top: 2%;">
             <div class="col-md-12 mb-3">
             <!-- onsubmit="return checaFormulario()"  -->
+                <?php 
+                    echo "<pre>";
+                    //var_dump($requisitado);
+                    echo "</pre>";
+                ?>
                 <fieldset>
-                    <legend>Editar dados dos Moradores</legend>
+                    <legend>Editar dados dos Moradores Old</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
                     <!-- onsubmit="return checaFormulario(this)" -->
                     <form id="form1" name="form1" action="checaCadastroMorador.php" method="post" onsubmit="return checaFormulario(this)" />
                         <div class="form-row"><!-- Div1 -->
-                            <input type="hidden" name="id" value="<?=$morador->getId();?>">                                                    
+                            <input type="hidden" name="id" value="<?=$requisitado->getMorador()->getId();?>">                                                    
                             <div class="col-md-10 mb-3"><!-- Nome do Morador -->
                                 <label for="nome" class="required">Nome</label>
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$morador->getNome();?>" maxlength="100" placeholder="Informe o nome do morador"required />                    
+                                <input type="text" class="form-control" id="nome" name="nome" value="<?=$requisitado->getMorador()->getNome();?>" maxlength="100" placeholder="Informe o nome do morador"required />                    
                             </div>
                             <div class="col-md-2 mb-3"><!-- Nome do Morador -->
                                 <label for="cpf" class="required">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$morador->getCpf();?>" maxlength="11" placeholder="Somente números" required />                               
+                                <input type="text" class="form-control" id="cpf" name="cpf" value="<?=$requisitado->getMorador()->getCpf();?>" maxlength="11" placeholder="Somente números" required />                               
                                 <?php if (isset($_SESSION['cpf_existe'])) {
                                     echo "<p style='color:red;'>" .$_SESSION['cpf_existe']."</p>";
                                     unset($_SESSION['cpf_existe']);
@@ -101,7 +107,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <select class="form-control" name="perfil" required/>
                                     <!-- <option value="4" selected disabled>--SELECIONE--</option> -->
                                     <?php foreach ($perfis as $perfil): ?>                                                    
-                                        <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>" <?=($perfil->getId()==$morador->getPerfil()->getId()) ? "selected":"";?> > <?=$perfil->getNome();?></option> 
+                                        <option id="<?=$perfil->getId();?>" value="<?=$perfil->getId();?>" <?=($perfil->getId()==$requisitado->getMorador()->getPerfil()->getId()) ? "selected":"";?> > <?=$perfil->getNome();?></option> 
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
@@ -109,13 +115,13 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <label for="status" class="required">Situação</label>
                                 <select class="form-control" name="status" required/>
                                     <?php foreach ($situacoes as $situacao): ?> 
-                                        <option id="<?=$situacao->getId()?>" value="<?=$situacao->getId()?>" <?=($situacao->getId()==$morador->getSituacao()->getId()) ? "selected":""?>><?=$situacao->getNome();?></option>
+                                        <option id="<?=$situacao->getId()?>" value="<?=$situacao->getId()?>" <?=($situacao->getId()==$requisitado->getMorador()->getSituacao()->getId()) ? "selected":""?>><?=$situacao->getNome();?></option>
                                     <?php endforeach; ?>   
                                 </select> 
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="login" class="required">Login</label>
-                                <input type="text" class="form-control" id="login" name="login" value="<?=$morador->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
+                                <input type="text" class="form-control" id="login" name="login" value="<?=$requisitado->getMorador()->getLogin();?>" maxlength="25" placeholder="Login do morador" required />
                                 <?php if (isset($_SESSION['login_existe'])) {
                                     echo "<p style='color:red;'>" .$_SESSION['login_existe']."</p>";
                                     unset($_SESSION['login_existe']);
@@ -123,7 +129,7 @@ date_default_timezone_set('America/Sao_Paulo');
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="senha" class="required">Senha</label>
-                                <input type="button" class="btn btn-default btn-block" value="ALTERAR SENHA" <?=($morador->getId() == '') ? "disabled":"" ;?> data-toggle="modal" data-target="#alterarSenhaModal" />
+                                <input type="button" class="btn btn-default btn-block" value="ALTERAR SENHA" <?=($requisitado->getMorador()->getId() == '') ? "disabled":"" ;?> data-toggle="modal" data-target="#alterarSenhaModal" />
                             </div>
                             <div class="col-md-2 mb-3" id="div_blocos"><!-- select Apartamento -->
                                 <label for="blocoId" class="required">Bloco</label>
@@ -131,7 +137,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
                                     <option value=""></option>
                                     <?php foreach ($blocos as $bloco): ?>                                                    
-                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>" <?=$bloco->getId() == $requisitado->getApartamento()->getBloco()->getId() ? "selected": "";?>><?=$bloco->getApelido();?></option> 
+                                        <option id="<?=$bloco->getId();?>" value="<?=$bloco->getId();?>" <?=($bloco->getId()==$requisitado->getApartamento()->getBloco()->getId()) ? "selected": "";?>><?=$bloco->getApelido();?></option> 
                                     <?php endforeach; ?>                                    
                                 </select> 
                             </div>  
@@ -149,7 +155,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                     <button type="submit" class="btn btn-primary btn-block" name="salvar" value="salvar">Salvar</button>
                                 </div>
                                 <div class="col-md-2 mb-3">
-                                    <button type="submit" class="btn btn-warning btn-block" name="limpar" value="limpar">Limpar</button>
+                                    <button type="reset" class="btn btn-warning btn-block" name="limpar" value="limpar">Limpar</button>
                                 </div>
                             </div><!-- Fim Botões -->
                         </div>

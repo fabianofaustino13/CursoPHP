@@ -175,6 +175,48 @@ require_once(__DIR__ . "/../modelo/Requisitado.class.php");
             return $moradorRequisitado;
         }
 
+        public function findRequisitadoById($id) {
+            //$sql = "SELECT * FROM TB_MORADORES LEFT JOIN TB_PERFIS ON PK_PER = FK_MOR_PER WHERE PK_MOR = :ID";
+            $sql = "SELECT * FROM TB_MORADORES JOIN TB_PERFIS ON PK_PER=FK_MOR_PER LEFT JOIN TB_APARTAMENTOS_MORADORES ON PK_MOR=FK_ADM_MOR JOIN TB_SITUACAO ON PK_SIT=FK_MOR_SIT JOIN TB_APARTAMENTOS ON PK_APA=FK_ADM_APA JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_OCUPACAO ON PK_OCU=FK_APA_OCU WHERE PK_ADM=:ID";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id); //Proteção contra sql injetct
+            $statement->execute();
+            $row = $statement->fetch();
+            $perfil = new Perfil();
+            $perfil->setId($row['PK_PER']);
+            $perfil->setNome($row['PER_NOME']);
+            $bloco = new bloco();
+            $bloco->setId($row['PK_BLO']);
+            $bloco->setNome($row['BLO_NOME']);
+            $bloco->setApelido($row['BLO_APELIDO']);
+            $ocupacao = new Ocupacao();
+            $ocupacao->setId($row['PK_OCU']);
+            $ocupacao->setNome($row['OCU_NOME']);
+            $apartamentoRequisitado = new Apartamento();
+            $apartamentoRequisitado->setId($row['PK_APA']);
+            $apartamentoRequisitado->setNome($row['APA_NOME']);
+            $apartamentoRequisitado->setBloco($bloco);
+            $apartamentoRequisitado->setOcupacao($ocupacao);
+            $situacao = new Situacao();
+            $situacao->setId($row['PK_SIT']);
+            $situacao->setNome($row['SIT_NOME']);
+            $moradorRequisitado = new Morador();
+            $moradorRequisitado->setId($row['PK_MOR']);
+            $moradorRequisitado->setNome($row['MOR_NOME']);
+            $moradorRequisitado->setCpf($row['MOR_CPF']);
+            $moradorRequisitado->setLogin($row['MOR_LOGIN']);
+            $moradorRequisitado->setSenha($row['MOR_SENHA']);
+            $moradorRequisitado->setSituacao($situacao);
+            // $morador->setApartamento($apartamento);
+            $moradorRequisitado->setPerfil($perfil);
+
+            $requisitado = new Requisitado();
+            $requisitado->setId($row['PK_ADM']);
+            $requisitado->setApartamento($apartamentoRequisitado);
+            $requisitado->setMorador($moradorRequisitado);
+            return $requisitado;
+        }
+
         public function findByApartamento($id) {
             $sql = "SELECT * FROM TB_APARTAMENTOS JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI=FK_APA_ADI WHERE PK_APA=:ID";
             //$sql = "SELECT * FROM TB_MORADORES WHERE PK_MOR = :ID";
