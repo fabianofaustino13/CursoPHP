@@ -58,6 +58,12 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="row" style="margin-top: 1%;">
             <div class="col-md-12 mb-3">
             <!-- onsubmit="return checaFormulario()"  -->
+            <div class="col-12" style="background-color: red; text-align: center; color:white">
+                <?php if (isset($_SESSION['apartamento_ocupado'])) {
+                    echo "<p style='color:white;'>" .$_SESSION['apartamento_ocupado']."</p>";
+                    unset($_SESSION['apartamento_ocupado']);
+                }?> 
+            </div>
                 <fieldset>
                     <legend>Cadastro do Morador</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->

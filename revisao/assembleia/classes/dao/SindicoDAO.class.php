@@ -3,6 +3,7 @@
 require_once (__DIR__ . "/./Conexao.class.php");
 require_once (__DIR__ . "/../modelo/Morador.class.php");
 require_once (__DIR__ . "/../modelo/Sindico.class.php");
+require_once (__DIR__ . "/../modelo/Situacao.class.php");
 
     class SindicoDAO {
 
@@ -13,18 +14,21 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
 
         public function findAll() {
-            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR  ORDER BY SIN_DATA_FIM DESC";
+            $sql = "SELECT * FROM TB_SINDICOS JOIN TB_MORADORES ON PK_MOR=FK_SIN_MOR JOIN TB_SITUACAO ON PK_SIT=FK_MOR_SIT ORDER BY SIN_DATA_FIM DESC";
             $statement = $this->conexao->prepare($sql);
             $statement->execute();
             $result = $statement->fetchAll();
             $sindicos = array();
             foreach ($result as $row) {
+                $situacao = new Situacao();
+                $situacao->setId($row['PK_SIT']);
+                $situacao->setNome($row['SIT_NOME']);
                 $morador = new Morador();
                 $morador->setId($row['PK_MOR']);
                 $morador->setNome($row['MOR_NOME']);
                 $morador->setCpf($row['MOR_CPF']);
                 $morador->setLogin($row['MOR_LOGIN']);
-                $morador->setStatus($row['MOR_STATUS']);
+                $morador->setSituacao($situacao);
                 $sindico = new sindico();
                 $sindico->setId($row['PK_SIN']);
                 $sindico->setDataInicio($row['SIN_DATA_INICIO']);
@@ -61,17 +65,20 @@ require_once (__DIR__ . "/../modelo/Sindico.class.php");
         }
     
         public function findById($id) {
-            $sql = "SELECT * FROM TB_SINDICOS RIGHT JOIN TB_MORADORES ON PK_MOR = FK_SIN_MOR WHERE PK_SIN = :ID";
+            $sql = "SELECT * FROM TB_SINDICOS RIGHT JOIN TB_MORADORES ON PK_MOR=FK_SIN_MOR JOIN TB_SITUACAO ON PK_SIT=FK_MOR_SIT WHERE PK_SIN = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
             $row = $statement->fetch();
+            $situacao = new Situacao();
+            $situacao->setId($row['PK_SIT']);
+            $situacao->setNome($row['SIT_NOME']);
             $morador = new Morador();
             $morador->setId($row['PK_MOR']);
             $morador->setNome($row['MOR_NOME']);
             $morador->setCpf($row['MOR_CPF']);
             $morador->setLogin($row['MOR_LOGIN']);
-            $morador->setStatus($row['MOR_STATUS']);
+            $morador->setSituacao($situacao);
             
             $sindico = new Sindico();
             $sindico->setId($row['PK_SIN']);

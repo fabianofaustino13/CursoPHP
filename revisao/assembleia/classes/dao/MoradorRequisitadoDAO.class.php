@@ -6,6 +6,7 @@ require_once(__DIR__ . "/../modelo/Apartamento.class.php");
 require_once(__DIR__ . "/../modelo/Adimplente.class.php");
 require_once(__DIR__ . "/../modelo/Bloco.class.php");
 require_once(__DIR__ . "/../modelo/Requisitado.class.php");
+require_once(__DIR__ . "/../modelo/Ocupacao.class.php");
 
     class MoradorRequisitadoDAO {
 
@@ -218,25 +219,29 @@ require_once(__DIR__ . "/../modelo/Requisitado.class.php");
         }
 
         public function findByApartamento($id) {
-            $sql = "SELECT * FROM TB_APARTAMENTOS JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI=FK_APA_ADI WHERE PK_APA=:ID";
+            $sql = "SELECT * FROM TB_APARTAMENTOS JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_ADIMPLENTES ON PK_ADI=FK_APA_ADI JOIN TB_OCUPACAO ON PK_OCU=FK_APA_OCU WHERE PK_APA=:ID";
             //$sql = "SELECT * FROM TB_MORADORES WHERE PK_MOR = :ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id); //Proteção contra sql injetct
             $statement->execute();
             $row = $statement->fetch();
-            $Adimplente = new Adimplente();
-            $Adimplente->setId($row['PK_ADI']);
-            $Adimplente->setNome($row['ADI_NOME']);
-            $Adimplente->setImagem($row['ADI_IMAGEM']);
+            $adimplente = new Adimplente();
+            $adimplente->setId($row['PK_ADI']);
+            $adimplente->setNome($row['ADI_NOME']);
+            $adimplente->setImagem($row['ADI_IMAGEM']);
             $bloco = new Bloco();
             $bloco->setId($row['PK_BLO']);
             $bloco->setNome($row['BLO_NOME']);
             $bloco->setApelido($row['BLO_APELIDO']);
+            $ocupacao = new Ocupacao();
+            $ocupacao->setId($row['PK_OCU']);
+            $ocupacao->setNome($row['OCU_NOME']);
             $apartamento = new Apartamento();
             $apartamento->setId($row['PK_APA']);
             $apartamento->setNome($row['APA_NOME']);
             $apartamento->setBloco($bloco);
-            $apartamento->setAdimplente($Adimplente);
+            $apartamento->setAdimplente($adimplente);
+            $apartamento->setOcupacao($ocupacao);
             
             return $apartamento;
         }

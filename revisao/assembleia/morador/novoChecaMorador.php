@@ -31,49 +31,49 @@ $moradorRequisitadoDao = new MoradorRequisitadoDAO();
 
 $continua = true;
 
-if (empty($_POST['nome']) && isset($_POST['nome'])) {
-    $_SESSION['vazio_nome'] = "O nome é obrigatório";
-    $continua = false;
-    header('location: index.php');
-} else {
-    $_SESSION['nome'] = $_POST['nome'];
-}
+// if (empty($_POST['nome']) && isset($_POST['nome'])) {
+//     $_SESSION['vazio_nome'] = "O nome é obrigatório";
+//     $continua = false;
+//     header('location: index.php');
+// } else {
+//     $_SESSION['nome'] = $_POST['nome'];
+// }
 
-if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
-    $_SESSION['vazio_cpf'] = "CPF é obrigatório";
-    $cpf = $moradorDao->findCpf($_POST['cpf']);
-    //$num = count($cpf->getCpf());
-    if ($cpf == 1) {
-        //$_SESSION['cpf_existe'] = 'existe';
-        header('location: index.php');
-    }
-    $continua = false;
-    header('location: index.php');
-} 
+// if (empty($_POST['cpf']) &&  isset($_POST['cpf'])) {
+//     $_SESSION['vazio_cpf'] = "CPF é obrigatório";
+//     $cpf = $moradorDao->findCpf($_POST['cpf']);
+//     //$num = count($cpf->getCpf());
+//     if ($cpf == 1) {
+//         //$_SESSION['cpf_existe'] = 'existe';
+//         header('location: index.php');
+//     }
+//     $continua = false;
+//     header('location: index.php');
+// } 
 
-if (empty($_POST['login']) && isset($_POST['login'])) {
-    $_SESSION['vazio_login'] = "Login é obrigatório";
-    $continua = false;
-    header('location: index.php');
-}
+// if (empty($_POST['login']) && isset($_POST['login'])) {
+//     $_SESSION['vazio_login'] = "Login é obrigatório";
+//     $continua = false;
+//     header('location: index.php');
+// }
 
-if (empty($_POST['senha']) && isset($_POST['senha'])) {
-    $_SESSION['vazio_senha'] = "Senha é obrigatório";
-    $continua = false;
-    header('location: index.php');
-} 
+// if (empty($_POST['senha']) && isset($_POST['senha'])) {
+//     $_SESSION['vazio_senha'] = "Senha é obrigatório";
+//     $continua = false;
+//     header('location: index.php');
+// } 
 
-if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
-    $_SESSION['vazio_perfil'] = "Selecione um perfil";
-    $continua = false;
-    header('location: index.php');
-} 
+// if (empty($_POST['perfil']) && isset($_POST['perfil'])) {
+//     $_SESSION['vazio_perfil'] = "Selecione um perfil";
+//     $continua = false;
+//     header('location: index.php');
+// } 
 
-if (empty($_POST['status']) && isset($_POST['status'])) {
-    $_SESSION['vazio_status'] = "Selecione um status";
-    $continua = false;
-    header('location: index.php');
-} 
+// if (empty($_POST['status']) && isset($_POST['status'])) {
+//     $_SESSION['vazio_status'] = "Selecione um status";
+//     $continua = false;
+//     header('location: index.php');
+// } 
 
 if ($continua) {
     if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
@@ -87,17 +87,21 @@ if ($continua) {
             $morador->setPerfil($perfil); 
             $situacao = $situacaoDao->findById(2); //Inicialmente, o usuário terá situacao (2) Inativo e será necessário Ativar 
             $morador->setSituacao($situacao);
-            $moradorRequisitado = $moradorDao->save($morador);
-            echo "<pre>";
-            var_dump($moradorRequisitado);
-            echo "</pre>";
-            $apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['apartamentoId']);
-            $resultado = $moradorRequisitadoDao->save($moradorRequisitado, $apartamentoRequisitado);
+            //$moradorRequisitado = $moradorDao->save($morador);
             // echo "<pre>";
-            // echo "Não existe!\n";
             // var_dump($moradorRequisitado);
-            // var_dump($apartamentoRequisitado);
             // echo "</pre>";
+            $apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['apartamentoId']);
+            //$resultado = $moradorRequisitadoDao->save($moradorRequisitado, $apartamentoRequisitado);
+            if ($apartamentoRequisitado->getOcupacao()->getId() == 1) {
+                $_SESSION['apartamento_ocupado'] = "Atenção, este apartamento encontra-se ocupado!";
+                header('location: novoMorador.php');
+                echo "<pre>";
+                //var_dump($moradorRequisitado);
+                var_dump($apartamentoRequisitado);
+                echo "</pre>";
+
+            }
         } else {
             //if ($moradorRequisitado->getNome() != $_POST['nome']) {
             //    $_SESSION['mensagem2'] = "O CPF digitado, não confere com o nome já cadastrado. Compareça a Administração!";
@@ -105,12 +109,16 @@ if ($continua) {
             //    header('location: index.php');
             //}
             $apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['apartamentoId']);
-            $resultado = $moradorRequisitadoDao->save($moradorRequisitado, $apartamentoRequisitado);
-            // echo "<pre>";
-            // echo "Já existe!\n";
-            // var_dump($moradorRequisitado);
-            // var_dump($apartamentoRequisitado);
-            // echo "</pre>";
+            //$resultado = $moradorRequisitadoDao->save($moradorRequisitado, $apartamentoRequisitado);
+            if ($apartamentoRequisitado->getOcupacao()->getId() == 1) {
+                $_SESSION['apartamento_ocupado'] = "Apartamento ocupado!";
+                header('location: novoMorador.php');
+                echo "<pre>";
+                //var_dump($moradorRequisitado);
+                var_dump($apartamentoRequisitado);
+                echo "</pre>";
+
+            }
         }        
              
         //$apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['apartamentoId']);
@@ -158,7 +166,7 @@ if ($continua) {
         //     // $_SESSION['morador_erro'] = "Erro ao cadastrar";
         //     //echo "<META HTTP-EQUIV=REFRESH CONTENT = '0;URL=index.php'><script type=\"text/javascript\">alert(\"Erro ao cadastrar.\");</script>";  
         // // echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL= index.php'";
-        header('location: ../index.php');
+        //header('location: ../index.php');
     }
 }
 

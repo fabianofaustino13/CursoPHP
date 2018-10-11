@@ -149,7 +149,7 @@ $sindicosMoradores = $sindicoDao->findMoradorAll();
                                                     <td><?=$sindico->getMorador()->getNome();?></td>
                                                     <td><?=$sindico->getDataInicio();?></td>
                                                     <td><?=$sindico->getDataFim();?></td>
-                                                    <td><?= ($sindico->getMorador()->getStatus() == 1)?"ATIVO":"INATIVO";?></td>
+                                                    <td><?= ($sindico->getMorador()->getSituacao()->getId() == 1) ? "ATIVO":"INATIVO";?></td>
                                                     <td>
                                                         <form method="post" action="index.php">
                                                             <input type="hidden" name="id" value="<?=$sindico->getId();?>">
