@@ -58,12 +58,16 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="row" style="margin-top: 1%;">
             <div class="col-md-12 mb-3">
             <!-- onsubmit="return checaFormulario()"  -->
-            <div class="col-12" style="background-color: red; text-align: center; color:white">
-                <?php if (isset($_SESSION['apartamento_ocupado'])) {
-                    echo "<p style='color:white;'>" .$_SESSION['apartamento_ocupado']."</p>";
-                    unset($_SESSION['apartamento_ocupado']);
-                }?> 
-            </div>
+                <div>
+                    <?php if (!empty($_SESSION['apartamento_ocupado']) && isset($_SESSION['apartamento_ocupado'])) {
+                        echo "<p style='color:white; text-align:center; background-color: red; '>" .$_SESSION['apartamento_ocupado']."</p>";
+                        unset($_SESSION['apartamento_ocupado']);
+                    }?> 
+                    <?php if (!empty($_SESSION['morador_sucesso']) && isset($_SESSION['morador_sucesso'])) {
+                        echo "<p style='color:white; text-align:center; background-color: green; '>" .$_SESSION['morador_sucesso']."</p>";
+                        unset($_SESSION['morador_sucesso']);
+                    }?> 
+                </div>
                 <fieldset>
                     <legend>Cadastro do Morador</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
@@ -120,7 +124,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <label for="apartamentoId" class="required">Apartamento</label>
                                 <select class="form-control" name="apartamentoId" required/ >
                                     <!-- <option value="0" selected disabled>--Selecione um bloco--</option>-->
-                                    <option value="" ><?=$apartamento->getNome();?></option>                      
+                                    <option value="" ><?=$apartamento->getNome();?></option>                                                      
                                 </select> 
                             </div>
                         </div><!-- Fim Div1 -->

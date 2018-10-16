@@ -214,7 +214,7 @@ require_once(__DIR__ . "/../modelo/Ocupacao.class.php");
         }
 
         public function findApartamentoBloco(Bloco $bloco) {
-            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_OCUPACAO ON PK_OCU=FK_APA_OCU WHERE PK_BLO=:ID_BLOCO";
+            $sql = "SELECT * FROM TB_APARTAMENTOS LEFT JOIN TB_BLOCOS ON PK_BLO=FK_APA_BLO JOIN TB_OCUPACAO ON PK_OCU=FK_APA_OCU WHERE PK_BLO=:ID_BLOCO ORDER BY APA_NOME ASC";
             $statement = $this->conexao->prepare($sql);
             $id_bloco = $bloco->getId();
             $statement->bindParam(':ID_BLOCO', $id_bloco); //Proteção contra sql injetct

@@ -17,6 +17,9 @@ require_once(__DIR__ . "/../classes/dao/PerfilDAO.class.php");
 require_once(__DIR__ . "/../classes/modelo/Sindico.class.php");
 require_once(__DIR__ . "/../classes/modelo/Situacao.class.php");
 require_once(__DIR__ . "/../classes/dao/SituacaoDAO.class.php");
+require_once(__DIR__ . "/../classes/dao/MoradorRequisitadoDAO.class.php");
+require_once(__DIR__ . "/../classes/modelo/Ocupacao.class.php");
+require_once(__DIR__ . "/../classes/dao/OcupacaoDAO.class.php");
 
 $perfil = new Perfil();
 $perfilDao = new PerfilDAO();
@@ -34,6 +37,12 @@ $morador = new Morador();
 $mor = new Morador();
 $moradorDao = new MoradorDAO();
 $cpf = new Morador();
+
+$apartamentoRequisitado = new Apartamento();
+$moradorRequisitado = new Morador();
+$moradorRequisitadoDao = new MoradorRequisitadoDAO();
+$ocupacao = new Ocupacao();
+$ocupacaoDao = new OcupacaoDAO();
 
 $continua = true;
 
@@ -102,8 +111,11 @@ if (isset($_POST['alterarSenha']) && $_POST['alterarSenha'] == 'alterarSenha') {
 
 if ($continua) {
     if (isset($_POST['salvar']) && $_POST['salvar'] == 'salvar') {
-        $mor = $moradorDao->findById($_POST['id']);
-        $senha = $mor->getSenha();        
+        //$resultado = 100;
+        //if ($morador->getSituacao()->getId() == 2) {
+        $mor = $moradorDao->findById($_POST['id']); //reservado para preservar a senha já digitada
+        $senha = $mor->getSenha(); //reservado para preservar a senha já digitada
+        $morador->setId($_POST['id']);       
         $morador->setNome($_POST['nome']);
         $morador->setLogin($_POST['login']);
         $morador->setCpf($_POST['cpf']);
@@ -112,10 +124,48 @@ if ($continua) {
         $morador->setSituacao($situacao);
         $perfil = $perfilDao->findById($_POST['perfil']);
         $morador->setPerfil($perfil);
-        
-        if ($_POST['id'] != '') {
-            $morador->setId($_POST['id']);
-            $resultado = $moradorDao->save($morador);
+        if ($_POST['id'] != '') {            
+            if ($_POST['situacao'] == 2) {
+                $resultado = $moradorDao->save($morador);
+                // echo "teste1";
+                // echo "<pre>";
+                // var_dump($resultado);
+                // //var_dump($teste);
+                // var_dump($morador);
+                // //var_dump($apartamentoRequisitado);
+                // echo "</pre>";
+                $apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['ID_apartamento']);
+                $ocupacao = $ocupacaoDao->findById(2);
+                $apartamentoRequisitado->setOcupacao($ocupacao);
+                $apartamentoRequisitado = $apartamentoDao->save($apartamentoRequisitado);  
+                header('location: indexOld.php');          
+            } else {
+                // $mor = $moradorDao->findById($_POST['id']); //reservado para preservar a senha já digitada
+                // $senha = $mor->getSenha(); //reservado para preservar a senha já digitada
+                // $morador->setId($_POST['id']);       
+                // $morador->setNome($_POST['nome']);
+                // $morador->setLogin($_POST['login']);
+                // $morador->setCpf($_POST['cpf']);
+                // $morador->setSenha($senha);
+                // $situacao = $situacaoDao->findById($_POST['situacao']);
+                // $morador->setSituacao($situacao);
+                // $perfil = $perfilDao->findById($_POST['perfil']);
+                // $morador->setPerfil($perfil);
+                $resultado = $moradorDao->save($morador);
+                $apartamentoRequisitado = $moradorRequisitadoDao->findByApartamento($_POST['ID_apartamento']);
+                $ocupacao = $ocupacaoDao->findById(1);
+                $apartamentoRequisitado->setOcupacao($ocupacao);
+                $apartamentoRequisitado = $apartamentoDao->save($apartamentoRequisitado);  
+                header('location: indexOld.php'); 
+                // echo "teste3";
+                // echo "<pre>";
+                // var_dump($resultado);
+                // // var_dump($moradorRequisitado);
+                // // var_dump($apartamentoRequisitado);
+                // echo "</pre>";
+            }
+            //$morador->setId($_POST['id']);
+            //$resultado = $moradorDao->save($morador);
             if ($resultado == 2) {
                 $_SESSION['morador_erro'] = 'Erro ao cadastrar';
                 $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
@@ -126,13 +176,34 @@ if ($continua) {
                 $_SESSION['morador_erro'] = 'Erro ao cadastrar';
                 $_SESSION['senha_vazio'] = 'É necessário digitar uma senha!';
             }else {
-                $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";        
+                $_SESSION['morador_sucesso'] = "Atualizado com sucesso!!!";        
             }
-            header('location: indexOld.php');
+            //header('location: indexOld.php');
         } else {
-            $_SESSION['morador_erro'] = "Morador não cadastrado! Utilize a tela de login para cadastrar um novo morador";
-            header('location: indexOld.php');
-        }
+            $_SESSION['morador_erro'] = "Morador não cadastrado! Utilize a tela de cadastro de morador para cadastrar um novo morador";
+           // header('location: indexOld.php');
+        
+        //if ($_POST['id'] != '') {
+        } //else {
+            // $morador->setId($_POST['id']);
+            // //$resultado = $moradorDao->save($morador);
+            // if ($resultado == 2) {
+            //     $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+            //     $_SESSION['cpf_existe'] = 'CPF digitado, já existe!';
+            // } else if ($resultado == 3) {
+            //     $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+            //     $_SESSION['login_existe'] = 'Login digitado, já existe!';
+            // } else if ($resultado == 4) {
+            //     $_SESSION['morador_erro'] = 'Erro ao cadastrar';
+            //     $_SESSION['senha_vazio'] = 'É necessário digitar uma senha!';
+            // }else {
+            //     $_SESSION['morador_sucesso'] = "Cadastrado com sucesso!!!";        
+            // }
+            //header('location: indexOld2.php');
+        // } else {
+        //     $_SESSION['morador_erro'] = "Morador não cadastrado! Utilize a tela de login para cadastrar um novo morador";
+        //     header('location: indexOld3.php');
+        //}
         
         // echo "<pre>";
         // var_dump($mor);

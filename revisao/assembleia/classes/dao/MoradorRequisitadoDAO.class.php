@@ -420,7 +420,7 @@ require_once(__DIR__ . "/../modelo/Ocupacao.class.php");
                 
                 // return $this->findById($this->conexao->lastInsertId());
                 // return $this->findById($morador->getId());
-                //return $this->findById($this->conexao->lastInsertId());
+                return $this->findById($this->conexao->lastInsertId());
                 //return 0;
             } catch(PDOException $e) {
                 echo $e->getMessage();

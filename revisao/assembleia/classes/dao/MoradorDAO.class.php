@@ -270,7 +270,7 @@ require_once(__DIR__ . "/../modelo/Perfil.class.php");
             }
         }
         private function update(Morador $morador) {
-            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, FK_MOR_SIT=:SITUACAO, FK_MOR_PER=:PERFIL WHERE PK_MOR = :ID";
+            $sql = "UPDATE TB_MORADORES SET MOR_NOME=:NOME, MOR_CPF=:CPF, MOR_LOGIN=:USERNAME, MOR_SENHA=:SENHA, FK_MOR_SIT=:SITUACAO, FK_MOR_PER=:PERFIL WHERE PK_MOR=:ID";
             try {
                 // echo "<pre>";                
                 //     var_dump($morador);

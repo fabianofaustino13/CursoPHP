@@ -78,11 +78,16 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="row" style="margin-top: 2%;">
             <div class="col-md-12 mb-3">
             <!-- onsubmit="return checaFormulario()"  -->
-                <?php 
-                    echo "<pre>";
-                    //var_dump($requisitado);
-                    echo "</pre>";
-                ?>
+                <div>
+                    <?php if (!empty($_SESSION['morador_erro']) && isset($_SESSION['morador_erro'])) {
+                        echo "<p style='color:white; text-align:center; background-color: red; '>" .$_SESSION['morador_erro']."</p>";
+                        unset($_SESSION['morador_erro']);
+                    }?> 
+                    <?php if (!empty($_SESSION['morador_sucesso']) && isset($_SESSION['morador_sucesso'])) {
+                        echo "<p style='color:white; text-align:center; background-color: green; '>" .$_SESSION['morador_sucesso']."</p>";
+                        unset($_SESSION['morador_sucesso']);
+                    }?> 
+                </div>
                 <fieldset>
                     <legend>Editar dados dos Moradores Old</legend>
                     <!-- <form method="post" action="index.php">Form Geral -->
@@ -154,6 +159,7 @@ date_default_timezone_set('America/Sao_Paulo');
                             </div>
                             <div class="col-md-1 mb-3" id="div_apartamentos"><!-- select Apartamento -->
                                 <label for="apartamentoId" class="required">Apartamento</label>
+                                <input type="hidden" name="ID_apartamento" value="<?=$requisitado->getApartamento()->getId();?>">                                                    
                                 <input disabled="disabled" type="text" class="form-control" id="apartamentoId" name="apartamentoId" value="<?=$requisitado->getApartamento()->getNome();?>" />
                             </div>
 
