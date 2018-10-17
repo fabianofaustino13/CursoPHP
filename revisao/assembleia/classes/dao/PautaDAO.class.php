@@ -1,9 +1,9 @@
 <?php
 
-require_once (__DIR__ . "/./Conexao.class.php");
-require_once __DIR__ . "/../modelo/Pauta.class.php";
-require_once (__DIR__ . "/../modelo/Assembleia.class.php");
-require_once (__DIR__ . "/../modelo/TipoAssembleia.class.php");
+require_once(__DIR__ . "/./Conexao.class.php");
+require_once(__DIR__ . "/../modelo/Pauta.class.php");
+require_once(__DIR__ . "/../modelo/Assembleia.class.php");
+require_once(__DIR__ . "/../modelo/TipoAssembleia.class.php");
 
     class PautaDAO {
 
