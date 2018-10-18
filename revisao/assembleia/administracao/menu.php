@@ -76,7 +76,8 @@
                 <div class="dropdown-container">
                     <a href="../morador/gerenciarMorador.php"><i class="fab fa-gg"></i> <span>Morador</span> </a>
                     <a href="../vincularApartamentoMorador/index.php"><i class="fab fa-gg"></i> <span>Vincular Morador</span> </a>
-                    <a href="../evento/index.php"><i class="fab fa-gg"></i> <span>Evento</span> </a>
+                    <a href="../resultadoVotacao/index.php"><i class="fab fa-gg"></i> <span>Resultado Votação</span> </a>
+                    <a href="../votacao/index.php"><i class="fab fa-gg"></i> <span>Votação</span> </a>
                 </div>
             <?php endif;?>
     

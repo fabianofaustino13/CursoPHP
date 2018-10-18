@@ -46,14 +46,60 @@ require_once(__DIR__ . "/../modelo/OpcaoResposta.class.php");
             return $pautaOpcaoRespostas;
         }
 
+        public function findPorPauta() {
+            $sql = "SELECT DISTINCT PK_PAU, PAU_NOME FROM TB_PAUTAS_OPCOES_RESPOSTAS JOIN TB_OPCOES_RESPOSTAS ON PK_ODR=FK_POR_ODR JOIN TB_MORADORES ON PK_MOR=FK_POR_MOR JOIN TB_PAUTAS ON PK_PAU=FK_POR_PAU ORDER BY FK_POR_PAU ASC";
+            $statement = $this->conexao->prepare($sql);
+            $statement->execute();
+            $rows = $statement->fetchAll();
+            $pautaOpcaoRespostas = array();
+            foreach ($rows as $row) {
+                $pautaOpcaoResposta = new PautaOpcaoResposta();
+                
+                $pauta = new Pauta();
+                $pauta->setId($row['PK_PAU']);
+                $pauta->setNome($row['PAU_NOME']);
+                $pautaOpcaoResposta->setPauta($pauta);
+              
+                array_push($pautaOpcaoRespostas, $pautaOpcaoResposta);
+            }
+            return $pautaOpcaoRespostas;
+        }
+
         public function somaSim($id) {
-            $sql = "SELECT COUNT(*) FROM TB_PAUTAS_OPCOES_RESPOSTAS JOIN TB_OPCOES_RESPOSTAS ON PK_ODR=FK_POR_ODR JOIN TB_MORADORES ON PK_MOR=FK_POR_MOR JOIN TB_PAUTAS ON PK_PAU=FK_POR_PAU WHERE PK_PAU=$id AND PK_ODR=1";
-           
-            return $sql;
+            $sql = "SELECT * FROM TB_PAUTAS_OPCOES_RESPOSTAS JOIN TB_OPCOES_RESPOSTAS ON PK_ODR=FK_POR_ODR JOIN TB_MORADORES ON PK_MOR=FK_POR_MOR JOIN TB_PAUTAS ON PK_PAU=FK_POR_PAU WHERE PK_PAU=:ID AND PK_ODR=1";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id);
+            $statement->execute();
+            $resultado = $statement->fetchAll();
+            $count = count($resultado); 
+            
+            return $count;
+        }
+        
+        public function somaNao($id) {
+            $sql = "SELECT * FROM TB_PAUTAS_OPCOES_RESPOSTAS JOIN TB_OPCOES_RESPOSTAS ON PK_ODR=FK_POR_ODR JOIN TB_MORADORES ON PK_MOR=FK_POR_MOR JOIN TB_PAUTAS ON PK_PAU=FK_POR_PAU WHERE PK_PAU=:ID AND PK_ODR=2";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id);
+            $statement->execute();
+            $resultado = $statement->fetchAll();
+            $count = count($resultado); 
+            
+            return $count;
+        }
+        
+        public function somaAbstencao($id) {
+            $sql = "SELECT * FROM TB_PAUTAS_OPCOES_RESPOSTAS JOIN TB_OPCOES_RESPOSTAS ON PK_ODR=FK_POR_ODR JOIN TB_MORADORES ON PK_MOR=FK_POR_MOR JOIN TB_PAUTAS ON PK_PAU=FK_POR_PAU WHERE PK_PAU=:ID AND PK_ODR=3";
+            $statement = $this->conexao->prepare($sql);
+            $statement->bindParam(':ID', $id);
+            $statement->execute();
+            $resultado = $statement->fetchAll();
+            $count = count($resultado); 
+            
+            return $count;
         }
 
         public function findById($id) {
-            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = :ID";
+            $sql = "SELECT * FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR=:ID";
             $statement = $this->conexao->prepare($sql);
             $statement->bindParam(':ID', $id);
             $statement->execute();
@@ -82,50 +128,58 @@ require_once(__DIR__ . "/../modelo/OpcaoResposta.class.php");
             return $opcaoResposta;
         }
 
-        public function save(OpcaoResposta $opcaoResposta) {
-            if ($opcaoResposta->getId() == null) {
-                $this->insert($opcaoResposta);
+        public function save(PautaOpcaoResposta $pautaOpcaoResposta) {
+            if (!is_null($pautaOpcaoResposta->getPauta()->getId())) {
+                return $this->insert($pautaOpcaoResposta);
             } else {
-                $this->update($opcaoResposta);
+                return $this->update($pautaOpcaoResposta);
             }
         }
 
-        private function insert(OpcaoResposta $opcaoResposta) {
-            $sql = "INSERT INTO TB_OPCOES_RESPOSTAS (ODR_NOME, ODR_IMAGEM) VALUES (:NOME, :IMAGEM)";
+        private function insert(PautaOpcaoResposta $pautaOpcaoResposta) {
+            $sql = "INSERT INTO TB_PAUTAS_OPCOES_RESPOSTAS (FK_POR_MOR, FK_POR_PAU, FK_POR_ODR) VALUES (:MORADOR, :PAUTA, :RESPOSTA)";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $nome = $opcaoResposta->getNome();
-                $imagem = $opcaoResposta->getImagem();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':IMAGEM', $imagem);
-                $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                $morador = $pautaOpcaoResposta->getMorador()->getId();
+                $pauta = $pautaOpcaoResposta->getPauta()->getId();
+                $resposta = $pautaOpcaoResposta->getOpcaoResposta()->getId();
+                $statement->bindParam(':MORADOR', $morador);
+                $statement->bindParam(':PAUTA', $pauta);
+                $statement->bindParam(':RESPOSTA', $resposta);
+                $statement->execute();                
+                //return $this->findById($this->conexao->lastInsertId());
+                return 1;
             } catch(PDOException $e) {
                 echo $e->getMessage();
-                return null;
+                //return null;
+                return 5;
             }
         }
 
-        private function update(OpcaoResposta $opcaoResposta) {
-            $sql = "UPDATE TB_OPCOES_RESPOSTAS SET ODR_NOME = :NOME, ODR_IMAGEM = :IMAGEM WHERE PK_ODR = :ID";
+        private function update(PautaOpcaoResposta $pautaOpcaoResposta) {
+            $sql = "UPDATE TB_PAUTAS_OPCOES_RESPOSTAS SET FK_POR_MOR=:MORADOR, FK_POR_PAU=:PAUTA, FK_POR_ODR=:RESPOSTA WHERE FK_POR_PAU=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
-                $nome = $opcaoResposta->getNome();
-                $imagem = $opcaoResposta->getImagem();
-                $id = $opcaoResposta->getId();
-                $statement->bindParam(':NOME', $nome);
-                $statement->bindParam(':IMAGEM', $imagem);
+                $morador = $pautaOpcaoResposta->getMorador()->getId();
+                $pauta = $pautaOpcaoResposta->getPauta()->getId();
+                $resposta = $pautaOpcaoResposta->getOpcaoResposta()->getId();
+                $id = $pautaOpcaoResposta->getPauta()->getId();
+                $statement->bindParam(':MORADOR', $morador);
+                $statement->bindParam(':PAUTA', $pauta);
+                $statement->bindParam(':RESPOSTA', $resposta);
                 $statement->bindParam(':ID', $id);
                 $statement->execute();
-                return $this->findById($this->conexao->lastInsertId());
+                //return $this->findById($this->conexao->lastInsertId());
+                return 2;
             } catch(PDOException $e) {
                 echo $e->getMessage();
-                return null;
+                //return null;
+                return 6;
             }
         }
 
         public function remove($id) {
-            $sql = "DELETE FROM TB_OPCOES_RESPOSTAS WHERE PK_ODR = :ID";
+            $sql = "DELETE FROM TB_PAUTA_OPCOES_RESPOSTAS WHERE FK_POR_PAU=:ID";
             try {
                 $statement = $this->conexao->prepare($sql);
                 $statement->bindParam(':ID', $id);
